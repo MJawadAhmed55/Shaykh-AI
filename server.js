@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve static files from root directory (where index.html is)
+app.use(express.static(__dirname));
 
 // ── Chat endpoint (API key is hidden on the server) ──
 app.post('/api/chat', async (req, res) => {
@@ -84,6 +86,11 @@ app.post('/api/chat', async (req, res) => {
     console.error('Groq error:', err.message);
     res.status(500).json({ error: 'Server error. Please try again.' });
   }
+});
+
+// Fallback — serve index.html for any unknown route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
