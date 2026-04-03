@@ -1,6 +1,7 @@
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
+const fetch   = require('node-fetch');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -57,23 +58,29 @@ app.post('/api/chat', async (req, res) => {
 - Maintain the highest adab at all times`;
 
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 1024,
-        messages: [
-          { role: 'system', content: SYSTEM },
-          ...messages
-        ]
-      })
-    });
+const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+  },
+  body: JSON.stringify({
+    model: 'llama3-8b-8192',
+    max_tokens: 1024,
+    messages: [
+      { role: 'system', content: SYSTEM },
+      ...messages
+    ]
+  })
+});
 
-    const data = await response.json();
+if (!response.ok) {
+  const text = await response.text();
+  console.error("Groq API error:", text);
+  return res.status(500).json({ error: text });
+}
+
+const data = await response.json();
 
     if (data.error) {
       return res.status(500).json({ error: data.error.message });
