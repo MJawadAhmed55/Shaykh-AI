@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0e0f">
+<meta name="description" content="Shaykh AI — Free Hanafi Islamic Scholar powered by AI">
+<title>Shaykh AI — Islamic Scholar</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e0f;--bg-card:#111618;--bg-panel:#151b1d;
+    --gold:#c9a84c;--gold-lt:#e2c97e;--gold-dim:#7a6230;
+    --green:#2e7d52;--green-br:#3dbb76;
+    --txt:#e8e0d0;--txt-dim:#8a8278;--txt-muted:#5a5550;
+    --border:rgba(201,168,76,0.15);--border-s:rgba(201,168,76,0.35);
+    --user-bg:#162a1e;--ai-bg:#131a1c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{background:var(--bg);color:var(--txt);font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column;position:relative}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:repeating-linear-gradient(60deg,transparent,transparent 40px,rgba(201,168,76,0.018) 40px,rgba(201,168,76,0.018) 41px),repeating-linear-gradient(-60deg,transparent,transparent 40px,rgba(201,168,76,0.018) 40px,rgba(201,168,76,0.018) 41px)}
+
+  /* HEADER */
+  header{z-index:10;background:linear-gradient(180deg,#0d1214,rgba(13,18,20,0.97));border-bottom:1px solid var(--border-s);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px;flex-shrink:0}
+  .h-left{display:flex;align-items:center;gap:11px}
+  .h-emblem{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--gold);background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);box-shadow:0 0 14px rgba(201,168,76,0.2);flex-shrink:0}
+  .h-titles h1{font-size:1.1rem;font-weight:600;color:var(--gold-lt);letter-spacing:0.03em;line-height:1.1}
+  .h-titles p{font-size:0.65rem;color:var(--txt-dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+  .h-arabic{font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold);opacity:0.85}
+  .status{display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;color:var(--green-br);letter-spacing:0.08em;text-transform:uppercase}
+  .status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-br);box-shadow:0 0 7px var(--green-br);animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* LAYOUT */
+  .app-body{flex:1;display:flex;overflow:hidden;min-height:0}
+
+  /* SIDEBAR */
+  aside{width:240px;flex-shrink:0;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:14px 0}
+  aside::-webkit-scrollbar{width:3px}
+  aside::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
+  .s-profile{padding:12px 14px 14px;border-bottom:1px solid var(--border);text-align:center;margin-bottom:12px}
+  .s-avatar{width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle at 35% 35%,#1e3a28,#0d1812);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 7px;box-shadow:0 0 18px rgba(201,168,76,0.2)}
+  .s-name{font-size:0.93rem;font-weight:600;color:var(--gold-lt);margin-bottom:3px}
+  .s-title{font-size:0.67rem;color:var(--txt-dim);line-height:1.5}
+  .badge{display:inline-block;background:rgba(46,125,82,0.18);border:1px solid rgba(61,187,118,0.28);color:var(--green-br);font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 7px;border-radius:20px;margin-top:4px}
+  .s-label{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--txt-muted);padding:0 14px;margin-bottom:7px}
+  .s-section{padding:0 9px 12px;border-bottom:1px solid var(--border);margin-bottom:12px}
+  .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);font-family:'Cormorant Garamond',serif;font-size:0.82rem;padding:7px 10px;cursor:pointer;transition:all .17s;margin-bottom:4px}
+  .t-chip:hover{background:rgba(201,168,76,0.06);border-color:var(--gold-dim);color:var(--gold-lt)}
+  .free-note{margin:0 9px;padding:9px 11px;background:linear-gradient(135deg,rgba(46,125,82,0.12),rgba(61,187,118,0.05));border:1px solid rgba(61,187,118,0.2);border-radius:7px;font-size:0.68rem;color:var(--green-br);line-height:1.8;text-align:center}
+
+  /* CHAT */
+  .chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+  #msgs{flex:1;overflow-y:auto;padding:22px 26px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+  #msgs::-webkit-scrollbar{width:4px}
+  #msgs::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:4px}
+
+  #welcome{text-align:center;padding:28px 14px 18px;max-width:520px;margin:0 auto;animation:up .5s ease both}
+  .w-bism{font-family:'Amiri',serif;font-size:1.9rem;color:var(--gold);margin-bottom:9px;text-shadow:0 0 16px rgba(201,168,76,0.28)}
+  #welcome h2{font-size:1.3rem;font-weight:400;color:var(--txt);margin-bottom:7px;line-height:1.35}
+  #welcome p{font-size:0.87rem;color:var(--txt-dim);line-height:1.8;margin-bottom:18px}
+  .starters{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .sq{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:10px 12px;cursor:pointer;text-align:left;font-family:'Cormorant Garamond',serif;font-size:0.8rem;color:var(--txt-dim);transition:all .17s;line-height:1.4}
+  .sq:hover{background:rgba(201,168,76,0.06);border-color:var(--gold-dim);color:var(--gold-lt)}
+  @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  .row{display:flex;gap:11px;animation:up .26s ease both;max-width:780px}
+  .row.user{flex-direction:row-reverse;align-self:flex-end}
+  .row.ai{align-self:flex-start}
+  .av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-top:2px}
+  .row.ai .av{background:radial-gradient(circle,#1e3a28,#0d1812);border:1.5px solid var(--gold-dim);color:var(--gold)}
+  .row.user .av{background:var(--user-bg);border:1.5px solid var(--green);color:var(--green-br)}
+  .rname{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+  .row.ai .rname{color:var(--gold-dim)}
+  .row.user .rname{color:var(--green);text-align:right}
+  .bubble{max-width:600px;padding:12px 15px;border-radius:11px;line-height:1.8;font-size:.93rem}
+  .row.ai .bubble{background:var(--ai-bg);border:1px solid var(--border);border-top-left-radius:2px;color:var(--txt)}
+  .row.user .bubble{background:var(--user-bg);border:1px solid rgba(46,125,82,.3);border-top-right-radius:2px;color:var(--txt)}
+  .arabic-q{display:block;font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold);text-align:right;direction:rtl;margin:6px 0;padding:6px 10px;border-right:3px solid var(--gold-dim);background:rgba(201,168,76,.05);border-radius:4px}
+
+  .typing{display:flex;align-items:center;gap:4px;padding:10px 14px;background:var(--ai-bg);border:1px solid var(--border);border-radius:11px;border-top-left-radius:2px;width:fit-content}
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--gold-dim);animation:bounce 1.2s ease-in-out infinite}
+  .typing span:nth-child(2){animation-delay:.2s}
+  .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+  /* INPUT */
+  .input-bar{padding:12px 26px 16px;border-top:1px solid var(--border);background:linear-gradient(0,#0b0e0f 60%,transparent);flex-shrink:0}
+  .input-wrap{display:flex;align-items:flex-end;gap:8px;background:var(--bg-card);border:1px solid var(--border-s);border-radius:11px;padding:9px 11px;transition:border-color .2s;max-width:840px;margin:0 auto}
+  .input-wrap:focus-within{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(201,168,76,.06)}
+  #inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-family:'Cormorant Garamond',serif;font-size:.95rem;resize:none;max-height:120px;min-height:22px;line-height:1.6}
+  #inp::placeholder{color:var(--txt-muted);font-style:italic}
+  #send{width:36px;height:36px;border-radius:7px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .17s}
+  #send:hover{background:linear-gradient(135deg,var(--green-br),var(--green));transform:scale(1.05);box-shadow:0 4px 12px rgba(61,187,118,.26)}
+  .hint{text-align:center;font-size:.62rem;color:var(--txt-muted);margin-top:5px;letter-spacing:.04em}
+
+  /* PWA install banner */
+  #install-bar{display:none;background:linear-gradient(135deg,var(--green-deep,#1a3a2a),#0d1812);border-top:1px solid rgba(61,187,118,.2);padding:9px 20px;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+  #install-bar span{font-size:.8rem;color:var(--green-br)}
+  #install-bar button{background:var(--green);border:none;color:#fff;font-family:'Cormorant Garamond',serif;font-size:.85rem;padding:6px 16px;border-radius:6px;cursor:pointer}
+
+  @media(max-width:620px){
+    aside{display:none}
+    #msgs{padding:12px}
+    .input-bar{padding:9px 9px 13px}
+    .starters{grid-template-columns:1fr}
+    .h-arabic{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-left">
+    <div class="h-emblem">☪</div>
+    <div class="h-titles">
+      <h1>Shaykh AI</h1>
+      <p>Hanafi · Sunni · Shariah</p>
+    </div>
+  </div>
+  <div class="h-arabic">الشيخ العلّامة</div>
+  <div class="status">Online · Free</div>
+</header>
+
+<div class="app-body">
+  <aside>
+    <div class="s-profile">
+      <div class="s-avatar">🕌</div>
+      <div class="s-name">Shaykh AI</div>
+      <div class="s-title">Doctor of Islamic Philosophy<br>Hanafi Jurisprudence</div>
+      <div class="badge">Sunni · Hanafi · Free</div>
+    </div>
+    <div class="s-label">Islamic Topics</div>
+    <div class="s-section">
+      <button class="t-chip" onclick="ask('What are the five pillars of Islam in the Hanafi school?')">🕋 Five Pillars</button>
+      <button class="t-chip" onclick="ask('Explain Salah rulings according to Hanafi fiqh step by step.')">🤲 Salah & Prayer</button>
+      <button class="t-chip" onclick="ask('What does Hanafi fiqh say about halal and haram food?')">📿 Halal & Haram</button>
+      <button class="t-chip" onclick="ask('Explain Islamic Nikah rules in the Hanafi school.')">💍 Nikah & Family</button>
+      <button class="t-chip" onclick="ask('What is the Hanafi ruling on Zakat?')">💛 Zakat Rules</button>
+      <button class="t-chip" onclick="ask('Explain Tawheed and Islamic Aqeedah in depth.')">📖 Aqeedah & Tawheed</button>
+      <button class="t-chip" onclick="ask('Tell me about Imam Abu Hanifa and his contributions.')">✍️ Imam Abu Hanifa</button>
+      <button class="t-chip" onclick="ask('What is Tasawwuf and its place in Sunni Islam?')">🌙 Tasawwuf</button>
+      <button class="t-chip" onclick="ask('How do I perform Ghusl correctly in Hanafi fiqh?')">💧 Ghusl & Taharah</button>
+      <button class="t-chip" onclick="ask('What is the Islamic view on seeking knowledge?')">🌟 Seeking Knowledge</button>
+    </div>
+    <div class="free-note">✅ 100% Free<br>No account needed<br>Works on any device</div>
+  </aside>
+
+  <div class="chat-wrap">
+    <div id="msgs">
+      <div id="welcome">
+        <div class="w-bism">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <h2>As-Salamu Alaykum wa Rahmatullahi wa Barakatuh</h2>
+        <p>I am your personal Islamic Scholar — grounded in the <strong>Hanafi madhab</strong>, Sunni tradition and classical Islamic philosophy. Ask freely about Fiqh, Aqeedah, Tafsir, Hadith or any matter of Deen.</p>
+        <div class="starters">
+          <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 How to perform Wudu?</button>
+          <button class="sq" onclick="ask('What is the difference between Fard, Wajib, Sunnah and Mustahab?')">📜 Fard vs Wajib vs Sunnah</button>
+          <button class="sq" onclick="ask('What is the Islamic view on seeking knowledge?')">🌟 Virtue of seeking knowledge</button>
+          <button class="sq" onclick="ask('Explain Tawbah and how to sincerely repent to Allah.')">🤲 How to make Tawbah</button>
+        </div>
+      </div>
+    </div>
+    <div class="input-bar">
+      <div class="input-wrap">
+        <textarea id="inp" rows="1" placeholder="Ask your question about Islam, Fiqh, Aqeedah, Deen…"></textarea>
+        <button id="send" onclick="sendMsg()">➤</button>
+      </div>
+      <div class="hint">Enter to send · Shift+Enter for new line · Responses follow Hanafi Shariah</div>
+    </div>
+  </div>
+</div>
+
+<!-- PWA install prompt -->
+<div id="install-bar">
+  <span>📱 Add Shaykh AI to your home screen for easy access</span>
+  <button id="install-btn">Install App</button>
+</div>
+
+<script>
+let history = [];
+let busy    = false;
+let deferredPrompt = null;
+
+// PWA install
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-bar').style.display = 'flex';
+});
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-bar').style.display = 'none';
+});
+
+// Input resize
+const inp = document.getElementById('inp');
+inp.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+
+function ask(q) { inp.value = q; sendMsg(); }
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmt(txt) {
+  let h = esc(txt);
+  h = h.replace(/\[ARABIC:\s*(.+?)\]/g, '<span class="arabic-q">$1</span>');
+  h = h.replace(/^### (.+)$/gm,'<strong style="color:var(--gold-lt);font-size:1rem;display:block;margin:5px 0 2px">$1</strong>');
+  h = h.replace(/^## (.+)$/gm, '<strong style="color:var(--gold);font-size:1.06rem;display:block;margin:9px 0 3px">$1</strong>');
+  h = h.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold-lt)">$1</strong>');
+  h = h.replace(/\*(.+?)\*/g,    '<em style="color:var(--txt-dim)">$1</em>');
+  h = h.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  h = h.replace(/(?:^|<br>)[•\-] (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:1px 0">• $1</span>');
+  h = h.replace(/(?:^|<br>)(\d+)\. (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:2px 0"><span style="color:var(--gold-dim);font-weight:600">$1.</span> $2</span>');
+  return h;
+}
+
+function addMsg(role, text) {
+  const w = document.getElementById('welcome');
+  if (w) { w.style.transition='all .2s'; w.style.opacity='0'; setTimeout(()=>w.remove(),200); }
+  const c = document.getElementById('msgs');
+  const row = document.createElement('div');
+  row.className = `row ${role}`;
+  if (role === 'user') {
+    row.innerHTML = `<div class="av">👤</div><div><div class="rname">You</div><div class="bubble">${esc(text)}</div></div>`;
+  } else {
+    row.innerHTML = `<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">${fmt(text)}</div></div>`;
+  }
+  c.appendChild(row);
+  c.scrollTop = c.scrollHeight;
+}
+
+function showTyping() {
+  const c = document.getElementById('msgs');
+  const row = document.createElement('div');
+  row.className='row ai'; row.id='typing';
+  row.innerHTML='<div class="av">☪</div><div><div class="rname">Shaykh AI</div><div class="typing"><span></span><span></span><span></span></div></div>';
+  c.appendChild(row); c.scrollTop=c.scrollHeight;
+}
+function hideTyping() { document.getElementById('typing')?.remove(); }
+
+async function sendMsg() {
+  if (busy) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value=''; inp.style.height='auto';
+  busy = true;
+  addMsg('user', text);
+  history.push({ role:'user', content:text });
+  showTyping();
+  try {
+    const res = await fetch('/api/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ messages: history })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    history.push({ role:'assistant', content:data.reply });
+    hideTyping();
+    addMsg('ai', data.reply);
+  } catch(err) {
+    hideTyping();
+    addMsg('ai', `⚠️ Error: ${err.message}. Please try again.`);
+  }
+  busy = false;
+}
+</script>
+</body>
+</html>
