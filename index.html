@@ -29,9 +29,13 @@
   .h-titles h1{font-size:1.1rem;font-weight:600;color:var(--gold-lt);letter-spacing:0.03em;line-height:1.1}
   .h-titles p{font-size:0.65rem;color:var(--txt-dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
   .h-arabic{font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold);opacity:0.85}
+  .h-right{display:flex;align-items:center;gap:10px}
   .status{display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;color:var(--green-br);letter-spacing:0.08em;text-transform:uppercase}
   .status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-br);box-shadow:0 0 7px var(--green-br);animation:blink 2s infinite}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .new-chat-btn{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-family:'Cormorant Garamond',serif;font-size:0.8rem;padding:6px 12px;cursor:pointer;transition:all .2s;letter-spacing:0.04em}
+  .new-chat-btn:hover{background:rgba(201,168,76,0.08);border-color:var(--gold);color:var(--gold-lt)}
+  .msg-count{font-size:0.65rem;color:var(--txt-muted);letter-spacing:0.06em}
 
   /* LAYOUT */
   .app-body{flex:1;display:flex;overflow:hidden;min-height:0}
@@ -49,6 +53,8 @@
   .s-section{padding:0 9px 12px;border-bottom:1px solid var(--border);margin-bottom:12px}
   .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);font-family:'Cormorant Garamond',serif;font-size:0.82rem;padding:7px 10px;cursor:pointer;transition:all .17s;margin-bottom:4px}
   .t-chip:hover{background:rgba(201,168,76,0.06);border-color:var(--gold-dim);color:var(--gold-lt)}
+  .memory-box{margin:0 9px 12px;padding:10px 12px;background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02));border:1px solid var(--border-s);border-radius:8px;font-size:0.7rem;color:var(--txt-dim);line-height:1.8}
+  .memory-box strong{color:var(--gold-lt);display:block;margin-bottom:4px;font-size:0.75rem}
   .free-note{margin:0 9px;padding:9px 11px;background:linear-gradient(135deg,rgba(46,125,82,0.12),rgba(61,187,118,0.05));border:1px solid rgba(61,187,118,0.2);border-radius:7px;font-size:0.68rem;color:var(--green-br);line-height:1.8;text-align:center}
 
   /* CHAT */
@@ -96,17 +102,13 @@
   #send:hover{background:linear-gradient(135deg,var(--green-br),var(--green));transform:scale(1.05);box-shadow:0 4px 12px rgba(61,187,118,.26)}
   .hint{text-align:center;font-size:.62rem;color:var(--txt-muted);margin-top:5px;letter-spacing:.04em}
 
-  /* PWA install banner */
-  #install-bar{display:none;background:linear-gradient(135deg,var(--green-deep,#1a3a2a),#0d1812);border-top:1px solid rgba(61,187,118,.2);padding:9px 20px;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
-  #install-bar span{font-size:.8rem;color:var(--green-br)}
-  #install-bar button{background:var(--green);border:none;color:#fff;font-family:'Cormorant Garamond',serif;font-size:.85rem;padding:6px 16px;border-radius:6px;cursor:pointer}
-
   @media(max-width:620px){
     aside{display:none}
     #msgs{padding:12px}
     .input-bar{padding:9px 9px 13px}
     .starters{grid-template-columns:1fr}
     .h-arabic{display:none}
+    .msg-count{display:none}
   }
 </style>
 </head>
@@ -121,7 +123,11 @@
     </div>
   </div>
   <div class="h-arabic">الشيخ العلّامة</div>
-  <div class="status">Online · Free</div>
+  <div class="h-right">
+    <span class="msg-count" id="msg-count"></span>
+    <div class="status">Online · Free</div>
+    <button class="new-chat-btn" onclick="newChat()">✦ New Chat</button>
+  </div>
 </header>
 
 <div class="app-body">
@@ -132,6 +138,12 @@
       <div class="s-title">Doctor of Islamic Philosophy<br>Hanafi Jurisprudence</div>
       <div class="badge">Sunni · Hanafi · Free</div>
     </div>
+
+    <div class="memory-box">
+      <strong>🧠 Memory Active</strong>
+      Shaykh AI remembers your full conversation — just like ChatGPT. Click "New Chat" to start fresh.
+    </div>
+
     <div class="s-label">Islamic Topics</div>
     <div class="s-section">
       <button class="t-chip" onclick="ask('What are the five pillars of Islam in the Hanafi school?')">🕋 Five Pillars</button>
@@ -153,7 +165,7 @@
       <div id="welcome">
         <div class="w-bism">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
         <h2>As-Salamu Alaykum wa Rahmatullahi wa Barakatuh</h2>
-        <p>I am your personal Islamic Scholar — grounded in the <strong>Hanafi madhab</strong>, Sunni tradition and classical Islamic philosophy. Ask freely about Fiqh, Aqeedah, Tafsir, Hadith or any matter of Deen.</p>
+        <p>I am your personal Islamic Scholar — grounded in the <strong>Hanafi madhab</strong>, Sunni tradition and classical Islamic philosophy. I remember our full conversation, so feel free to ask follow-up questions naturally.</p>
         <div class="starters">
           <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 How to perform Wudu?</button>
           <button class="sq" onclick="ask('What is the difference between Fard, Wajib, Sunnah and Mustahab?')">📜 Fard vs Wajib vs Sunnah</button>
@@ -164,38 +176,53 @@
     </div>
     <div class="input-bar">
       <div class="input-wrap">
-        <textarea id="inp" rows="1" placeholder="Ask your question about Islam, Fiqh, Aqeedah, Deen…"></textarea>
+        <textarea id="inp" rows="1" placeholder="Ask your question… I remember our full conversation"></textarea>
         <button id="send" onclick="sendMsg()">➤</button>
       </div>
-      <div class="hint">Enter to send · Shift+Enter for new line · Responses follow Hanafi Shariah</div>
+      <div class="hint">Enter to send · Shift+Enter for new line · Full memory active like ChatGPT</div>
     </div>
   </div>
 </div>
 
-<!-- PWA install prompt -->
-<div id="install-bar">
-  <span>📱 Add Shaykh AI to your home screen for easy access</span>
-  <button id="install-btn">Install App</button>
-</div>
-
 <script>
+// ── FULL CONVERSATION MEMORY ──
+// history[] stores every message sent and received
+// It is sent to the server on every request so the AI
+// always has full context of the conversation — just like ChatGPT
 let history = [];
-let busy    = false;
-let deferredPrompt = null;
+let busy = false;
 
-// PWA install
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-bar').style.display = 'flex';
-});
-document.getElementById('install-btn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  document.getElementById('install-bar').style.display = 'none';
-});
+function updateCount() {
+  const turns = Math.floor(history.length / 2);
+  const el = document.getElementById('msg-count');
+  if (turns > 0) {
+    el.textContent = turns + ' exchange' + (turns > 1 ? 's' : '') + ' in memory';
+  } else {
+    el.textContent = '';
+  }
+}
+
+function newChat() {
+  if (history.length > 0 && !confirm('Start a new conversation? Current chat will be cleared.')) return;
+  history = [];
+  updateCount();
+  const msgs = document.getElementById('msgs');
+  msgs.innerHTML = '';
+  // Re-add welcome screen
+  const welcome = document.createElement('div');
+  welcome.id = 'welcome';
+  welcome.innerHTML = `
+    <div class="w-bism">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <h2>As-Salamu Alaykum wa Rahmatullahi wa Barakatuh</h2>
+    <p>New conversation started. I am ready to guide you. Ask me anything about Islam, Fiqh, Aqeedah or Deen.</p>
+    <div class="starters">
+      <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 How to perform Wudu?</button>
+      <button class="sq" onclick="ask('What is the difference between Fard, Wajib, Sunnah and Mustahab?')">📜 Fard vs Wajib vs Sunnah</button>
+      <button class="sq" onclick="ask('What is the Islamic view on seeking knowledge?')">🌟 Virtue of seeking knowledge</button>
+      <button class="sq" onclick="ask('Explain Tawbah and how to sincerely repent to Allah.')">🤲 How to make Tawbah</button>
+    </div>`;
+  msgs.appendChild(welcome);
+}
 
 // Input resize
 const inp = document.getElementById('inp');
@@ -231,11 +258,11 @@ function addMsg(role, text) {
   if (w) { w.style.transition='all .2s'; w.style.opacity='0'; setTimeout(()=>w.remove(),200); }
   const c = document.getElementById('msgs');
   const row = document.createElement('div');
-  row.className = `row ${role}`;
+  row.className = 'row ' + role;
   if (role === 'user') {
-    row.innerHTML = `<div class="av">👤</div><div><div class="rname">You</div><div class="bubble">${esc(text)}</div></div>`;
+    row.innerHTML = '<div class="av">👤</div><div><div class="rname">You</div><div class="bubble">' + esc(text) + '</div></div>';
   } else {
-    row.innerHTML = `<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">${fmt(text)}</div></div>`;
+    row.innerHTML = '<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">' + fmt(text) + '</div></div>';
   }
   c.appendChild(row);
   c.scrollTop = c.scrollHeight;
@@ -245,7 +272,7 @@ function showTyping() {
   const c = document.getElementById('msgs');
   const row = document.createElement('div');
   row.className='row ai'; row.id='typing';
-  row.innerHTML='<div class="av">☪</div><div><div class="rname">Shaykh AI</div><div class="typing"><span></span><span></span><span></span></div></div>';
+  row.innerHTML='<div class="av">☪</div><div><div class="rname">Shaykh AI · thinking...</div><div class="typing"><span></span><span></span><span></span></div></div>';
   c.appendChild(row); c.scrollTop=c.scrollHeight;
 }
 function hideTyping() { document.getElementById('typing')?.remove(); }
@@ -256,24 +283,36 @@ async function sendMsg() {
   if (!text) return;
   inp.value=''; inp.style.height='auto';
   busy = true;
+
+  // Add to history BEFORE sending
+  history.push({ role: 'user', content: text });
   addMsg('user', text);
-  history.push({ role:'user', content:text });
   showTyping();
+
   try {
     const res = await fetch('/api/chat', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // Send FULL history every time — this is what gives memory
       body: JSON.stringify({ messages: history })
     });
+
     const data = await res.json();
     if (data.error) throw new Error(data.error);
-    history.push({ role:'assistant', content:data.reply });
+
+    // Save AI reply to history too
+    history.push({ role: 'assistant', content: data.reply });
+
     hideTyping();
     addMsg('ai', data.reply);
+    updateCount();
+
   } catch(err) {
     hideTyping();
-    addMsg('ai', `⚠️ Error: ${err.message}. Please try again.`);
+    history.pop(); // remove failed user message from history
+    addMsg('ai', '⚠️ Error: ' + err.message + '. Please try again.');
   }
+
   busy = false;
 }
 </script>
