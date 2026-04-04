@@ -7,7 +7,49 @@
 <title>Shaykh AI — Islamic Scholar</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer>
+// ── SUGGEST CORRECTION ──
+let suggestContext = { question: '', answer: '' };
+
+function openSuggest(btn) {
+  const row = btn.closest('.row');
+  // Find the previous user message
+  let prev = row.previousElementSibling;
+  while(prev && !prev.classList.contains('row')) prev = prev.previousElementSibling;
+  suggestContext.question = prev ? (prev.querySelector('.bubble')?.textContent || '') : '';
+  suggestContext.answer = row.getAttribute('data-text') || '';
+  document.getElementById('suggest-text').value = '';
+  document.getElementById('suggest-modal').style.display = 'flex';
+}
+
+function closeSuggest() {
+  document.getElementById('suggest-modal').style.display = 'none';
+}
+
+async function submitSuggestion() {
+  const text = document.getElementById('suggest-text').value.trim();
+  if (!text) { alert('Please write your suggested correction'); return; }
+  try {
+    await fetch('/api/suggestions', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        user_email: currentUser.email,
+        user_name: currentUser.name,
+        original_question: suggestContext.question,
+        original_answer: suggestContext.answer,
+        suggested_answer: text,
+        status: 'pending'
+      })
+    });
+    closeSuggest();
+    alert('JazakAllah Khair! Your suggestion has been submitted for review.');
+  } catch(err) {
+    alert('Error submitting suggestion: ' + err.message);
+  }
+}
+
+</script>
 <style>
   :root{
     --bg:#0b0e0f;--bg-card:#111618;--bg-panel:#151b1d;
@@ -126,6 +168,20 @@
   .row.ai .bubble{background:var(--ai-bg);border:1px solid var(--border);border-top-left-radius:2px;color:var(--txt)}
   .row.user .bubble{background:var(--user-bg);border:1px solid rgba(46,125,82,.3);border-top-right-radius:2px;color:var(--txt)}
   .arabic-q{display:block;font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold);text-align:right;direction:rtl;margin:6px 0;padding:6px 10px;border-right:3px solid var(--gold-dim);background:rgba(201,168,76,.05);border-radius:4px}
+  .suggest-btn{display:inline-flex;align-items:center;gap:5px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-muted);font-family:'Cormorant Garamond',serif;font-size:0.7rem;padding:3px 10px;cursor:pointer;margin-top:8px;transition:all .17s;letter-spacing:0.04em}
+  .suggest-btn:hover{border-color:var(--gold-dim);color:var(--gold-dim)}
+  /* SUGGEST MODAL */
+  #suggest-modal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+  .suggest-box{background:#111618;border:1px solid var(--border-s);border-radius:14px;padding:28px 26px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.8)}
+  .suggest-box h3{color:var(--gold-lt);font-size:1.1rem;font-weight:400;margin-bottom:6px}
+  .suggest-box p{color:var(--txt-muted);font-size:0.8rem;margin-bottom:16px;line-height:1.6}
+  .suggest-box label{display:block;font-size:0.75rem;color:var(--txt-dim);margin-bottom:4px}
+  .suggest-box textarea{width:100%;background:#0d1214;border:1px solid var(--border-s);border-radius:8px;color:var(--txt);font-family:'Cormorant Garamond',serif;font-size:0.93rem;padding:10px 12px;outline:none;resize:vertical;min-height:110px;margin-bottom:12px}
+  .suggest-box textarea:focus{border-color:var(--gold-dim)}
+  .suggest-btns{display:flex;gap:8px}
+  .s-submit{flex:1;padding:10px;border-radius:7px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;font-family:'Cormorant Garamond',serif;font-size:0.95rem;cursor:pointer}
+  .s-cancel{padding:10px 16px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--txt-muted);font-family:'Cormorant Garamond',serif;font-size:0.95rem;cursor:pointer}
+  .s-cancel:hover{border-color:var(--txt-muted)}
   .typing{display:flex;align-items:center;gap:4px;padding:10px 14px;background:var(--ai-bg);border:1px solid var(--border);border-radius:11px;border-top-left-radius:2px;width:fit-content}
   .typing span{width:6px;height:6px;border-radius:50%;background:var(--gold-dim);animation:bounce 1.2s ease-in-out infinite}
   .typing span:nth-child(2){animation-delay:.2s}
@@ -516,7 +572,9 @@ function addMsgToDOM(role, text) {
       :`<div class="av" style="background:var(--user-bg);border:1.5px solid var(--green);color:var(--green-br)">👤</div>`;
     row.innerHTML=av+'<div><div class="rname">'+esc(currentUser?.name||'You')+'</div><div class="bubble">'+esc(text)+'</div></div>';
   } else {
-    row.innerHTML='<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">'+fmt(text)+'</div></div>';
+    const msgId='msg_'+Date.now();
+    row.setAttribute('data-text', text);
+    row.innerHTML='<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">'+fmt(text)+'</div><button class="suggest-btn" onclick="openSuggest(this)">✏️ Suggest Correction</button></div>';
   }
   c.appendChild(row); c.scrollTop=c.scrollHeight;
 }
@@ -557,6 +615,63 @@ async function sendMsg(){
   }
   busy=false;
 }
+
+// ── SUGGEST CORRECTION ──
+let suggestContext = { question: '', answer: '' };
+
+function openSuggest(btn) {
+  const row = btn.closest('.row');
+  // Find the previous user message
+  let prev = row.previousElementSibling;
+  while(prev && !prev.classList.contains('row')) prev = prev.previousElementSibling;
+  suggestContext.question = prev ? (prev.querySelector('.bubble')?.textContent || '') : '';
+  suggestContext.answer = row.getAttribute('data-text') || '';
+  document.getElementById('suggest-text').value = '';
+  document.getElementById('suggest-modal').style.display = 'flex';
+}
+
+function closeSuggest() {
+  document.getElementById('suggest-modal').style.display = 'none';
+}
+
+async function submitSuggestion() {
+  const text = document.getElementById('suggest-text').value.trim();
+  if (!text) { alert('Please write your suggested correction'); return; }
+  try {
+    await fetch('/api/suggestions', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        user_email: currentUser.email,
+        user_name: currentUser.name,
+        original_question: suggestContext.question,
+        original_answer: suggestContext.answer,
+        suggested_answer: text,
+        status: 'pending'
+      })
+    });
+    closeSuggest();
+    alert('JazakAllah Khair! Your suggestion has been submitted for review.');
+  } catch(err) {
+    alert('Error submitting suggestion: ' + err.message);
+  }
+}
+
 </script>
+
+<!-- SUGGEST CORRECTION MODAL -->
+<div id="suggest-modal">
+  <div class="suggest-box">
+    <h3>💡 Suggest a Correction</h3>
+    <p>JazakAllah Khair for helping improve Shaykh AI! Your suggestion will be reviewed by the admin before being added.</p>
+    <label>Your Correction / Better Answer</label>
+    <textarea id="suggest-text" placeholder="Write the correct Islamic answer here..."></textarea>
+    <div class="suggest-btns">
+      <button class="s-submit" onclick="submitSuggestion()">Submit Suggestion</button>
+      <button class="s-cancel" onclick="closeSuggest()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
