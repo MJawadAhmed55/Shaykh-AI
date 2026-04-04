@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaykh AI — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root{--bg:#0b0e0f;--bg-card:#111618;--bg-panel:#151b1d;--gold:#c9a84c;--gold-lt:#e2c97e;--gold-dim:#7a6230;--green:#2e7d52;--green-br:#3dbb76;--txt:#e8e0d0;--txt-dim:#8a8278;--txt-muted:#5a5550;--border:rgba(201,168,76,0.15);--border-s:rgba(201,168,76,0.35);--red:#e05555;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:'Cormorant Garamond',serif;min-height:100vh}
+  #login{position:fixed;inset:0;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;z-index:999}
+  .login-box{background:#111618;border:1px solid var(--border-s);border-radius:16px;padding:40px 32px;max-width:400px;width:90%;text-align:center}
+  .login-box h2{color:var(--gold-lt);font-size:1.4rem;font-weight:400;margin:10px 0 8px}
+  .login-box p{color:var(--txt-dim);font-size:0.85rem;margin-bottom:24px;line-height:1.6}
+  .google-btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#333;border:none;border-radius:8px;padding:12px 22px;font-size:0.97rem;font-weight:500;cursor:pointer;transition:all .2s}
+  .google-btn:hover{background:#f5f5f5;transform:translateY(-1px)}
+  .access-denied{color:var(--red);margin-top:14px;font-size:0.85rem;display:none}
+
+  header{background:linear-gradient(180deg,#0d1214,#111618);border-bottom:1px solid var(--border-s);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:62px}
+  .h-left{display:flex;align-items:center;gap:10px}
+  .h-emblem{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--gold)}
+  header h1{font-size:1.05rem;font-weight:600;color:var(--gold-lt)}
+  header p{font-size:0.62rem;color:var(--txt-muted);letter-spacing:0.1em;text-transform:uppercase}
+  .admin-badge{background:rgba(201,168,76,0.12);border:1px solid var(--border-s);color:var(--gold);font-size:0.7rem;padding:3px 10px;border-radius:20px;letter-spacing:0.08em}
+
+  .container{max-width:1100px;margin:0 auto;padding:28px 20px}
+  .tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0}
+  .tab{background:transparent;border:none;border-bottom:2px solid transparent;color:var(--txt-muted);font-family:'Cormorant Garamond',serif;font-size:1rem;padding:8px 18px;cursor:pointer;transition:all .2s;margin-bottom:-1px}
+  .tab:hover{color:var(--txt-dim)}
+  .tab.active{color:var(--gold-lt);border-bottom-color:var(--gold)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+  .card h3{color:var(--gold-lt);font-size:1.05rem;font-weight:600;margin-bottom:14px}
+  label{display:block;font-size:0.78rem;color:var(--txt-dim);margin-bottom:5px;letter-spacing:0.04em}
+  input,textarea,select{width:100%;background:#0d1214;border:1px solid var(--border-s);border-radius:8px;color:var(--txt);font-family:'Cormorant Garamond',serif;font-size:0.95rem;padding:10px 13px;outline:none;transition:border-color .2s;margin-bottom:12px}
+  input:focus,textarea:focus{border-color:var(--gold-dim)}
+  textarea{resize:vertical;min-height:100px}
+  .btn{padding:10px 20px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:0.95rem;cursor:pointer;transition:all .2s;border:none}
+  .btn-green{background:linear-gradient(135deg,var(--green),#1e5c38);color:#fff;border:1px solid rgba(61,187,118,.3)}
+  .btn-green:hover{background:linear-gradient(135deg,var(--green-br),var(--green))}
+  .btn-red{background:rgba(224,85,85,0.15);color:var(--red);border:1px solid rgba(224,85,85,0.3)}
+  .btn-red:hover{background:rgba(224,85,85,0.25)}
+  .btn-gold{background:rgba(201,168,76,0.12);color:var(--gold-lt);border:1px solid var(--border-s)}
+  .btn-gold:hover{background:rgba(201,168,76,0.2)}
+  .btn-sm{padding:5px 12px;font-size:0.8rem}
+
+  .knowledge-item{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+  .ki-type{display:inline-block;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-bottom:8px}
+  .ki-type.qa{background:rgba(46,125,82,0.15);color:var(--green-br);border:1px solid rgba(61,187,118,.2)}
+  .ki-type.text{background:rgba(201,168,76,0.1);color:var(--gold-dim);border:1px solid var(--border)}
+  .ki-q{font-size:0.88rem;color:var(--gold-lt);margin-bottom:5px;font-weight:600}
+  .ki-a{font-size:0.85rem;color:var(--txt-dim);line-height:1.6}
+  .ki-actions{display:flex;gap:8px;margin-top:10px}
+
+  .suggestion-item{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+  .si-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .si-user{font-size:0.78rem;color:var(--txt-muted)}
+  .si-status{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+  .si-status.pending{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid var(--border)}
+  .si-status.approved{background:rgba(46,125,82,0.15);color:var(--green-br);border:1px solid rgba(61,187,118,.2)}
+  .si-status.rejected{background:rgba(224,85,85,0.1);color:var(--red);border:1px solid rgba(224,85,85,.2)}
+  .si-label{font-size:0.7rem;color:var(--txt-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+  .si-text{font-size:0.85rem;color:var(--txt-dim);line-height:1.6;margin-bottom:10px;padding:8px 10px;background:rgba(0,0,0,0.2);border-radius:6px}
+  .si-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+  .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+  .stat-num{font-size:1.8rem;color:var(--gold);font-weight:600}
+  .stat-label{font-size:0.72rem;color:var(--txt-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
+
+  .empty{text-align:center;padding:30px;color:var(--txt-muted);font-size:0.88rem}
+  .success-msg{background:rgba(46,125,82,0.15);border:1px solid rgba(61,187,118,.2);color:var(--green-br);padding:10px 14px;border-radius:8px;font-size:0.85rem;margin-bottom:14px;display:none}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box">
+    <div style="font-size:2rem;margin-bottom:8px">☪</div>
+    <h2>Shaykh AI Admin Panel</h2>
+    <p>Sign in with your admin Google account to manage the knowledge base and review user suggestions.</p>
+    <button class="google-btn" onclick="adminLogin()">
+      <img src="https://www.google.com/favicon.ico" width="20"> Sign in with Google
+    </button>
+    <div class="access-denied" id="access-denied">⚠️ Access denied. This panel is for admin only.</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="h-left">
+    <div class="h-emblem">☪</div>
+    <div>
+      <h1>Shaykh AI — Admin Panel</h1>
+      <p>Knowledge Base & Suggestions Manager</p>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="admin-badge">👑 Admin</span>
+    <span id="admin-name" style="font-size:0.8rem;color:var(--txt-dim)"></span>
+  </div>
+</header>
+
+<div class="container">
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card"><div class="stat-num" id="stat-knowledge">0</div><div class="stat-label">Knowledge Items</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">Pending Suggestions</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-approved">0</div><div class="stat-label">Approved</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('knowledge')">📚 Knowledge Base</button>
+    <button class="tab" onclick="showTab('suggestions')">💡 User Suggestions</button>
+  </div>
+
+  <!-- KNOWLEDGE TAB -->
+  <div class="tab-panel active" id="tab-knowledge">
+    <div class="card">
+      <h3>➕ Add New Knowledge</h3>
+      <div id="add-success" class="success-msg">✅ Knowledge added successfully!</div>
+      <div style="margin-bottom:12px">
+        <label>Type</label>
+        <select id="k-type" onchange="toggleKType()">
+          <option value="qa">Q&A Pair (Question + Answer)</option>
+          <option value="text">Free Text (Knowledge paragraph)</option>
+        </select>
+      </div>
+      <div id="k-question-wrap">
+        <label>Question</label>
+        <input type="text" id="k-question" placeholder="e.g. What is the ruling on combining prayers?">
+      </div>
+      <label>Answer / Knowledge</label>
+      <textarea id="k-answer" placeholder="Type the correct Islamic answer here..."></textarea>
+      <div class="row2">
+        <div>
+          <label>Topic (optional)</label>
+          <input type="text" id="k-topic" placeholder="e.g. Salah, Zakat, Fiqh...">
+        </div>
+        <div>
+          <label>Language</label>
+          <select id="k-lang">
+            <option value="all">All Languages</option>
+            <option value="urdu">Urdu</option>
+            <option value="english">English</option>
+            <option value="arabic">Arabic</option>
+            <option value="hindi">Hindi</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-green" onclick="addKnowledge()">✦ Add to Knowledge Base</button>
+    </div>
+
+    <div id="knowledge-list"></div>
+  </div>
+
+  <!-- SUGGESTIONS TAB -->
+  <div class="tab-panel" id="tab-suggestions">
+    <div id="suggestions-list"></div>
+  </div>
+</div>
+
+<script>
+const ADMIN_EMAIL = 'muhammadjawadahmed8567@gmail.com';
+let adminUser = null;
+
+// ── LOGIN ──
+function adminLogin() {
+  google.accounts.id.initialize({
+    client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
+    callback: handleAdmin,
+    auto_select: false
+  });
+  google.accounts.id.prompt();
+}
+
+function handleAdmin(response) {
+  const p = JSON.parse(atob(response.credential.split('.')[1]));
+  if (p.email !== ADMIN_EMAIL) {
+    document.getElementById('access-denied').style.display = 'block';
+    return;
+  }
+  adminUser = { email: p.email, name: p.given_name || p.name };
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('admin-name').textContent = adminUser.name;
+  loadAll();
+}
+
+// ── TABS ──
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['knowledge','suggestions'][i]===name));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+function toggleKType() {
+  const isQA = document.getElementById('k-type').value === 'qa';
+  document.getElementById('k-question-wrap').style.display = isQA ? 'block' : 'none';
+}
+
+// ── LOAD ALL ──
+async function loadAll() {
+  await Promise.all([loadKnowledge(), loadSuggestions()]);
+}
+
+// ── KNOWLEDGE ──
+async function loadKnowledge() {
+  const res = await fetch('/api/knowledge');
+  const data = await res.json();
+  document.getElementById('stat-knowledge').textContent = data.length;
+  const list = document.getElementById('knowledge-list');
+  if (!data.length) { list.innerHTML = '<div class="empty">No knowledge added yet. Add your first item above!</div>'; return; }
+  list.innerHTML = data.map(k => `
+    <div class="knowledge-item">
+      <span class="ki-type ${k.type}">${k.type === 'qa' ? 'Q&A' : 'Text'}</span>
+      ${k.question ? `<div class="ki-q">Q: ${esc(k.question)}</div>` : ''}
+      <div class="ki-a">${esc(k.answer)}</div>
+      ${k.topic ? `<div style="font-size:0.7rem;color:var(--txt-muted);margin-top:5px">Topic: ${esc(k.topic)}</div>` : ''}
+      <div class="ki-actions">
+        <button class="btn btn-red btn-sm" onclick="deleteKnowledge(${k.id})">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function addKnowledge() {
+  const type = document.getElementById('k-type').value;
+  const question = document.getElementById('k-question').value.trim();
+  const answer = document.getElementById('k-answer').value.trim();
+  const topic = document.getElementById('k-topic').value.trim();
+  const language = document.getElementById('k-lang').value;
+  if (!answer) { alert('Please enter an answer/knowledge text'); return; }
+  await fetch('/api/knowledge', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ type, question, answer, topic, language, email: adminUser.email })
+  });
+  document.getElementById('k-question').value = '';
+  document.getElementById('k-answer').value = '';
+  document.getElementById('k-topic').value = '';
+  const msg = document.getElementById('add-success');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 3000);
+  loadKnowledge();
+}
+
+async function deleteKnowledge(id) {
+  if (!confirm('Delete this knowledge item?')) return;
+  await fetch('/api/knowledge/'+id, {
+    method: 'DELETE',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ email: adminUser.email })
+  });
+  loadKnowledge();
+}
+
+// ── SUGGESTIONS ──
+async function loadSuggestions() {
+  const res = await fetch('/api/suggestions');
+  const data = await res.json();
+  const pending = data.filter(s => s.status === 'pending').length;
+  const approved = data.filter(s => s.status === 'approved').length;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  const list = document.getElementById('suggestions-list');
+  if (!data.length) { list.innerHTML = '<div class="empty">No suggestions yet from users.</div>'; return; }
+  list.innerHTML = data.map(s => `
+    <div class="suggestion-item">
+      <div class="si-header">
+        <div class="si-user">👤 ${esc(s.user_name)} — ${esc(s.user_email)} · ${new Date(s.created_at).toLocaleDateString()}</div>
+        <span class="si-status ${s.status}">${s.status}</span>
+      </div>
+      <div class="si-label">Original Question</div>
+      <div class="si-text">${esc(s.original_question)}</div>
+      <div class="si-label">AI's Answer (that user corrected)</div>
+      <div class="si-text">${esc(s.original_answer)}</div>
+      <div class="si-label">User's Suggested Correction</div>
+      <div class="si-text" style="border-left:3px solid var(--green-br)">${esc(s.suggested_answer)}</div>
+      ${s.status === 'pending' ? `
+      <div class="si-actions">
+        <button class="btn btn-green btn-sm" onclick="approveSuggestion(${s.id},'${esc(s.original_question)}','${esc(s.suggested_answer)}')">✅ Approve & Add to Knowledge</button>
+        <button class="btn btn-red btn-sm" onclick="rejectSuggestion(${s.id})">❌ Reject</button>
+      </div>` : ''}
+    </div>`).join('');
+}
+
+async function approveSuggestion(id, question, answer) {
+  await fetch('/api/suggestions/'+id, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ email: adminUser.email, status: 'approved', question, answer })
+  });
+  loadAll();
+}
+
+async function rejectSuggestion(id) {
+  if (!confirm('Reject this suggestion?')) return;
+  await fetch('/api/suggestions/'+id, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ email: adminUser.email, status: 'rejected' })
+  });
+  loadAll();
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
