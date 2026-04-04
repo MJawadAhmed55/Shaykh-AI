@@ -22,7 +22,7 @@
   body{background:var(--bg);color:var(--txt);font-family:'Cormorant Garamond',serif;display:flex;flex-direction:column}
   body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:repeating-linear-gradient(60deg,transparent,transparent 40px,rgba(201,168,76,0.018) 40px,rgba(201,168,76,0.018) 41px),repeating-linear-gradient(-60deg,transparent,transparent 40px,rgba(201,168,76,0.018) 40px,rgba(201,168,76,0.018) 41px)}
 
-  /* LOGIN SCREEN */
+  /* ── LOGIN SCREEN ── */
   #login-screen{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
   .login-box{background:#111618;border:1px solid var(--border-s);border-radius:18px;padding:42px 36px;max-width:420px;width:92%;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,0.8)}
   .login-emblem{font-size:2.8rem;margin-bottom:10px}
@@ -34,7 +34,28 @@
   .google-btn img{width:20px;height:20px}
   .login-note{font-size:0.7rem;color:var(--txt-muted);margin-top:16px;line-height:1.7}
 
-  /* HEADER */
+  /* ── LANGUAGE SCREEN ── */
+  #lang-screen{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.95);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+  .lang-box{background:#111618;border:1px solid var(--border-s);border-radius:18px;padding:36px 32px;max-width:560px;width:94%;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,0.8)}
+  .lang-emblem{font-size:2.2rem;margin-bottom:8px}
+  .lang-title{font-size:1.3rem;font-weight:400;color:var(--gold-lt);margin-bottom:6px}
+  .lang-desc{font-size:0.83rem;color:var(--txt-dim);line-height:1.7;margin-bottom:22px}
+  .lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}
+  .lang-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:10px;padding:13px 8px;cursor:pointer;transition:all .18s;text-align:center}
+  .lang-card:hover{background:rgba(201,168,76,0.08);border-color:var(--gold-dim);transform:translateY(-2px)}
+  .lang-card.selected{background:rgba(201,168,76,0.12);border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,0.2)}
+  .lang-flag{font-size:1.6rem;margin-bottom:5px}
+  .lang-name{font-size:0.82rem;color:var(--txt-dim);line-height:1.3}
+  .lang-card.selected .lang-name{color:var(--gold-lt)}
+  .lang-native{font-size:0.72rem;color:var(--txt-muted);margin-top:2px}
+  .lang-card.selected .lang-native{color:var(--gold-dim)}
+  .lang-confirm{width:100%;padding:13px;border-radius:8px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.05rem;cursor:pointer;transition:all .2s;letter-spacing:0.04em}
+  .lang-confirm:hover{background:linear-gradient(135deg,var(--green-br),var(--green));box-shadow:0 4px 16px rgba(61,187,118,.25)}
+  .lang-confirm:disabled{opacity:0.4;cursor:not-allowed}
+  .lang-change{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-muted);font-family:'Cormorant Garamond',serif;font-size:0.72rem;padding:4px 10px;cursor:pointer;transition:all .2s}
+  .lang-change:hover{border-color:var(--gold-dim);color:var(--gold-dim)}
+
+  /* ── HEADER ── */
   header{z-index:10;background:linear-gradient(180deg,#0d1214,rgba(13,18,20,0.97));border-bottom:1px solid var(--border-s);padding:0 18px;display:flex;align-items:center;justify-content:space-between;height:62px;flex-shrink:0}
   .h-left{display:flex;align-items:center;gap:10px}
   .h-emblem{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--gold);background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);flex-shrink:0}
@@ -47,26 +68,26 @@
   .user-pill{display:flex;align-items:center;gap:7px;background:rgba(201,168,76,0.07);border:1px solid var(--border);border-radius:20px;padding:4px 10px 4px 4px;cursor:pointer;transition:all .2s}
   .user-pill:hover{background:rgba(201,168,76,0.12);border-color:var(--gold-dim)}
   .user-avatar{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold-dim)}
-  .user-name{font-size:0.72rem;color:var(--txt-dim);max-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-name{font-size:0.72rem;color:var(--txt-dim);max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .new-btn{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-family:'Cormorant Garamond',serif;font-size:0.78rem;padding:5px 11px;cursor:pointer;transition:all .2s}
   .new-btn:hover{background:rgba(201,168,76,0.08);border-color:var(--gold);color:var(--gold-lt)}
+  #lang-indicator{font-size:0.68rem;color:var(--txt-muted);display:flex;align-items:center;gap:5px}
+  #lang-indicator span{font-size:1rem}
 
-  /* LAYOUT */
+  /* ── LAYOUT ── */
   .app-body{flex:1;display:flex;overflow:hidden;min-height:0}
 
-  /* SIDEBAR */
+  /* ── SIDEBAR ── */
   aside{width:252px;flex-shrink:0;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
   .sidebar-top{padding:12px 10px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
   .sidebar-top-label{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--txt-muted);padding:0 4px;margin-bottom:8px}
   .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);font-family:'Cormorant Garamond',serif;font-size:0.8rem;padding:6px 9px;cursor:pointer;transition:all .17s;margin-bottom:4px}
   .t-chip:hover{background:rgba(201,168,76,0.06);border-color:var(--gold-dim);color:var(--gold-lt)}
-
-  /* HISTORY PANEL */
   .history-panel{flex:1;overflow-y:auto;padding:10px 10px 0}
   .history-panel::-webkit-scrollbar{width:3px}
   .history-panel::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
   .history-label{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--txt-muted);padding:0 4px;margin-bottom:7px}
-  .chat-history-item{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 9px;border-radius:7px;cursor:pointer;transition:all .17s;margin-bottom:3px;border:1px solid transparent;group:true}
+  .chat-history-item{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 9px;border-radius:7px;cursor:pointer;transition:all .17s;margin-bottom:3px;border:1px solid transparent}
   .chat-history-item:hover{background:rgba(201,168,76,0.06);border-color:var(--border)}
   .chat-history-item.active{background:rgba(201,168,76,0.1);border-color:var(--gold-dim)}
   .chi-text{flex:1;min-width:0}
@@ -78,12 +99,11 @@
   .chi-del:hover{color:#e05555;background:rgba(224,85,85,0.1)}
   .no-history{text-align:center;padding:20px 10px;font-size:0.78rem;color:var(--txt-muted);line-height:1.8}
 
-  /* CHAT */
+  /* ── CHAT ── */
   .chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
   #msgs{flex:1;overflow-y:auto;padding:22px 26px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
   #msgs::-webkit-scrollbar{width:4px}
   #msgs::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:4px}
-
   #welcome{text-align:center;padding:28px 14px 18px;max-width:520px;margin:0 auto;animation:up .5s ease both}
   .w-bism{font-family:'Amiri',serif;font-size:1.9rem;color:var(--gold);margin-bottom:9px;text-shadow:0 0 16px rgba(201,168,76,0.28)}
   #welcome h2{font-size:1.3rem;font-weight:400;color:var(--txt);margin-bottom:7px;line-height:1.35}
@@ -92,7 +112,6 @@
   .sq{background:var(--bg-card);border:1px solid var(--border);border-radius:7px;padding:10px 12px;cursor:pointer;text-align:left;font-family:'Cormorant Garamond',serif;font-size:0.8rem;color:var(--txt-dim);transition:all .17s;line-height:1.4}
   .sq:hover{background:rgba(201,168,76,0.06);border-color:var(--gold-dim);color:var(--gold-lt)}
   @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
   .row{display:flex;gap:11px;animation:up .26s ease both;max-width:780px}
   .row.user{flex-direction:row-reverse;align-self:flex-end}
   .row.ai{align-self:flex-start}
@@ -107,13 +126,11 @@
   .row.ai .bubble{background:var(--ai-bg);border:1px solid var(--border);border-top-left-radius:2px;color:var(--txt)}
   .row.user .bubble{background:var(--user-bg);border:1px solid rgba(46,125,82,.3);border-top-right-radius:2px;color:var(--txt)}
   .arabic-q{display:block;font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold);text-align:right;direction:rtl;margin:6px 0;padding:6px 10px;border-right:3px solid var(--gold-dim);background:rgba(201,168,76,.05);border-radius:4px}
-
   .typing{display:flex;align-items:center;gap:4px;padding:10px 14px;background:var(--ai-bg);border:1px solid var(--border);border-radius:11px;border-top-left-radius:2px;width:fit-content}
   .typing span{width:6px;height:6px;border-radius:50%;background:var(--gold-dim);animation:bounce 1.2s ease-in-out infinite}
   .typing span:nth-child(2){animation-delay:.2s}
   .typing span:nth-child(3){animation-delay:.4s}
   @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
-
   .input-bar{padding:12px 26px 16px;border-top:1px solid var(--border);background:linear-gradient(0,#0b0e0f 60%,transparent);flex-shrink:0}
   .input-wrap{display:flex;align-items:flex-end;gap:8px;background:var(--bg-card);border:1px solid var(--border-s);border-radius:11px;padding:9px 11px;transition:border-color .2s;max-width:840px;margin:0 auto}
   .input-wrap:focus-within{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(201,168,76,.06)}
@@ -122,33 +139,42 @@
   #send{width:36px;height:36px;border-radius:7px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .17s}
   #send:hover{background:linear-gradient(135deg,var(--green-br),var(--green));transform:scale(1.05)}
   .hint{text-align:center;font-size:.62rem;color:var(--txt-muted);margin-top:5px;letter-spacing:.04em}
-
-  @media(max-width:640px){
-    aside{display:none}
-    #msgs{padding:12px}
-    .input-bar{padding:9px 9px 13px}
-    .starters{grid-template-columns:1fr}
-  }
+  @media(max-width:640px){aside{display:none}#msgs{padding:12px}.input-bar{padding:9px 9px 13px}.starters{grid-template-columns:1fr}.lang-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- ══ LOGIN SCREEN ══ -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-emblem">☪</div>
     <div class="login-arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <div class="login-title">Shaykh AI — Islamic Scholar</div>
-    <p class="login-desc">Sign in with Google to access your personal Islamic Scholar. Your chat history will be saved on this device — only you can see it.</p>
+    <p class="login-desc">Sign in with Google to access your personal Islamic Scholar with chat history saved on your device.</p>
     <button class="google-btn" onclick="signInWithGoogle()">
       <img src="https://www.google.com/favicon.ico" alt="G">
       Continue with Google
     </button>
-    <p class="login-note">🔒 Your history is saved only on your device.<br>No data is sent to any server except your questions to the AI.</p>
+    <p class="login-note">🔒 Your history is saved only on your device.</p>
   </div>
 </div>
 
-<!-- HEADER -->
+<!-- ══ LANGUAGE SELECTION SCREEN ══ -->
+<div id="lang-screen">
+  <div class="lang-box">
+    <div class="lang-emblem">🌐</div>
+    <div class="lang-title">Choose Your Language</div>
+    <p class="lang-desc">Shaykh AI will respond in your selected language. You can change it anytime from the header.</p>
+    <div class="lang-grid" id="lang-grid">
+      <!-- filled by JS -->
+    </div>
+    <button class="lang-confirm" id="lang-confirm-btn" onclick="confirmLanguage()" disabled>
+      Continue →
+    </button>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
 <header>
   <div class="h-left">
     <div class="h-emblem">☪</div>
@@ -158,8 +184,10 @@
     </div>
   </div>
   <div class="h-right">
+    <div id="lang-indicator"></div>
     <div class="status">Online · Free</div>
     <button class="new-btn" onclick="newChat()">✦ New Chat</button>
+    <button class="lang-change" onclick="changeLang()">🌐 Language</button>
     <div class="user-pill" onclick="signOut()" title="Click to sign out">
       <img class="user-avatar" id="user-avatar" src="" alt="">
       <span class="user-name" id="user-name"></span>
@@ -167,7 +195,7 @@
   </div>
 </header>
 
-<!-- BODY -->
+<!-- ══ BODY ══ -->
 <div class="app-body">
   <aside>
     <div class="sidebar-top">
@@ -181,9 +209,7 @@
     </div>
     <div class="history-panel">
       <div class="history-label">Chat History</div>
-      <div id="history-list">
-        <div class="no-history">No previous chats yet.<br>Start a conversation!</div>
-      </div>
+      <div id="history-list"><div class="no-history">No previous chats yet.<br>Start a conversation!</div></div>
     </div>
   </aside>
 
@@ -192,7 +218,7 @@
       <div id="welcome">
         <div class="w-bism">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
         <h2>As-Salamu Alaykum wa Rahmatullahi wa Barakatuh</h2>
-        <p>I am your personal Islamic Scholar — grounded in the <strong>Hanafi madhab</strong>. I remember our full conversation. Your previous chats are saved in the sidebar.</p>
+        <p>I am your personal Islamic Scholar — grounded in the <strong>Hanafi madhab</strong>. I will respond in your chosen language. Ask me anything about Islam.</p>
         <div class="starters">
           <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 How to perform Wudu?</button>
           <button class="sq" onclick="ask('What is the difference between Fard, Wajib, Sunnah and Mustahab?')">📜 Fard vs Wajib vs Sunnah</button>
@@ -203,114 +229,178 @@
     </div>
     <div class="input-bar">
       <div class="input-wrap">
-        <textarea id="inp" rows="1" placeholder="Ask your question… I remember our full conversation"></textarea>
+        <textarea id="inp" rows="1" placeholder="Ask your question in any language…"></textarea>
         <button id="send" onclick="sendMsg()">➤</button>
       </div>
-      <div class="hint">Enter to send · Shift+Enter for new line · History saved automatically</div>
+      <div class="hint">Enter to send · Shift+Enter for new line · Responds in your chosen language</div>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════
-// GOOGLE SIGN-IN (using Google Identity Services)
-// ══════════════════════════════════════════
-let currentUser = null;
+// ══════════════════════════════════════
+// LANGUAGES
+// ══════════════════════════════════════
+const LANGUAGES = [
+  { code:'urdu',    flag:'🇵🇰', name:'Urdu',    native:'اردو' },
+  { code:'english', flag:'🇬🇧', name:'English', native:'English' },
+  { code:'arabic',  flag:'🇸🇦', name:'Arabic',  native:'العربية' },
+  { code:'hindi',   flag:'🇮🇳', name:'Hindi',   native:'हिन्दी' },
+  { code:'bengali', flag:'🇧🇩', name:'Bengali', native:'বাংলা' },
+  { code:'turkish', flag:'🇹🇷', name:'Turkish', native:'Türkçe' },
+  { code:'malay',   flag:'🇲🇾', name:'Malay',   native:'Bahasa Melayu' },
+  { code:'french',  flag:'🇫🇷', name:'French',  native:'Français' },
+  { code:'indonesian', flag:'🇮🇩', name:'Indonesian', native:'Bahasa Indonesia' },
+  { code:'persian', flag:'🇮🇷', name:'Persian', native:'فارسی' },
+  { code:'somali',  flag:'🇸🇴', name:'Somali',  native:'Soomaali' },
+  { code:'hausa',   flag:'🇳🇬', name:'Hausa',   native:'Hausa' },
+];
 
+const LANG_PROMPTS = {
+  urdu:       'آپ کو تمام جوابات صرف اردو زبان میں دینے ہیں۔ اردو رسم الخط (نستعلیق) استعمال کریں۔',
+  english:    'You must respond in English only.',
+  arabic:     'يجب أن تجيب باللغة العربية الفصحى فقط.',
+  hindi:      'आपको सभी उत्तर केवल हिंदी में देने हैं।',
+  bengali:    'আপনাকে সমস্ত উত্তর শুধুমাত্র বাংলায় দিতে হবে।',
+  turkish:    'Tüm cevaplarını yalnızca Türkçe olarak vermelisin.',
+  malay:      'Anda mesti menjawab dalam Bahasa Melayu sahaja.',
+  french:     'Vous devez répondre uniquement en français.',
+  indonesian: 'Anda harus menjawab dalam Bahasa Indonesia saja.',
+  persian:    'باید تمام پاسخ‌ها را فقط به زبان فارسی بدهید.',
+  somali:     'Waa inaad ku jawaabto Af-Soomaali oo kaliya.',
+  hausa:      'Dole ne ka amsa da Hausa kawai.',
+};
+
+let selectedLang = null;
+let currentUser  = null;
+let history      = [];
+let currentChatId = null;
+let busy         = false;
+
+// Build language grid
+function buildLangGrid() {
+  const grid = document.getElementById('lang-grid');
+  grid.innerHTML = LANGUAGES.map(l => `
+    <div class="lang-card" id="lc-${l.code}" onclick="selectLang('${l.code}')">
+      <div class="lang-flag">${l.flag}</div>
+      <div class="lang-name">${l.name}</div>
+      <div class="lang-native">${l.native}</div>
+    </div>
+  `).join('');
+}
+buildLangGrid();
+
+function selectLang(code) {
+  selectedLang = code;
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('lc-' + code)?.classList.add('selected');
+  document.getElementById('lang-confirm-btn').disabled = false;
+}
+
+function confirmLanguage() {
+  if (!selectedLang) return;
+  localStorage.setItem('shaykh_lang_' + currentUser.id, selectedLang);
+  document.getElementById('lang-screen').style.display = 'none';
+  updateLangIndicator();
+  showWelcome();
+}
+
+function changeLang() {
+  // Pre-select current lang
+  if (selectedLang) {
+    document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('lc-' + selectedLang)?.classList.add('selected');
+    document.getElementById('lang-confirm-btn').disabled = false;
+  }
+  document.getElementById('lang-screen').style.display = 'flex';
+}
+
+function updateLangIndicator() {
+  const lang = LANGUAGES.find(l => l.code === selectedLang);
+  if (lang) {
+    document.getElementById('lang-indicator').innerHTML =
+      `<span>${lang.flag}</span>${lang.name}`;
+  }
+}
+
+// ══════════════════════════════════════
+// GOOGLE LOGIN
+// ══════════════════════════════════════
 function signInWithGoogle() {
-  // Use Google Identity Services popup
   google.accounts.id.initialize({
-    // IMPORTANT: Replace with your actual Google Client ID
-    // Get it free at: console.cloud.google.com
-    client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
+    client_id: 'YOUR_GOOGLE_CLIENT_ID',
     callback: handleCredentialResponse,
     auto_select: false
   });
-  google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // Fallback: show one-tap or use renderButton
-      google.accounts.id.renderButton(
-        document.querySelector('.login-box'),
-        { theme: 'outline', size: 'large', text: 'continue_with' }
-      );
+  google.accounts.id.prompt((n) => {
+    if (n.isNotDisplayed() || n.isSkippedMoment()) {
+      google.accounts.id.renderButton(document.querySelector('.login-box'),
+        { theme:'outline', size:'large' });
     }
   });
 }
 
 function handleCredentialResponse(response) {
-  // Decode JWT token from Google
   const payload = JSON.parse(atob(response.credential.split('.')[1]));
-  currentUser = {
-    id: payload.sub,
-    name: payload.given_name || payload.name,
-    email: payload.email,
-    avatar: payload.picture
-  };
-  // Save user to localStorage
+  currentUser = { id: payload.sub, name: payload.given_name || payload.name, email: payload.email, avatar: payload.picture };
   localStorage.setItem('shaykh_user', JSON.stringify(currentUser));
-  showApp();
+  afterLogin();
+}
+
+function afterLogin() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('user-name').textContent = currentUser.name;
+  document.getElementById('user-avatar').src = currentUser.avatar;
+
+  // Check saved language
+  const savedLang = localStorage.getItem('shaykh_lang_' + currentUser.id);
+  if (savedLang) {
+    selectedLang = savedLang;
+    selectLang(savedLang);
+    updateLangIndicator();
+    renderHistory();
+    showWelcome();
+  } else {
+    // Show language picker for first time
+    document.getElementById('lang-screen').style.display = 'flex';
+  }
 }
 
 function signOut() {
   if (!confirm('Sign out?')) return;
-  currentUser = null;
   localStorage.removeItem('shaykh_user');
   location.reload();
 }
 
-function showApp() {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('user-name').textContent = currentUser.name;
-  document.getElementById('user-avatar').src = currentUser.avatar;
-  renderHistory();
-}
-
-// Check if already logged in
 window.addEventListener('load', () => {
+  currentChatId = 'chat_' + Date.now();
   const saved = localStorage.getItem('shaykh_user');
-  if (saved) {
-    currentUser = JSON.parse(saved);
-    showApp();
-  }
+  if (saved) { currentUser = JSON.parse(saved); afterLogin(); }
 });
 
-// ══════════════════════════════════════════
-// CHAT HISTORY — localStorage per user
-// ══════════════════════════════════════════
-let history     = [];  // current conversation messages
-let currentChatId = null;
-
-function getStorageKey() {
-  return 'shaykh_chats_' + currentUser.id;
-}
-
-function getAllChats() {
-  const raw = localStorage.getItem(getStorageKey());
-  return raw ? JSON.parse(raw) : [];
-}
-
-function saveAllChats(chats) {
-  localStorage.setItem(getStorageKey(), JSON.stringify(chats));
-}
+// ══════════════════════════════════════
+// CHAT HISTORY
+// ══════════════════════════════════════
+function getStorageKey() { return 'shaykh_chats_' + currentUser.id; }
+function getAllChats() { const r = localStorage.getItem(getStorageKey()); return r ? JSON.parse(r) : []; }
+function saveAllChats(c) { localStorage.setItem(getStorageKey(), JSON.stringify(c)); }
 
 function saveChatToHistory(title) {
   if (history.length === 0) return;
   const chats = getAllChats();
-  const existing = chats.findIndex(c => c.id === currentChatId);
+  const idx = chats.findIndex(c => c.id === currentChatId);
+  const lang = LANGUAGES.find(l => l.code === selectedLang);
   const chatData = {
     id: currentChatId,
-    title: title || history[0].content.slice(0, 50) + '...',
+    title: title || history[0].content.slice(0,50) + '...',
     messages: history,
-    date: new Date().toLocaleDateString('en-PK', { day:'numeric', month:'short', year:'numeric' }),
+    lang: selectedLang,
+    langFlag: lang?.flag || '',
+    date: new Date().toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'}),
     timestamp: Date.now()
   };
-  if (existing >= 0) {
-    chats[existing] = chatData;
-  } else {
-    chats.unshift(chatData);
-  }
-  // Keep max 50 chats
-  saveAllChats(chats.slice(0, 50));
+  if (idx >= 0) chats[idx] = chatData; else chats.unshift(chatData);
+  saveAllChats(chats.slice(0,50));
   renderHistory();
 }
 
@@ -322,148 +412,148 @@ function renderHistory() {
     return;
   }
   list.innerHTML = chats.map(c => `
-    <div class="chat-history-item ${c.id === currentChatId ? 'active' : ''}" onclick="loadChat('${c.id}')">
+    <div class="chat-history-item ${c.id===currentChatId?'active':''}" onclick="loadChat('${c.id}')">
       <div class="chi-text">
-        <div class="chi-title">${esc(c.title)}</div>
+        <div class="chi-title">${c.langFlag||''} ${esc(c.title)}</div>
         <div class="chi-date">${c.date} · ${Math.floor(c.messages.length/2)} msg</div>
       </div>
       <button class="chi-del" onclick="deleteChat(event,'${c.id}')" title="Delete">✕</button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function loadChat(id) {
-  const chats = getAllChats();
-  const chat = chats.find(c => c.id === id);
+  const chat = getAllChats().find(c => c.id === id);
   if (!chat) return;
   currentChatId = id;
   history = chat.messages;
-  // Render messages
+  if (chat.lang) { selectedLang = chat.lang; selectLang(chat.lang); updateLangIndicator(); }
   const msgs = document.getElementById('msgs');
   msgs.innerHTML = '';
-  history.forEach(m => addMsgToDOM(m.role === 'user' ? 'user' : 'ai', m.content));
+  history.forEach(m => addMsgToDOM(m.role==='user'?'user':'ai', m.content));
   renderHistory();
 }
 
 function deleteChat(e, id) {
   e.stopPropagation();
   if (!confirm('Delete this chat?')) return;
-  const chats = getAllChats().filter(c => c.id !== id);
-  saveAllChats(chats);
-  if (currentChatId === id) newChat();
-  else renderHistory();
+  saveAllChats(getAllChats().filter(c => c.id !== id));
+  if (currentChatId === id) newChat(); else renderHistory();
 }
 
-// ══════════════════════════════════════════
-// CHAT LOGIC
-// ══════════════════════════════════════════
-let busy = false;
-
-function newChat() {
-  history = [];
-  currentChatId = 'chat_' + Date.now();
+// ══════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════
+function showWelcome() {
   const msgs = document.getElementById('msgs');
+  const lang = LANGUAGES.find(l => l.code === selectedLang);
+  const greetings = {
+    urdu:       'السلام علیکم ورحمۃ اللہ وبرکاتہ',
+    arabic:     'السلام عليكم ورحمة الله وبركاته',
+    english:    'As-Salamu Alaykum wa Rahmatullahi wa Barakatuh',
+    hindi:      'अस्सलामु अलैकुम व रहमतुल्लाहि व बरकातुह',
+    bengali:    'আস-সালামু আলাইকুম ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহ',
+    turkish:    'Es-Selâmü Aleyküm ve Rahmetullahi ve Berekâtühü',
+    malay:      'Assalamualaikum Warahmatullahi Wabarakatuh',
+    french:     'As-Salamu Alaykum wa Rahmatullahi wa Barakatuh',
+    indonesian: 'Assalamualaikum Warahmatullahi Wabarakatuh',
+    persian:    'السلام علیکم و رحمة الله و برکاته',
+    somali:     'Assalaamu Calaykum Warahmatullaahi Wabarakaatuh',
+    hausa:      'Assalamu Alaikum Warahmatullahi Wabarakatuh',
+  };
+  const greeting = greetings[selectedLang] || greetings.english;
   msgs.innerHTML = `
     <div id="welcome">
       <div class="w-bism">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-      <h2>As-Salamu Alaykum wa Rahmatullahi wa Barakatuh</h2>
-      <p>New conversation started. Ask me anything about Islam, Fiqh, Aqeedah or Deen.</p>
-      <div class="starters">
-        <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 How to perform Wudu?</button>
-        <button class="sq" onclick="ask('What is the difference between Fard, Wajib, Sunnah and Mustahab?')">📜 Fard vs Wajib vs Sunnah</button>
-        <button class="sq" onclick="ask('What is the Islamic view on seeking knowledge?')">🌟 Virtue of seeking knowledge</button>
-        <button class="sq" onclick="ask('Explain Tawbah and how to sincerely repent to Allah.')">🤲 How to make Tawbah</button>
+      <h2>${greeting}</h2>
+      <p style="margin-bottom:10px">Language: <strong style="color:var(--gold-lt)">${lang?.flag} ${lang?.name} — ${lang?.native}</strong></p>
+      <p>I am your personal Islamic Scholar — Hanafi madhab, Sunni tradition. Ask me anything about Islam, Fiqh, Aqeedah or Deen.</p>
+      <div class="starters" style="margin-top:16px">
+        <button class="sq" onclick="ask('How do I perform Wudu correctly according to Hanafi fiqh?')">💧 Wudu (Hanafi)</button>
+        <button class="sq" onclick="ask('What is the difference between Fard, Wajib and Sunnah?')">📜 Fard vs Sunnah</button>
+        <button class="sq" onclick="ask('What is the Islamic view on seeking knowledge?')">🌟 Seeking Knowledge</button>
+        <button class="sq" onclick="ask('Explain Tawbah and how to sincerely repent to Allah.')">🤲 Tawbah</button>
       </div>
     </div>`;
   renderHistory();
 }
 
-// Initialize chat ID on load
-window.addEventListener('load', () => {
+function newChat() {
+  history = [];
   currentChatId = 'chat_' + Date.now();
-});
-
-const inp = document.getElementById('inp');
-inp.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-});
-inp.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-});
-
-function ask(q) { inp.value = q; sendMsg(); }
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  showWelcome();
 }
 
+const inp = document.getElementById('inp');
+inp.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,120)+'px'; });
+inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();} });
+
+function ask(q) { inp.value=q; sendMsg(); }
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 function fmt(txt) {
-  let h = esc(txt);
-  h = h.replace(/\[ARABIC:\s*(.+?)\]/g, '<span class="arabic-q">$1</span>');
-  h = h.replace(/^### (.+)$/gm,'<strong style="color:var(--gold-lt);font-size:1rem;display:block;margin:5px 0 2px">$1</strong>');
-  h = h.replace(/^## (.+)$/gm, '<strong style="color:var(--gold);font-size:1.06rem;display:block;margin:9px 0 3px">$1</strong>');
-  h = h.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold-lt)">$1</strong>');
-  h = h.replace(/\*(.+?)\*/g,    '<em style="color:var(--txt-dim)">$1</em>');
-  h = h.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-  h = h.replace(/(?:^|<br>)[•\-] (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:1px 0">• $1</span>');
-  h = h.replace(/(?:^|<br>)(\d+)\. (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:2px 0"><span style="color:var(--gold-dim);font-weight:600">$1.</span> $2</span>');
+  let h=esc(txt);
+  h=h.replace(/\[ARABIC:\s*(.+?)\]/g,'<span class="arabic-q">$1</span>');
+  h=h.replace(/^### (.+)$/gm,'<strong style="color:var(--gold-lt);font-size:1rem;display:block;margin:5px 0 2px">$1</strong>');
+  h=h.replace(/^## (.+)$/gm,'<strong style="color:var(--gold);font-size:1.06rem;display:block;margin:9px 0 3px">$1</strong>');
+  h=h.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold-lt)">$1</strong>');
+  h=h.replace(/\*(.+?)\*/g,'<em style="color:var(--txt-dim)">$1</em>');
+  h=h.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  h=h.replace(/(?:^|<br>)[•\-] (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:1px 0">• $1</span>');
+  h=h.replace(/(?:^|<br>)(\d+)\. (.+?)(?=<br>|$)/g,'<br><span style="display:block;padding-left:16px;margin:2px 0"><span style="color:var(--gold-dim);font-weight:600">$1.</span> $2</span>');
   return h;
 }
 
 function addMsgToDOM(role, text) {
-  const w = document.getElementById('welcome');
-  if (w) { w.style.transition='all .2s';w.style.opacity='0';setTimeout(()=>w.remove(),200); }
-  const c = document.getElementById('msgs');
-  const row = document.createElement('div');
-  row.className = 'row ' + role;
-  if (role === 'user') {
-    const avatarHTML = currentUser?.avatar
-      ? `<div class="av"><img src="${currentUser.avatar}" referrerpolicy="no-referrer"></div>`
-      : `<div class="av" style="background:var(--user-bg);border:1.5px solid var(--green);color:var(--green-br)">👤</div>`;
-    row.innerHTML = avatarHTML + '<div><div class="rname">' + esc(currentUser?.name || 'You') + '</div><div class="bubble">' + esc(text) + '</div></div>';
+  const w=document.getElementById('welcome');
+  if(w){w.style.transition='all .2s';w.style.opacity='0';setTimeout(()=>w.remove(),200);}
+  const c=document.getElementById('msgs');
+  const row=document.createElement('div');
+  row.className='row '+role;
+  if(role==='user'){
+    const av=currentUser?.avatar
+      ?`<div class="av"><img src="${currentUser.avatar}" referrerpolicy="no-referrer"></div>`
+      :`<div class="av" style="background:var(--user-bg);border:1.5px solid var(--green);color:var(--green-br)">👤</div>`;
+    row.innerHTML=av+'<div><div class="rname">'+esc(currentUser?.name||'You')+'</div><div class="bubble">'+esc(text)+'</div></div>';
   } else {
-    row.innerHTML = '<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">' + fmt(text) + '</div></div>';
+    row.innerHTML='<div class="av">☪</div><div style="max-width:600px"><div class="rname">Shaykh AI · Hanafi Scholar</div><div class="bubble">'+fmt(text)+'</div></div>';
   }
-  c.appendChild(row);
-  c.scrollTop = c.scrollHeight;
+  c.appendChild(row); c.scrollTop=c.scrollHeight;
 }
 
-function showTyping() {
-  const c = document.getElementById('msgs');
-  const row = document.createElement('div');
+function showTyping(){
+  const c=document.getElementById('msgs');
+  const row=document.createElement('div');
   row.className='row ai';row.id='typing';
   row.innerHTML='<div class="av">☪</div><div><div class="rname">Shaykh AI · thinking...</div><div class="typing"><span></span><span></span><span></span></div></div>';
   c.appendChild(row);c.scrollTop=c.scrollHeight;
 }
 function hideTyping(){document.getElementById('typing')?.remove();}
 
-async function sendMsg() {
-  if (busy || !currentUser) return;
-  const text = inp.value.trim();
-  if (!text) return;
+async function sendMsg(){
+  if(busy||!currentUser||!selectedLang) return;
+  const text=inp.value.trim(); if(!text) return;
   inp.value='';inp.style.height='auto';
   busy=true;
   history.push({role:'user',content:text});
-  addMsgToDOM('user', text);
+  addMsgToDOM('user',text);
   showTyping();
-  try {
-    const res = await fetch('/api/chat',{
+  try{
+    const res=await fetch('/api/chat',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({messages:history})
+      body:JSON.stringify({messages:history, lang:selectedLang, langPrompt:LANG_PROMPTS[selectedLang]})
     });
-    const data = await res.json();
+    const data=await res.json();
     if(data.error) throw new Error(data.error);
     history.push({role:'assistant',content:data.reply});
     hideTyping();
-    addMsgToDOM('ai', data.reply);
-    // Auto-save after every exchange
+    addMsgToDOM('ai',data.reply);
     saveChatToHistory(text.slice(0,50));
-  } catch(err) {
+  }catch(err){
     hideTyping();
     history.pop();
-    addMsgToDOM('ai','⚠️ Error: '+err.message+'. Please try again.');
+    addMsgToDOM('ai','⚠️ Error: '+err.message);
   }
   busy=false;
 }
