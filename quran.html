@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0e0f">
+<title>Shaykh AI — Quran</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e0f;--bg-card:#111618;--bg-panel:#151b1d;
+    --gold:#c9a84c;--gold-lt:#e2c97e;--gold-dim:#7a6230;
+    --green:#2e7d52;--green-br:#3dbb76;
+    --txt:#e8e0d0;--txt-dim:#8a8278;--txt-muted:#5a5550;
+    --border:rgba(201,168,76,0.15);--border-s:rgba(201,168,76,0.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:'Playfair Display',serif}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(60deg,transparent,transparent 40px,rgba(201,168,76,0.015) 40px,rgba(201,168,76,0.015) 41px),repeating-linear-gradient(-60deg,transparent,transparent 40px,rgba(201,168,76,0.015) 40px,rgba(201,168,76,0.015) 41px)}
+
+  /* HEADER */
+  header{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,#0d1214,rgba(13,18,20,0.98));border-bottom:1px solid var(--border-s);padding:0 22px;display:flex;align-items:center;justify-content:space-between;height:64px;backdrop-filter:blur(12px)}
+  .h-left{display:flex;align-items:center;gap:11px}
+  .h-emblem{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--gold);background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);flex-shrink:0}
+  .h-titles h1{font-size:1.1rem;font-weight:600;color:var(--gold-lt);letter-spacing:0.03em}
+  .h-titles p{font-size:0.65rem;color:var(--txt-dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+  .h-right{display:flex;align-items:center;gap:8px}
+  .back-btn{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-family:'Playfair Display',serif;font-size:0.85rem;padding:6px 13px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .back-btn:hover{background:rgba(201,168,76,0.08);border-color:var(--gold);color:var(--gold-lt)}
+  .irfan-btn{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid var(--border-s);border-radius:7px;color:var(--gold-lt);font-family:'Playfair Display',serif;font-size:0.85rem;padding:6px 13px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .irfan-btn:hover{background:rgba(201,168,76,0.2);border-color:var(--gold)}
+
+  /* MAIN */
+  .container{max-width:900px;margin:0 auto;padding:28px 20px;position:relative;z-index:1}
+
+  /* HERO */
+  .quran-hero{text-align:center;padding:30px 20px 28px;margin-bottom:28px;border-bottom:1px solid var(--border)}
+  .hero-bismillah{font-family:'Amiri',serif;font-size:2.6rem;color:var(--gold);margin-bottom:10px;text-shadow:0 0 20px rgba(201,168,76,0.3);line-height:1.4}
+  .hero-title{font-size:1.5rem;font-weight:400;color:var(--gold-lt);margin-bottom:6px}
+  .hero-sub{font-size:0.92rem;color:var(--txt-dim);line-height:1.7;margin-bottom:18px}
+  .irfan-card{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.04));border:1px solid var(--border-s);border-radius:12px;padding:14px 20px;cursor:pointer;transition:all .2s;text-decoration:none}
+  .irfan-card:hover{background:rgba(201,168,76,0.16);border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,0.12)}
+  .irfan-icon{font-size:2rem}
+  .irfan-text{text-align:left}
+  .irfan-text strong{display:block;color:var(--gold-lt);font-size:1rem;margin-bottom:2px}
+  .irfan-text span{font-size:0.78rem;color:var(--txt-dim)}
+
+  /* CONTROLS */
+  .controls{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;margin-bottom:22px;align-items:end}
+  .ctrl-group label{display:block;font-size:0.7rem;color:var(--txt-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px}
+  select,input[type=number]{width:100%;background:#0d1214;border:1px solid var(--border-s);border-radius:8px;color:var(--txt);font-family:'Playfair Display',serif;font-size:0.97rem;padding:10px 13px;outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none}
+  select:focus,input[type=number]:focus{border-color:var(--gold-dim)}
+  .load-btn{padding:11px 20px;border-radius:8px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;font-family:'Playfair Display',serif;font-size:1rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+  .load-btn:hover{background:linear-gradient(135deg,var(--green-br),var(--green));box-shadow:0 4px 14px rgba(61,187,118,.25)}
+
+  /* TRANSLATION TOGGLE */
+  .trans-toggle{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .t-btn{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--txt-muted);font-family:'Playfair Display',serif;font-size:0.82rem;padding:5px 14px;cursor:pointer;transition:all .17s}
+  .t-btn:hover{border-color:var(--gold-dim);color:var(--gold-dim)}
+  .t-btn.active{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold-lt)}
+
+  /* SURAH INFO */
+  .surah-info{background:var(--bg-card);border:1px solid var(--border-s);border-radius:12px;padding:18px 20px;margin-bottom:20px;display:none}
+  .si-name-ar{font-family:'Amiri',serif;font-size:2rem;color:var(--gold);text-align:center;margin-bottom:6px}
+  .si-details{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+  .si-detail{text-align:center}
+  .si-detail strong{display:block;color:var(--gold-lt);font-size:1rem}
+  .si-detail span{font-size:0.72rem;color:var(--txt-muted);text-transform:uppercase;letter-spacing:0.08em}
+
+  /* BISMILLAH */
+  .bismillah-line{font-family:'Amiri',serif;font-size:1.9rem;color:var(--gold);text-align:center;padding:18px;margin-bottom:16px;border-bottom:1px solid var(--border);opacity:0.9}
+
+  /* AYAT */
+  .ayat-list{display:flex;flex-direction:column;gap:0}
+  .ayat-card{border-bottom:1px solid var(--border);padding:20px 4px;transition:background .2s}
+  .ayat-card:hover{background:rgba(201,168,76,0.03)}
+  .ayat-num{display:inline-flex;width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid var(--border);color:var(--gold-dim);font-size:0.75rem;align-items:center;justify-content:center;flex-shrink:0;margin-bottom:12px}
+  .ayat-arabic{font-family:'Amiri',serif;font-size:1.75rem;color:var(--txt);text-align:right;direction:rtl;line-height:2.2;margin-bottom:12px}
+  .ayat-urdu{font-family:'Amiri',serif;font-size:1.15rem;color:var(--txt-dim);text-align:right;direction:rtl;line-height:2;margin-bottom:8px;padding-right:8px;border-right:2px solid var(--gold-dim)}
+  .ayat-english{font-size:0.95rem;color:var(--txt-muted);line-height:1.8;font-style:italic;padding-left:8px;border-left:2px solid var(--green)}
+  .ayat-actions{display:flex;gap:8px;margin-top:10px}
+  .ayat-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-muted);font-family:'Playfair Display',serif;font-size:0.72rem;padding:3px 10px;cursor:pointer;transition:all .15s}
+  .ayat-btn:hover{border-color:var(--gold-dim);color:var(--gold-dim)}
+
+  /* LOADING */
+  .loading{text-align:center;padding:40px;color:var(--txt-muted)}
+  .loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* NAV */
+  .page-nav{display:flex;gap:10px;justify-content:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border)}
+  .nav-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--txt-dim);font-family:'Playfair Display',serif;font-size:0.92rem;padding:9px 18px;cursor:pointer;transition:all .2s}
+  .nav-btn:hover{border-color:var(--gold-dim);color:var(--gold-lt)}
+  .nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+  /* SEARCH */
+  .search-wrap{position:relative;margin-bottom:22px}
+  .search-wrap input{width:100%;background:#0d1214;border:1px solid var(--border-s);border-radius:8px;color:var(--txt);font-family:'Playfair Display',serif;font-size:0.97rem;padding:10px 13px 10px 38px;outline:none;transition:border-color .2s}
+  .search-wrap input:focus{border-color:var(--gold-dim)}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt-muted);font-size:0.9rem}
+
+  @media(max-width:600px){
+    .controls{grid-template-columns:1fr 1fr;}.load-btn{grid-column:1/-1}
+    .ayat-arabic{font-size:1.45rem}
+    .irfan-card{flex-direction:column;text-align:center}.irfan-text{text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="h-left">
+    <div class="h-emblem">📖</div>
+    <div class="h-titles">
+      <h1>Quran — القرآن الكريم</h1>
+      <p>Arabic · Urdu · English</p>
+    </div>
+  </div>
+  <div class="h-right">
+    <a href="/" class="back-btn">← Shaykh AI</a>
+    <a href="https://www.irfan-ul-quran.com" target="_blank" class="irfan-btn">📗 Irfan ul Quran</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="quran-hero">
+    <div class="hero-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <div class="hero-title">Al-Quran Al-Kareem</div>
+    <p class="hero-sub">Read the Holy Quran with Arabic text, Urdu & English translation.<br>For the complete Irfan ul Quran by Shaykh ul Islam Dr. Muhammad Tahir ul Qadri, visit the official site:</p>
+    <a href="https://www.irfan-ul-quran.com" target="_blank" class="irfan-card">
+      <div class="irfan-icon">📗</div>
+      <div class="irfan-text">
+        <strong>Irfan ul Quran — Official Website</strong>
+        <span>Complete Tafsir & Translation by Dr. Tahir ul Qadri · irfan-ul-quran.com</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="ctrl-group">
+      <label>Select Surah</label>
+      <select id="surah-select" onchange="onSurahChange()">
+        <option value="">— Choose Surah —</option>
+      </select>
+    </div>
+    <div class="ctrl-group">
+      <label>Go to Ayat</label>
+      <input type="number" id="ayat-num" min="1" value="1" placeholder="Ayat #">
+    </div>
+    <button class="load-btn" onclick="loadSurah()">📖 Load</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-inp" placeholder="Search Surah name in English or Urdu…" oninput="filterSurahs()">
+  </div>
+
+  <!-- TRANSLATION TOGGLE -->
+  <div class="trans-toggle">
+    <span style="font-size:0.78rem;color:var(--txt-muted);align-self:center;margin-right:4px">Show:</span>
+    <button class="t-btn active" id="tb-arabic" onclick="toggleTrans('arabic')">🔤 Arabic</button>
+    <button class="t-btn active" id="tb-urdu"   onclick="toggleTrans('urdu')">🇵🇰 Urdu</button>
+    <button class="t-btn active" id="tb-english" onclick="toggleTrans('english')">🇬🇧 English</button>
+  </div>
+
+  <!-- SURAH INFO -->
+  <div class="surah-info" id="surah-info"></div>
+
+  <!-- AYAT LIST -->
+  <div id="ayat-container">
+    <div style="text-align:center;padding:50px 20px;color:var(--txt-muted)">
+      <div style="font-family:'Amiri',serif;font-size:2rem;color:var(--gold);margin-bottom:14px">اختر سورة</div>
+      <div style="font-size:1rem">Select a Surah above to begin reading</div>
+    </div>
+  </div>
+
+  <!-- PAGE NAV -->
+  <div class="page-nav" id="page-nav" style="display:none">
+    <button class="nav-btn" id="prev-btn" onclick="changeSurah(-1)">← Previous Surah</button>
+    <button class="nav-btn" id="next-btn" onclick="changeSurah(1)">Next Surah →</button>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──
+let allSurahs  = [];
+let currentSurah = null;
+let showArabic  = true;
+let showUrdu    = true;
+let showEnglish = true;
+
+// Free APIs
+const QURAN_API   = 'https://api.alquran.cloud/v1';
+const URDU_EDITION   = 'ur.ahmedali';   // Free Urdu translation
+const ENGLISH_EDITION = 'en.sahih';     // Sahih International English
+
+// ── LOAD SURAH LIST ──
+async function loadSurahList() {
+  try {
+    const res = await fetch(`${QURAN_API}/surah`);
+    const data = await res.json();
+    allSurahs = data.data;
+    populateSelect(allSurahs);
+  } catch(e) {
+    document.getElementById('ayat-container').innerHTML =
+      '<div class="loading" style="color:#e05555">⚠️ Could not load Surah list. Please check your internet connection.</div>';
+  }
+}
+
+function populateSelect(surahs) {
+  const sel = document.getElementById('surah-select');
+  sel.innerHTML = '<option value="">— Choose Surah —</option>' +
+    surahs.map(s => `<option value="${s.number}">${s.number}. ${s.englishName} — ${s.name} (${s.englishNameTranslation})</option>`).join('');
+}
+
+function filterSurahs() {
+  const q = document.getElementById('search-inp').value.toLowerCase();
+  if (!q) { populateSelect(allSurahs); return; }
+  const filtered = allSurahs.filter(s =>
+    s.englishName.toLowerCase().includes(q) ||
+    s.englishNameTranslation.toLowerCase().includes(q) ||
+    s.name.includes(q) ||
+    String(s.number).includes(q)
+  );
+  populateSelect(filtered);
+}
+
+function onSurahChange() {
+  const num = document.getElementById('surah-select').value;
+  if (num) document.getElementById('ayat-num').max = allSurahs.find(s=>s.number==num)?.numberOfAyahs || 286;
+}
+
+// ── LOAD SURAH ──
+async function loadSurah() {
+  const num = document.getElementById('surah-select').value;
+  if (!num) { alert('Please select a Surah first'); return; }
+  currentSurah = parseInt(num);
+  await fetchAndRender(currentSurah);
+  // Scroll to specific ayat if set
+  const ayatN = parseInt(document.getElementById('ayat-num').value)||1;
+  setTimeout(() => {
+    const el = document.getElementById('ayat-'+ayatN);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 600);
+}
+
+async function fetchAndRender(surahNum) {
+  const container = document.getElementById('ayat-container');
+  container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading Surah…</div>';
+  document.getElementById('page-nav').style.display = 'none';
+
+  try {
+    // Fetch Arabic + Urdu + English in parallel
+    const [arRes, urRes, enRes] = await Promise.all([
+      fetch(`${QURAN_API}/surah/${surahNum}`),
+      fetch(`${QURAN_API}/surah/${surahNum}/${URDU_EDITION}`),
+      fetch(`${QURAN_API}/surah/${surahNum}/${ENGLISH_EDITION}`)
+    ]);
+    const [arData, urData, enData] = await Promise.all([arRes.json(), urRes.json(), enRes.json()]);
+
+    const surah   = arData.data;
+    const urAyahs = urData.data.ayahs;
+    const enAyahs = enData.data.ayahs;
+
+    // Show surah info
+    const info = document.getElementById('surah-info');
+    info.style.display = 'block';
+    info.innerHTML = `
+      <div class="si-name-ar">${surah.name}</div>
+      <div class="si-details">
+        <div class="si-detail"><strong>${surah.number}</strong><span>Surah No.</span></div>
+        <div class="si-detail"><strong>${surah.englishName}</strong><span>Name</span></div>
+        <div class="si-detail"><strong>${surah.englishNameTranslation}</strong><span>Meaning</span></div>
+        <div class="si-detail"><strong>${surah.revelationType}</strong><span>Revelation</span></div>
+        <div class="si-detail"><strong>${surah.numberOfAyahs}</strong><span>Ayaat</span></div>
+      </div>`;
+
+    // Build ayat HTML
+    let html = '';
+    // Bismillah for all except Surah 1 (Al-Fatiha) and Surah 9 (At-Tawbah)
+    if (surah.number !== 1 && surah.number !== 9) {
+      html += `<div class="bismillah-line">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>`;
+    }
+    html += '<div class="ayat-list">';
+    surah.ayahs.forEach((ayat, i) => {
+      const urText = urAyahs[i]?.text || '';
+      const enText = enAyahs[i]?.text || '';
+      html += `
+        <div class="ayat-card" id="ayat-${ayat.numberInSurah}">
+          <div class="ayat-num">${ayat.numberInSurah}</div>
+          <div class="ayat-arabic arabic-part" style="display:${showArabic?'block':'none'}">${ayat.text}</div>
+          <div class="ayat-urdu urdu-part" style="display:${showUrdu?'block':'none'}">${urText}</div>
+          <div class="ayat-english english-part" style="display:${showEnglish?'block':'none'}">${enText}</div>
+          <div class="ayat-actions">
+            <button class="ayat-btn" onclick="copyAyat(${surahNum},${ayat.numberInSurah})">📋 Copy</button>
+            <button class="ayat-btn" onclick="shareAyat('${esc(surah.englishName)}',${ayat.numberInSurah},'${esc(enText)}')">🔗 Share</button>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    document.getElementById('page-nav').style.display = 'flex';
+    document.getElementById('prev-btn').disabled = surahNum <= 1;
+    document.getElementById('next-btn').disabled = surahNum >= 114;
+
+  } catch(e) {
+    container.innerHTML = `<div class="loading" style="color:#e05555">⚠️ Error loading Surah: ${e.message}<br><br><button onclick="fetchAndRender(${surahNum})" style="background:var(--green);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Playfair Display',serif;font-size:1rem">Try Again</button></div>`;
+  }
+}
+
+// ── TRANSLATION TOGGLES ──
+function toggleTrans(type) {
+  if (type==='arabic')  { showArabic=!showArabic;  document.getElementById('tb-arabic').classList.toggle('active',showArabic);  document.querySelectorAll('.arabic-part').forEach(e=>e.style.display=showArabic?'block':'none'); }
+  if (type==='urdu')    { showUrdu=!showUrdu;       document.getElementById('tb-urdu').classList.toggle('active',showUrdu);      document.querySelectorAll('.urdu-part').forEach(e=>e.style.display=showUrdu?'block':'none'); }
+  if (type==='english') { showEnglish=!showEnglish; document.getElementById('tb-english').classList.toggle('active',showEnglish);document.querySelectorAll('.english-part').forEach(e=>e.style.display=showEnglish?'block':'none'); }
+}
+
+// ── NAVIGATION ──
+function changeSurah(dir) {
+  const newNum = currentSurah + dir;
+  if (newNum < 1 || newNum > 114) return;
+  currentSurah = newNum;
+  // Update select
+  document.getElementById('surah-select').value = newNum;
+  document.getElementById('ayat-num').value = 1;
+  fetchAndRender(newNum);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── COPY & SHARE ──
+function copyAyat(surah, ayat) {
+  const card  = document.getElementById('ayat-'+ayat);
+  const ar    = card.querySelector('.arabic-part')?.textContent||'';
+  const ur    = card.querySelector('.urdu-part')?.textContent||'';
+  const en    = card.querySelector('.english-part')?.textContent||'';
+  const text  = `${ar}\n${ur}\n${en}\n— Surah ${surah}, Ayat ${ayat}`;
+  navigator.clipboard.writeText(text).then(()=>alert('Ayat copied to clipboard! 📋'));
+}
+
+function shareAyat(surahName, ayatNum, text) {
+  const shareText = `"${text}" — Surah ${surahName}, Ayat ${ayatNum}\n\nRead on Shaykh AI: ${window.location.origin}`;
+  if (navigator.share) {
+    navigator.share({title:`Quran — ${surahName}:${ayatNum}`, text:shareText});
+  } else {
+    navigator.clipboard.writeText(shareText).then(()=>alert('Link copied! 🔗'));
+  }
+}
+
+function esc(s) { return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+// ── INIT ──
+loadSurahList();
+</script>
+</body>
+</html>
