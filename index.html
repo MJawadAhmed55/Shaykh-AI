@@ -205,9 +205,10 @@
     <div class="login-arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <div class="login-title">Shaykh AI — Islamic Scholar</div>
     <p class="login-desc">Sign in with Google to access your personal Islamic Scholar. Your chat history will be saved on this device.</p>
-    <button class="google-btn" onclick="signInWithGoogle()">
+    <button class="google-btn" onclick="signInWithGoogle()" id="manual-google-btn">
       <img src="https://www.google.com/favicon.ico" alt="G"> Continue with Google
     </button>
+    <div id="google-btn-container" style="margin-top:10px;display:flex;justify-content:center;min-height:44px"></div>
     <p class="login-note">🔒 Your history is saved only on your device.</p>
   </div>
 </div>
@@ -381,13 +382,21 @@ function signInWithGoogle() {
   google.accounts.id.initialize({
     client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
     callback: handleCredentialResponse,
-    auto_select: false
+    auto_select: false,
+    ux_mode: 'popup'
   });
-  google.accounts.id.prompt((n) => {
-    if (n.isNotDisplayed() || n.isSkippedMoment()) {
-      google.accounts.id.renderButton(document.querySelector('.login-box'), { theme:'outline', size:'large' });
-    }
+  // Use renderButton — most reliable across all browsers
+  const container = document.getElementById('google-btn-container');
+  container.innerHTML = '';
+  google.accounts.id.renderButton(container, {
+    theme: 'outline',
+    size: 'large',
+    width: 280,
+    text: 'continue_with',
+    shape: 'rectangular'
   });
+  // Also try one-tap
+  google.accounts.id.prompt();
 }
 
 function handleCredentialResponse(response) {
@@ -420,7 +429,25 @@ function signOut() {
 window.addEventListener('load', () => {
   currentChatId = 'chat_'+Date.now();
   const saved = localStorage.getItem('shaykh_user');
-  if (saved) { currentUser = JSON.parse(saved); afterLogin(); }
+  if (saved) { currentUser = JSON.parse(saved); afterLogin(); return; }
+  // Auto-initialize Google Sign In on page load
+  setTimeout(() => {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
+        callback: handleCredentialResponse,
+        auto_select: false,
+        ux_mode: 'popup'
+      });
+      const container = document.getElementById('google-btn-container');
+      if (container) {
+        google.accounts.id.renderButton(container, {
+          theme: 'outline', size: 'large', width: 280,
+          text: 'continue_with', shape: 'rectangular'
+        });
+      }
+    }
+  }, 500);
 });
 
 // ══════════════════════════════════════
