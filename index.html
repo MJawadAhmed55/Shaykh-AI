@@ -7,7 +7,7 @@
 <title>Shaykh AI — Islamic Scholar</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <style>
   :root{
     --bg:#0b0e0f;--bg-card:#111618;--bg-panel:#151b1d;
@@ -205,10 +205,9 @@
     <div class="login-arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
     <div class="login-title">Shaykh AI — Islamic Scholar</div>
     <p class="login-desc">Sign in with Google to access your personal Islamic Scholar. Your chat history will be saved on this device.</p>
-    <button class="google-btn" onclick="signInWithGoogle()" id="manual-google-btn">
+    <button class="google-btn" onclick="signInWithGoogle()">
       <img src="https://www.google.com/favicon.ico" alt="G"> Continue with Google
     </button>
-    <div id="google-btn-container" style="margin-top:10px;display:flex;justify-content:center;min-height:44px"></div>
     <p class="login-note">🔒 Your history is saved only on your device.</p>
   </div>
 </div>
@@ -378,32 +377,46 @@ function updateLangIndicator() {
 // ══════════════════════════════════════
 // GOOGLE LOGIN
 // ══════════════════════════════════════
+// ── GOOGLE OAUTH (redirect method — works on all browsers) ──
+const GOOGLE_CLIENT_ID = '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com';
+const REDIRECT_URI     = window.location.origin;
+
 function signInWithGoogle() {
-  google.accounts.id.initialize({
-    client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
-    callback: handleCredentialResponse,
-    auto_select: false,
-    ux_mode: 'popup'
+  // Build Google OAuth URL
+  const params = new URLSearchParams({
+    client_id:     GOOGLE_CLIENT_ID,
+    redirect_uri:  REDIRECT_URI,
+    response_type: 'token',
+    scope:         'openid email profile',
+    prompt:        'select_account'
   });
-  // Use renderButton — most reliable across all browsers
-  const container = document.getElementById('google-btn-container');
-  container.innerHTML = '';
-  google.accounts.id.renderButton(container, {
-    theme: 'outline',
-    size: 'large',
-    width: 280,
-    text: 'continue_with',
-    shape: 'rectangular'
-  });
-  // Also try one-tap
-  google.accounts.id.prompt();
+  // Open Google login in same window
+  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
 }
 
-function handleCredentialResponse(response) {
-  const p = JSON.parse(atob(response.credential.split('.')[1]));
-  currentUser = { id:p.sub, name:p.given_name||p.name, email:p.email, avatar:p.picture };
-  localStorage.setItem('shaykh_user', JSON.stringify(currentUser));
-  afterLogin();
+// Handle redirect back from Google with access token
+async function handleGoogleRedirect() {
+  const hash = window.location.hash;
+  if (!hash.includes('access_token')) return false;
+  // Extract token from URL hash
+  const params = new URLSearchParams(hash.substring(1));
+  const token  = params.get('access_token');
+  if (!token) return false;
+  try {
+    // Get user info from Google
+    const res  = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    const p = await res.json();
+    currentUser = { id: p.sub, name: p.given_name || p.name, email: p.email, avatar: p.picture };
+    localStorage.setItem('shaykh_user', JSON.stringify(currentUser));
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return true;
+  } catch(e) {
+    console.error('Google login error:', e);
+    return false;
+  }
 }
 
 function afterLogin() {
@@ -426,28 +439,16 @@ function signOut() {
   showConfirm('Sign Out?', 'Are you sure you want to sign out of Shaykh AI?', '👋', 'Yes, Sign Out', () => { localStorage.removeItem(\'shaykh_user\'); location.reload(); });
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   currentChatId = 'chat_'+Date.now();
+  // Check if returning from Google login
+  const fromGoogle = await handleGoogleRedirect();
+  if (fromGoogle) { afterLogin(); return; }
+  // Check saved session
   const saved = localStorage.getItem('shaykh_user');
   if (saved) { currentUser = JSON.parse(saved); afterLogin(); return; }
-  // Auto-initialize Google Sign In on page load
-  setTimeout(() => {
-    if (typeof google !== 'undefined') {
-      google.accounts.id.initialize({
-        client_id: '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com',
-        callback: handleCredentialResponse,
-        auto_select: false,
-        ux_mode: 'popup'
-      });
-      const container = document.getElementById('google-btn-container');
-      if (container) {
-        google.accounts.id.renderButton(container, {
-          theme: 'outline', size: 'large', width: 280,
-          text: 'continue_with', shape: 'rectangular'
-        });
-      }
-    }
-  }, 500);
+  // Show login screen
+  document.getElementById('login-screen').style.display = 'flex';
 });
 
 // ══════════════════════════════════════
