@@ -44,7 +44,7 @@
   }
   .prayer-time-item { 
     display: flex; flex-direction: column; align-items: center; 
-    min-width: 140px; text-align: center; border-right: 1px solid var(--border); 
+    min-width: 150px; text-align: center; border-right: 1px solid var(--border); 
     padding-right: 15px; flex-shrink: 0;
   }
   .prayer-time-item:last-child { border-right: none; }
@@ -53,7 +53,7 @@
   .p-range { font-size: 0.6rem; color: var(--txt-dim); margin-top: 3px; font-style: italic; }
   .date-label { font-size: 0.6rem; color: var(--txt-muted); margin-top: 2px; }
 
-  /* ── HEADER & LAYOUT ── */
+  /* ── LAYOUT ── */
   header {
     z-index: 10; background: #0d1214; border-bottom: 1px solid var(--border-s);
     padding: 0 18px; display: flex; align-items: center; justify-content: space-between; height: 64px; flex-shrink: 0;
@@ -65,9 +65,9 @@
   .nav-link { background: transparent; border: 1px solid var(--border-s); border-radius: 7px; color: var(--gold-dim); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; text-decoration: none; transition: 0.2s; }
 
   .app-body { flex: 1; display: flex; overflow: hidden; min-height: 0; }
-  aside { width: 260px; flex-shrink: 0; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
+  aside { width: 280px; flex-shrink: 0; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
   .sidebar-top { padding: 15px 12px; }
-  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 10px 12px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.82rem; transition: 0.2s; }
+  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 9px 12px; margin-bottom: 6px; cursor: pointer; font-family: inherit; font-size: 0.8rem; transition: 0.2s; }
   .t-chip:hover { border-color: var(--gold-dim); color: var(--gold-lt); background: rgba(255,255,255,0.02); }
 
   .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
@@ -77,7 +77,7 @@
   #inp { flex: 1; background: transparent; border: none; outline: none; color: var(--txt); font-family: inherit; font-size: 1rem; resize: none; max-height: 150px; line-height: 1.5; }
   #send { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, var(--green), #1e5c38); border: 1px solid rgba(61,187,118,0.3); color: #fff; cursor: pointer; font-size: 1.1rem; }
 
-  @media(max-width: 640px) { aside { display: none; } .h-right .nav-link:not(:last-child) { display: none; } }
+  @media(max-width: 768px) { aside { display: none; } }
 </style>
 </head>
 <body>
@@ -86,7 +86,7 @@
   <div class="perm-box">
     <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
     <h2 style="color:var(--gold-lt); margin-bottom:10px;">Scholar Suite</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">Access accurate Prayer ranges and dates for your location.</p>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">Allow location for accurate 12h prayer ranges and dates.</p>
     <button class="perm-btn btn-allow" onclick="handleLocation(true)">Allow Location Access</button>
     <button class="perm-btn btn-deny" onclick="handleLocation(false)">Lahore (Default)</button>
   </div>
@@ -114,43 +114,31 @@
     <span class="date-label" id="angrezi-disp">...</span>
     <span class="loc-label" id="city-disp">Awaiting...</span>
   </div>
-  <div class="prayer-time-item">
-    <span class="p-label">Fajr Window</span>
-    <span class="p-val" id="fajr-range">--:--</span>
-    <span class="p-range">Start — Sunrise</span>
-  </div>
-  <div class="prayer-time-item">
-    <span class="p-label">Dhuhr Window</span>
-    <span class="p-val" id="dhuhr-range">--:--</span>
-    <span class="p-range">Start — Asr</span>
-  </div>
-  <div class="prayer-time-item">
-    <span class="p-label">Asr Window</span>
-    <span class="p-val" id="asr-range">--:--</span>
-    <span class="p-range">Hanafi Start — Sunset</span>
-  </div>
-  <div class="prayer-time-item">
-    <span class="p-label">Maghrib Window</span>
-    <span class="p-val" id="maghrib-range">--:--</span>
-    <span class="p-range">Start — Isha</span>
-  </div>
-  <div class="prayer-time-item">
-    <span class="p-label">Isha Window</span>
-    <span class="p-val" id="isha-range">--:--</span>
-    <span class="p-range">Start — Fajr</span>
-  </div>
+  <div class="prayer-time-item"><span class="p-label">Fajr</span><span class="p-val" id="fajr-range">--:--</span><span class="p-range">Start — Sunrise</span></div>
+  <div class="prayer-time-item"><span class="p-label">Dhuhr</span><span class="p-val" id="dhuhr-range">--:--</span><span class="p-range">Start — Asr</span></div>
+  <div class="prayer-time-item"><span class="p-label">Asr</span><span class="p-val" id="asr-range">--:--</span><span class="p-range">Hanafi Start — Sunset</span></div>
+  <div class="prayer-time-item"><span class="p-label">Maghrib</span><span class="p-val" id="maghrib-range">--:--</span><span class="p-range">Start — Isha</span></div>
+  <div class="prayer-time-item"><span class="p-label">Isha</span><span class="p-val" id="isha-range">--:--</span><span class="p-range">Start — Fajr</span></div>
 </div>
 
 <div class="app-body">
   <aside>
     <div class="sidebar-top">
-      <div style="font-size:0.65rem; color:var(--txt-muted); margin-bottom:12px;">LIBRARIES</div>
-      <button class="t-chip" onclick="location.href='quran.html'">📖 Noble Quran Reader</button>
-      <button class="t-chip" onclick="location.href='hadith.html'">📜 Hadith Database</button>
-      <button class="t-chip" onclick="location.href='usool.html'" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</button>
-      <div style="font-size:0.65rem; color:var(--txt-muted); margin-top:25px; margin-bottom:12px;">QUICK ASK</div>
-      <button class="t-chip" onclick="ask('What is the Nisab for Zakat?')">💰 Zakat</button>
-      <button class="t-chip" onclick="ask('How to perform Wudu?')">💧 Wudu</button>
+      <div style="font-size:0.6rem; color:var(--gold); margin-bottom:10px; letter-spacing:1.5px; font-weight: bold;">ARKAN-UL-ISLAM (5)</div>
+      <button class="t-chip" onclick="ask('Explain Shahada (Testimony of Faith).')">☝️ Shahada</button>
+      <button class="t-chip" onclick="ask('Explain Salah (Five Daily Prayers).')">🛐 Salah</button>
+      <button class="t-chip" onclick="ask('Explain the rules of Zakat (Almsgiving).')">💰 Zakat</button>
+      <button class="t-chip" onclick="ask('Explain the Sawm (Fasting in Ramadan).')">🌙 Sawm</button>
+      <button class="t-chip" onclick="ask('Explain the pillars and method of Hajj.')">🕋 Hajj</button>
+
+      <div style="font-size:0.6rem; color:var(--green-br); margin-top:20px; margin-bottom:10px; letter-spacing:1.5px; font-weight: bold;">ARKAN-UL-IMAN (7)</div>
+      <button class="t-chip" onclick="ask('Belief in Allah (Tawheed).')">✨ Belief in Allah</button>
+      <button class="t-chip" onclick="ask('Belief in the Angels (Malaikah).')">🪽 Belief in Angels</button>
+      <button class="t-chip" onclick="ask('Belief in the Revealed Books (Kutub).')">📖 Belief in Books</button>
+      <button class="t-chip" onclick="ask('Belief in the Messengers (Rusul).')">📜 Belief in Prophets</button>
+      <button class="t-chip" onclick="ask('Belief in the Last Day (Akhirah).')">⚖️ Belief in Resurrection</button>
+      <button class="t-chip" onclick="ask('Belief in Divine Decree (Qadar).')">✍️ Belief in Destiny</button>
+      <button class="t-chip" onclick="ask('Belief in Life after Death.')">🌱 Life after Death</button>
     </div>
   </aside>
 
@@ -171,18 +159,15 @@
 </div>
 
 <script>
-// --- HELPERS ---
 function formatTime12(time24) {
   if (!time24) return "--:--";
   const [hours, minutes] = time24.split(':');
   let h = parseInt(hours);
-  const m = minutes;
   const ampm = h >= 12 ? 'PM' : 'AM';
   h = h % 12 || 12;
-  return `${h}:${m} ${ampm}`;
+  return `${h}:${minutes} ${ampm}`;
 }
 
-// --- LOGIC: PERMISSION & DATA ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
   fetchPrayerData(allow);
@@ -190,15 +175,13 @@ function handleLocation(allow) {
 
 async function fetchPrayerData(useAuto) {
   let city = "Lahore", country = "Pakistan";
-  const cityDisp = document.getElementById('city-disp');
-
   if (useAuto) {
     try {
       const geo = await fetch('https://ipapi.co/json/').then(r => r.json());
       city = geo.city || city; country = geo.country_name || country;
-      cityDisp.innerText = city;
-    } catch (e) { cityDisp.innerText = "Lahore (Fallback)"; }
-  } else { cityDisp.innerText = "Lahore (Manual)"; }
+    } catch (e) {}
+  }
+  document.getElementById('city-disp').innerText = city;
 
   try {
     const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`).then(r => r.json());
@@ -206,19 +189,15 @@ async function fetchPrayerData(useAuto) {
       const t = res.data.timings;
       const h = res.data.date.hijri;
       const g = res.data.date.gregorian;
-      
-      // Update Prayer Ranges
       document.getElementById('fajr-range').innerText = `${formatTime12(t.Fajr)} — ${formatTime12(t.Sunrise)}`;
       document.getElementById('dhuhr-range').innerText = `${formatTime12(t.Dhuhr)} — ${formatTime12(t.Asr)}`;
       document.getElementById('asr-range').innerText = `${formatTime12(t.Asr)} — ${formatTime12(t.Sunset)}`;
       document.getElementById('maghrib-range').innerText = `${formatTime12(t.Maghrib)} — ${formatTime12(t.Isha)}`;
       document.getElementById('isha-range').innerText = `${formatTime12(t.Isha)} — ${formatTime12(t.Fajr)}`;
-      
-      // Update Dates
       document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
       document.getElementById('angrezi-disp').innerText = `${g.day} ${g.month.en} ${g.year} AD`;
     }
-  } catch (e) { cityDisp.innerText = "Offline Mode"; }
+  } catch (e) {}
 }
 
 function sendMsg() {
