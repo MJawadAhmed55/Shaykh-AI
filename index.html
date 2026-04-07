@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b0e0f">
 <title>Shaykh AI — Islamic Scholar</title>
-<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -21,20 +20,31 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:'Playfair Display',serif;}
 
+  /* ── PERMISSION OVERLAY ── */
+  #location-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .perm-box {
+    background: var(--bg-card); border: 1px solid var(--border-s);
+    padding: 30px; border-radius: 18px; text-align: center; max-width: 380px; width: 90%;
+  }
+  .perm-btn {
+    padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border);
+    cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: 0.2s;
+  }
+  .btn-allow { background: var(--gold); color: #000; font-weight: bold; border: none; margin-right: 10px; }
+  .btn-deny { background: transparent; color: var(--txt-dim); }
+
   /* ── PRAYER BAR ── */
   .prayer-bar {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 18px;
-    display: flex;
-    justify-content: space-around;
-    font-size: 0.75rem;
-    color: var(--gold-lt);
-    gap: 10px;
-    overflow-x: auto;
+    background: var(--bg-card); border-bottom: 1px solid var(--border);
+    padding: 10px 18px; display: flex; justify-content: space-around;
+    font-size: 0.75rem; color: var(--gold-lt); gap: 10px; overflow-x: auto;
   }
   .prayer-time-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; text-align: center; }
-  .p-label { font-size: 0.6rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 2px; letter-spacing: 0.5px; }
+  .p-label { font-size: 0.6rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 2px; }
   .p-val { font-weight: bold; }
   .hijri-date { color: var(--green-br); }
   .loc-label { display: block; font-size: 0.6rem; opacity: 0.8; color: var(--gold-dim); margin-top: 2px; font-style: italic; }
@@ -46,41 +56,37 @@
   .h-titles h1{font-size:1.1rem;font-weight:600;color:var(--gold-lt)}
   .h-right{display:flex;align-items:center;gap:8px}
 
-  /* BUTTONS */
-  .nav-link{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-size:0.8rem;padding:6px 12px;cursor:pointer;text-decoration:none;transition:0.2s;display: inline-block;}
+  /* BUTTONS & UI */
+  .nav-link{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-size:0.8rem;padding:6px 12px;cursor:pointer;text-decoration:none;transition:0.2s;}
   .nav-link:hover{border-color:var(--gold);color:var(--gold-lt);background:rgba(201,168,76,0.05)}
   .user-pill{display:flex;align-items:center;gap:7px;background:rgba(201,168,76,0.07);border:1px solid var(--border);border-radius:20px;padding:4px 10px;cursor:pointer}
-  .user-avatar{width:26px;height:26px;border-radius:50%; background: #222;}
-
-  /* LAYOUT */
+  
   .app-body{flex:1;display:flex;overflow:hidden;min-height:0}
   aside{width:260px;flex-shrink:0;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column; overflow-y: auto;}
   .sidebar-top{padding:12px 10px; border-bottom:1px solid var(--border)}
   .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);padding:8px 10px;margin-bottom:5px;cursor:pointer;font-family:inherit;font-size: 0.82rem;}
-  .t-chip:hover{border-color:var(--gold-dim);color:var(--gold-lt);background: rgba(255,255,255,0.02);}
   
   .chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
   #msgs{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:15px;scroll-behavior: smooth;}
-  
   .input-bar{padding:14px 28px 18px;border-top:1px solid var(--border);background:var(--bg)}
   .input-wrap{display:flex;align-items:flex-end;gap:9px;background:var(--bg-card);border:1px solid var(--border-s);border-radius:12px;padding:10px 13px;max-width:860px;margin:0 auto}
-  #inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-family:inherit;font-size:1rem;resize:none;max-height:150px; line-height: 1.5;}
-  #send{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-  #login-screen{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.96);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
-  .login-box{background:var(--bg-card);border:1px solid var(--border-s);border-radius:18px;padding:40px;text-align:center;max-width:400px;width:90%}
+  #inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-family:inherit;font-size:1rem;resize:none;max-height:150px;}
+  #send{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;cursor:pointer}
 
   @media(max-width:640px){ aside{display:none} .h-right .nav-link:not(:first-child) {display:none} }
 </style>
 </head>
 <body>
 
-<div id="login-screen" style="display:none">
-  <div class="login-box">
-    <div style="font-family:'Amiri',serif; font-size:2rem; color:var(--gold); margin-bottom:10px">بِسْمِ اللَّهِ</div>
-    <h2 style="margin-bottom:20px; color:var(--gold-lt)">Shaykh AI</h2>
-    <p style="color:var(--txt-dim); margin-bottom:25px; font-size:0.9rem">Access the library of Shariah & Fiqh</p>
-    <button class="nav-link" style="background:var(--gold); color:black; padding:12px 20px; font-weight:bold; border:none; width:100%" onclick="signInWithGoogle()">Continue as Scholar</button>
+<div id="location-overlay">
+  <div class="perm-box">
+    <div style="font-size: 2rem; margin-bottom: 10px;">📍</div>
+    <h3 style="color:var(--gold-lt); margin-bottom: 10px;">Prayer Times Access</h3>
+    <p style="color:var(--txt-dim); font-size: 0.85rem; margin-bottom: 25px;">
+      Shaykh AI needs your location to provide accurate prayer times for your city.
+    </p>
+    <button class="perm-btn btn-allow" onclick="handleLocation(true)">Allow Access</button>
+    <button class="perm-btn btn-deny" onclick="handleLocation(false)">Not Now</button>
   </div>
 </div>
 
@@ -96,15 +102,14 @@
     <a href="quran.html" class="nav-link">📖 Quran</a>
     <a href="hadith.html" class="nav-link">📜 Hadith</a>
     <a href="usool.html" class="nav-link" style="border-color:var(--purple); color:var(--purple)">⚖️ Usool</a>
-    <div class="user-pill" onclick="signOut()">
-      <img class="user-avatar" id="user-avatar" src="https://ui-avatars.com/api/?name=S&background=c9a84c&color=fff">
-      <span class="user-name" id="user-name">User</span>
+    <div class="user-pill">
+      <span class="user-name" id="user-name">Scholar</span>
     </div>
   </div>
 </header>
 
-<div class="prayer-bar" id="prayer-bar">
-  <div class="prayer-time-item"><span class="p-label">Hijri</span><span class="p-val hijri-date" id="hijri-disp">...</span><span class="loc-label" id="city-disp">Detecting...</span></div>
+<div class="prayer-bar">
+  <div class="prayer-time-item"><span class="p-label">Hijri</span><span class="p-val hijri-date" id="hijri-disp">...</span><span class="loc-label" id="city-disp">Awaiting...</span></div>
   <div class="prayer-time-item"><span class="p-label">Fajr</span><span class="p-val" id="fajr">--:--</span></div>
   <div class="prayer-time-item"><span class="p-label">Dhuhr</span><span class="p-val" id="dhuhr">--:--</span></div>
   <div class="prayer-time-item"><span class="p-label">Asr (Hanafi)</span><span class="p-val" id="asr">--:--</span></div>
@@ -115,19 +120,13 @@
 <div class="app-body">
   <aside>
     <div class="sidebar-top">
-      <div style="font-size:0.6rem; color:var(--txt-muted); margin-bottom:10px; letter-spacing:1px">ISLAMIC LIBRARIES</div>
+      <div style="font-size:0.6rem; color:var(--txt-muted); margin-bottom:10px;">LIBRARIES</div>
       <a href="quran.html" style="text-decoration:none"><button class="t-chip">📖 Noble Quran Reader</button></a>
       <a href="hadith.html" style="text-decoration:none"><button class="t-chip">📜 Hadith Database</button></a>
       <a href="usool.html" style="text-decoration:none"><button class="t-chip" style="color:var(--purple)">⚖️ Usool ul-Fiqh</button></a>
-      
-      <div style="font-size:0.6rem; color:var(--txt-muted); margin-top:20px; margin-bottom:10px; letter-spacing:1px">QUICK TOPICS</div>
-      <button class="t-chip" onclick="ask('What are the rules of Zakat in Hanafi Fiqh?')">💰 Zakat Rules</button>
-      <button class="t-chip" onclick="ask('Explain the rulings of Nikah and its pillars.')">💍 Nikah & Marriage</button>
-      <button class="t-chip" onclick="ask('What is Riba and how to avoid it in Islamic Finance?')">📊 Islamic Finance</button>
-      <button class="t-chip" onclick="ask('How is inheritance distributed in Shariah?')">📜 Inheritance (Mirath)</button>
-      <button class="t-chip" onclick="ask('What are the valid reasons to break a fast in Ramadan?')">🌙 Fasting (Sawm)</button>
-      <button class="t-chip" onclick="ask('How to perform Wudu and Ghusl correctly?')">💧 Wudu & Ghusl</button>
-      <button class="t-chip" onclick="ask('What are the rules for travelers (Musafir) prayer?')">🛣️ Traveler Prayer</button>
+      <div style="font-size:0.6rem; color:var(--txt-muted); margin-top:20px; margin-bottom:10px;">QUICK TOPICS</div>
+      <button class="t-chip" onclick="ask('What are the rules of Zakat?')">💰 Zakat Rules</button>
+      <button class="t-chip" onclick="ask('How to perform Wudu?')">💧 Wudu Guide</button>
     </div>
   </aside>
 
@@ -135,8 +134,7 @@
     <div id="msgs">
       <div style="text-align:center; padding:50px 20px">
         <div style="font-family:'Amiri',serif; font-size:3rem; color:var(--gold); margin-bottom:10px">السَّلَامُ عَلَيْكُمْ</div>
-        <h2 style="font-weight:400">How can I assist your study today?</h2>
-        <p style="color:var(--txt-dim); margin-top:10px">Ask about Fiqh, Hadith, or Shariah rulings.</p>
+        <h2 style="font-weight:400">How can I assist you?</h2>
       </div>
     </div>
     <div class="input-bar">
@@ -149,33 +147,41 @@
 </div>
 
 <script>
-// --- ROBUST LOCATION & PRAYER TIMES ---
-async function fetchPrayerTimes() {
+// --- LOCATION HANDLER ---
+function handleLocation(allow) {
+  document.getElementById('location-overlay').style.display = 'none';
+  if (allow) {
+    fetchPrayerTimes(true); // Automatic
+  } else {
+    fetchPrayerTimes(false); // Manual/Default Lahore
+  }
+}
+
+async function fetchPrayerTimes(auto) {
   const cityDisp = document.getElementById('city-disp');
   let city = "Lahore"; 
   let country = "Pakistan";
 
-  try {
-    const geoRes = await fetch('https://ipapi.co/json/');
-    if (geoRes.ok) {
+  if (auto) {
+    try {
+      const geoRes = await fetch('https://ipapi.co/json/');
       const geoData = await geoRes.json();
       city = geoData.city || "Lahore";
       country = geoData.country_name || "Pakistan";
       cityDisp.innerText = city;
+    } catch (e) {
+      cityDisp.innerText = "Lahore (Fallback)";
     }
-  } catch (e) {
-    console.warn("Location check failed. Defaulting to Lahore.");
-    cityDisp.innerText = "Lahore (Fixed)";
+  } else {
+    cityDisp.innerText = "Lahore (Default)";
   }
 
   try {
     const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`);
     const data = await res.json();
-    
     if(data.code === 200) {
       const t = data.data.timings;
       const h = data.data.date.hijri;
-
       document.getElementById('fajr').innerText = t.Fajr;
       document.getElementById('dhuhr').innerText = t.Dhuhr;
       document.getElementById('asr').innerText = t.Asr;
@@ -184,68 +190,23 @@ async function fetchPrayerTimes() {
       document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en}`;
     }
   } catch (e) {
-    console.error("Prayer Time API failed:", e);
-    cityDisp.innerText = "Offline";
+    console.error("API error");
   }
 }
 
-// --- CHAT LOGIC ---
 function sendMsg() {
   const inp = document.getElementById('inp');
   const msgDiv = document.getElementById('msgs');
   if(!inp.value.trim()) return;
-
-  msgDiv.innerHTML += `
-    <div style="align-self: flex-end; background: var(--user-bg); padding: 12px 16px; border-radius: 12px 12px 0 12px; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border)">
-      ${inp.value}
-    </div>
-  `;
-  
+  msgDiv.innerHTML += `<div style="align-self: flex-end; background: var(--user-bg); padding: 12px 16px; border-radius: 12px 12px 0 12px; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border)">${inp.value}</div>`;
   inp.value = '';
   msgDiv.scrollTop = msgDiv.scrollHeight;
-
-  setTimeout(() => {
-    msgDiv.innerHTML += `
-      <div style="align-self: flex-start; background: var(--ai-bg); padding: 12px 16px; border-radius: 12px 12px 12px 0; max-width: 85%; margin-bottom: 10px; border: 1px solid var(--border-s)">
-        <span style="color:var(--gold); font-weight:bold">Shaykh AI:</span><br>
-        JazakAllah for your question. I am analyzing your query according to the Hanafi school of thought. 
-      </div>
-    `;
-    msgDiv.scrollTop = msgDiv.scrollHeight;
-  }, 1000);
 }
 
-function ask(q) {
-  document.getElementById('inp').value = q;
-  sendMsg();
-}
-
-// --- AUTH LOGIC ---
-function checkLogin() {
-  const user = localStorage.getItem('shaykh_user');
-  if(user) {
-    const p = JSON.parse(user);
-    document.getElementById('user-name').innerText = p.name;
-    document.getElementById('login-screen').style.display = 'none';
-  } else {
-    document.getElementById('login-screen').style.display = 'flex';
-  }
-}
-
-function signInWithGoogle() {
-  const demoUser = { name: "Scholar" };
-  localStorage.setItem('shaykh_user', JSON.stringify(demoUser));
-  checkLogin();
-}
-
-function signOut() {
-  localStorage.removeItem('shaykh_user');
-  location.reload();
-}
+function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
 
 window.onload = () => {
-  fetchPrayerTimes();
-  checkLogin();
+  // We don't call fetchPrayerTimes here; the overlay button calls it.
 };
 </script>
 </body>
