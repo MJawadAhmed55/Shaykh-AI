@@ -36,7 +36,6 @@
   }
   .btn-allow { background: var(--gold); color: #000; font-weight: bold; border: none; }
   .btn-deny { background: transparent; color: var(--txt-dim); }
-  .btn-allow:hover { background: var(--gold-lt); transform: translateY(-2px); }
 
   /* ── PRAYER BAR ── */
   .prayer-bar {
@@ -46,12 +45,12 @@
   }
   .prayer-time-item { 
     display: flex; flex-direction: column; align-items: center; 
-    min-width: 110px; text-align: center; border-right: 1px solid var(--border); 
+    min-width: 130px; text-align: center; border-right: 1px solid var(--border); 
     padding-right: 15px; flex-shrink: 0;
   }
   .prayer-time-item:last-child { border-right: none; }
   .p-label { font-size: 0.65rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 4px; font-weight: bold; letter-spacing: 1px; }
-  .p-val { font-weight: bold; font-family: monospace; color: var(--gold-lt); font-size: 0.95rem; letter-spacing: 0.5px; }
+  .p-val { font-weight: bold; font-family: monospace; color: var(--gold-lt); font-size: 0.85rem; letter-spacing: 0.5px; white-space: nowrap; }
   .p-range { font-size: 0.6rem; color: var(--txt-dim); margin-top: 3px; font-style: italic; }
 
   /* ── HEADER ── */
@@ -64,7 +63,6 @@
   .h-titles h1 { font-size: 1.1rem; font-weight: 600; color: var(--gold-lt); }
   .h-right { display: flex; align-items: center; gap: 8px; }
   .nav-link { background: transparent; border: 1px solid var(--border-s); border-radius: 7px; color: var(--gold-dim); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; text-decoration: none; transition: 0.2s; }
-  .nav-link:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
 
   /* ── LAYOUT ── */
   .app-body { flex: 1; display: flex; overflow: hidden; min-height: 0; }
@@ -178,6 +176,17 @@
 </div>
 
 <script>
+// --- HELPER: CONVERT 24H TO 12H ---
+function formatTime12(time24) {
+  if (!time24) return "--:--";
+  const [hours, minutes] = time24.split(':');
+  let h = parseInt(hours);
+  const m = minutes;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m} ${ampm}`;
+}
+
 // --- LOGIC: LOCATION & PRAYER RANGES ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
@@ -202,18 +211,17 @@ async function fetchPrayerData(useAuto) {
   }
 
   try {
-    // Aladhan API: method=1 (Karachi), school=1 (Hanafi)
     const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`).then(r => r.json());
     if(res.code === 200) {
       const t = res.data.timings;
       const h = res.data.date.hijri;
       
-      // Setting Start — End Ranges
-      document.getElementById('fajr-range').innerText = `${t.Fajr} — ${t.Sunrise}`;
-      document.getElementById('dhuhr-range').innerText = `${t.Dhuhr} — ${t.Asr}`;
-      document.getElementById('asr-range').innerText = `${t.Asr} — ${t.Sunset}`;
-      document.getElementById('maghrib-range').innerText = `${t.Maghrib} — ${t.Isha}`;
-      document.getElementById('isha-range').innerText = `${t.Isha} — ${t.Fajr}`;
+      // Setting 12-Hour Start — End Ranges
+      document.getElementById('fajr-range').innerText = `${formatTime12(t.Fajr)} — ${formatTime12(t.Sunrise)}`;
+      document.getElementById('dhuhr-range').innerText = `${formatTime12(t.Dhuhr)} — ${formatTime12(t.Asr)}`;
+      document.getElementById('asr-range').innerText = `${formatTime12(t.Asr)} — ${formatTime12(t.Sunset)}`;
+      document.getElementById('maghrib-range').innerText = `${formatTime12(t.Maghrib)} — ${formatTime12(t.Isha)}`;
+      document.getElementById('isha-range').innerText = `${formatTime12(t.Isha)} — ${formatTime12(t.Fajr)}`;
       
       document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en}`;
     }
@@ -237,7 +245,6 @@ function sendMsg() {
   inp.value = '';
   msgDiv.scrollTop = msgDiv.scrollHeight;
 
-  // Placeholder Scholar Response
   setTimeout(() => {
     msgDiv.innerHTML += `
       <div style="align-self: flex-start; background: var(--ai-bg); padding: 14px 18px; border-radius: 15px 15px 15px 0; max-width: 85%; margin-bottom: 12px; border: 1px solid var(--border-s); line-height: 1.6;">
@@ -253,10 +260,6 @@ function ask(q) {
   document.getElementById('inp').value = q;
   sendMsg();
 }
-
-window.onload = () => {
-  // Wait for User Choice on Overlay
-};
 </script>
 </body>
 </html>
