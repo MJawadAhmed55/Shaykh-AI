@@ -29,7 +29,6 @@
     padding: 40px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
-  .perm-icon { font-size: 3rem; margin-bottom: 15px; }
   .perm-btn {
     padding: 12px 24px; border-radius: 10px; border: 1px solid var(--border);
     cursor: pointer; font-family: inherit; font-size: 1rem; transition: 0.3s; width: 100%; margin-bottom: 10px;
@@ -45,15 +44,16 @@
   }
   .prayer-time-item { 
     display: flex; flex-direction: column; align-items: center; 
-    min-width: 130px; text-align: center; border-right: 1px solid var(--border); 
+    min-width: 140px; text-align: center; border-right: 1px solid var(--border); 
     padding-right: 15px; flex-shrink: 0;
   }
   .prayer-time-item:last-child { border-right: none; }
   .p-label { font-size: 0.65rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 4px; font-weight: bold; letter-spacing: 1px; }
   .p-val { font-weight: bold; font-family: monospace; color: var(--gold-lt); font-size: 0.85rem; letter-spacing: 0.5px; white-space: nowrap; }
   .p-range { font-size: 0.6rem; color: var(--txt-dim); margin-top: 3px; font-style: italic; }
+  .date-label { font-size: 0.6rem; color: var(--txt-muted); margin-top: 2px; }
 
-  /* ── HEADER ── */
+  /* ── HEADER & LAYOUT ── */
   header {
     z-index: 10; background: #0d1214; border-bottom: 1px solid var(--border-s);
     padding: 0 18px; display: flex; align-items: center; justify-content: space-between; height: 64px; flex-shrink: 0;
@@ -64,7 +64,6 @@
   .h-right { display: flex; align-items: center; gap: 8px; }
   .nav-link { background: transparent; border: 1px solid var(--border-s); border-radius: 7px; color: var(--gold-dim); font-size: 0.8rem; padding: 6px 12px; cursor: pointer; text-decoration: none; transition: 0.2s; }
 
-  /* ── LAYOUT ── */
   .app-body { flex: 1; display: flex; overflow: hidden; min-height: 0; }
   aside { width: 260px; flex-shrink: 0; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
   .sidebar-top { padding: 15px 12px; }
@@ -85,13 +84,11 @@
 
 <div id="location-overlay">
   <div class="perm-box">
-    <div class="perm-icon">🕌</div>
-    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Prayer Times Guide</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">
-      To provide accurate <strong>Hanafi Prayer Start & End times</strong> for your city, Shaykh AI requires location access.
-    </p>
+    <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
+    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Scholar Suite</h2>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">Access accurate Prayer ranges and dates for your location.</p>
     <button class="perm-btn btn-allow" onclick="handleLocation(true)">Allow Location Access</button>
-    <button class="perm-btn btn-deny" onclick="handleLocation(false)">Continue with Default (Lahore)</button>
+    <button class="perm-btn btn-deny" onclick="handleLocation(false)">Lahore (Default)</button>
   </div>
 </div>
 
@@ -100,7 +97,7 @@
     <div class="h-emblem">☪</div>
     <div class="h-titles">
       <h1>Shaykh AI</h1>
-      <p style="font-size:0.6rem; color:var(--txt-muted); letter-spacing:1px">ISLAMIC SCHOLAR SUITE</p>
+      <p style="font-size:0.6rem; color:var(--txt-muted); letter-spacing:1px">HANAFI JURISPRUDENCE</p>
     </div>
   </div>
   <div class="h-right">
@@ -112,8 +109,9 @@
 
 <div class="prayer-bar">
   <div class="prayer-time-item">
-    <span class="p-label">Date & City</span>
+    <span class="p-label">Date & Location</span>
     <span class="p-val" id="hijri-disp" style="color:var(--green-br)">...</span>
+    <span class="date-label" id="angrezi-disp">...</span>
     <span class="loc-label" id="city-disp">Awaiting...</span>
   </div>
   <div class="prayer-time-item">
@@ -146,16 +144,13 @@
 <div class="app-body">
   <aside>
     <div class="sidebar-top">
-      <div style="font-size:0.65rem; color:var(--txt-muted); margin-bottom:12px; letter-spacing:1px;">LIBRARIES</div>
+      <div style="font-size:0.65rem; color:var(--txt-muted); margin-bottom:12px;">LIBRARIES</div>
       <button class="t-chip" onclick="location.href='quran.html'">📖 Noble Quran Reader</button>
       <button class="t-chip" onclick="location.href='hadith.html'">📜 Hadith Database</button>
       <button class="t-chip" onclick="location.href='usool.html'" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</button>
-      
-      <div style="font-size:0.65rem; color:var(--txt-muted); margin-top:25px; margin-bottom:12px; letter-spacing:1px;">STUDY TOPICS</div>
-      <button class="t-chip" onclick="ask('What is the Nisab for Zakat today?')">💰 Zakat Calculation</button>
-      <button class="t-chip" onclick="ask('Explain the Hanafi method of Wudu.')">💧 Taharah (Purity)</button>
-      <button class="t-chip" onclick="ask('What are the pillars of an Islamic Nikah?')">💍 Nikah & Family</button>
-      <button class="t-chip" onclick="ask('Explain Riba in modern banking.')">📊 Islamic Finance</button>
+      <div style="font-size:0.65rem; color:var(--txt-muted); margin-top:25px; margin-bottom:12px;">QUICK ASK</div>
+      <button class="t-chip" onclick="ask('What is the Nisab for Zakat?')">💰 Zakat</button>
+      <button class="t-chip" onclick="ask('How to perform Wudu?')">💧 Wudu</button>
     </div>
   </aside>
 
@@ -163,12 +158,12 @@
     <div id="msgs">
       <div style="text-align:center; padding:60px 20px">
         <div style="font-family:'Amiri',serif; font-size:3.5rem; color:var(--gold); margin-bottom:10px">السَّلَامُ عَلَيْكُمْ</div>
-        <h2 style="font-weight:400; color:var(--txt-dim)">How can I assist your scholarly journey?</h2>
+        <h2 style="font-weight:400; color:var(--txt-dim)">How can I assist your study?</h2>
       </div>
     </div>
     <div class="input-bar">
       <div class="input-wrap">
-        <textarea id="inp" rows="1" placeholder="Enter your Fiqh or Shariah query..."></textarea>
+        <textarea id="inp" rows="1" placeholder="Type your query..."></textarea>
         <button id="send" onclick="sendMsg()">➤</button>
       </div>
     </div>
@@ -176,7 +171,7 @@
 </div>
 
 <script>
-// --- HELPER: CONVERT 24H TO 12H ---
+// --- HELPERS ---
 function formatTime12(time24) {
   if (!time24) return "--:--";
   const [hours, minutes] = time24.split(':');
@@ -187,7 +182,7 @@ function formatTime12(time24) {
   return `${h}:${m} ${ampm}`;
 }
 
-// --- LOGIC: LOCATION & PRAYER RANGES ---
+// --- LOGIC: PERMISSION & DATA ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
   fetchPrayerData(allow);
@@ -200,66 +195,40 @@ async function fetchPrayerData(useAuto) {
   if (useAuto) {
     try {
       const geo = await fetch('https://ipapi.co/json/').then(r => r.json());
-      city = geo.city || city;
-      country = geo.country_name || country;
+      city = geo.city || city; country = geo.country_name || country;
       cityDisp.innerText = city;
-    } catch (e) {
-      cityDisp.innerText = "Lahore (Fallback)";
-    }
-  } else {
-    cityDisp.innerText = "Lahore (Manual)";
-  }
+    } catch (e) { cityDisp.innerText = "Lahore (Fallback)"; }
+  } else { cityDisp.innerText = "Lahore (Manual)"; }
 
   try {
     const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`).then(r => r.json());
     if(res.code === 200) {
       const t = res.data.timings;
       const h = res.data.date.hijri;
+      const g = res.data.date.gregorian;
       
-      // Setting 12-Hour Start — End Ranges
+      // Update Prayer Ranges
       document.getElementById('fajr-range').innerText = `${formatTime12(t.Fajr)} — ${formatTime12(t.Sunrise)}`;
       document.getElementById('dhuhr-range').innerText = `${formatTime12(t.Dhuhr)} — ${formatTime12(t.Asr)}`;
       document.getElementById('asr-range').innerText = `${formatTime12(t.Asr)} — ${formatTime12(t.Sunset)}`;
       document.getElementById('maghrib-range').innerText = `${formatTime12(t.Maghrib)} — ${formatTime12(t.Isha)}`;
       document.getElementById('isha-range').innerText = `${formatTime12(t.Isha)} — ${formatTime12(t.Fajr)}`;
       
-      document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en}`;
+      // Update Dates
+      document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
+      document.getElementById('angrezi-disp').innerText = `${g.day} ${g.month.en} ${g.year} AD`;
     }
-  } catch (e) {
-    cityDisp.innerText = "Offline Mode";
-  }
+  } catch (e) { cityDisp.innerText = "Offline Mode"; }
 }
 
-// --- LOGIC: CHAT INTERFACE ---
 function sendMsg() {
   const inp = document.getElementById('inp');
-  const msgDiv = document.getElementById('msgs');
   if(!inp.value.trim()) return;
-
-  msgDiv.innerHTML += `
-    <div style="align-self: flex-end; background: var(--user-bg); padding: 14px 18px; border-radius: 15px 15px 0 15px; max-width: 80%; margin-bottom: 12px; border: 1px solid var(--border)">
-      ${inp.value}
-    </div>
-  `;
-  
+  document.getElementById('msgs').innerHTML += `<div style="align-self: flex-end; background: var(--user-bg); padding: 14px 18px; border-radius: 15px 15px 0 15px; max-width: 80%; margin-bottom: 12px; border: 1px solid var(--border)">${inp.value}</div>`;
   inp.value = '';
-  msgDiv.scrollTop = msgDiv.scrollHeight;
-
-  setTimeout(() => {
-    msgDiv.innerHTML += `
-      <div style="align-self: flex-start; background: var(--ai-bg); padding: 14px 18px; border-radius: 15px 15px 15px 0; max-width: 85%; margin-bottom: 12px; border: 1px solid var(--border-s); line-height: 1.6;">
-        <span style="color:var(--gold); font-weight:bold; font-size: 0.9rem;">SHAYKH AI:</span><br>
-        Wa Alaikum Assalam. I am retrieving relevant sources from the Hanafi Fiqh corpus to address your query...
-      </div>
-    `;
-    msgDiv.scrollTop = msgDiv.scrollHeight;
-  }, 800);
 }
 
-function ask(q) {
-  document.getElementById('inp').value = q;
-  sendMsg();
-}
+function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
 </script>
 </body>
 </html>
