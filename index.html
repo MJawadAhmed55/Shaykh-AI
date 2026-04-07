@@ -7,6 +7,7 @@
 <title>Shaykh AI — Islamic Scholar</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
   :root{
@@ -16,7 +17,7 @@
     --txt:#e8e0d0;--txt-dim:#8a8278;--txt-muted:#5a5550;
     --border:rgba(201,168,76,0.15);--border-s:rgba(201,168,76,0.35);
     --user-bg:#162a1e;--ai-bg:#131a1c;
-    /* == FONT SIZES (medium — works on mobile & PC) == */
+    /* ── FONT SIZES (medium — works on mobile & PC) ── */
     --fs-bubble: 1.05rem;
     --fs-ui:     0.88rem;
     --fs-small:  0.75rem;
@@ -131,7 +132,7 @@
   .rname{font-size:var(--fs-small);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
   .row.ai .rname{color:var(--gold-dim)}
   .row.user .rname{color:var(--green);text-align:right}
-  /* == BUBBLE — medium font size == */
+  /* ── BUBBLE — medium font size ── */
   .bubble{max-width:640px;padding:14px 18px;border-radius:12px;line-height:1.9;font-size:var(--fs-bubble)}
   .row.ai .bubble{background:var(--ai-bg);border:1px solid var(--border);border-top-left-radius:2px;color:var(--txt)}
   .row.user .bubble{background:var(--user-bg);border:1px solid rgba(46,125,82,.3);border-top-right-radius:2px;color:var(--txt)}
@@ -302,9 +303,9 @@
 </div>
 
 <script>
-// ======================================
+// ══════════════════════════════════════
 // LANGUAGES
-// ======================================
+// ══════════════════════════════════════
 const LANGUAGES = [
   { code:'urdu',       flag:'🇵🇰', name:'Urdu',        native:'اردو' },
   { code:'english',    flag:'🇬🇧', name:'English',      native:'English' },
@@ -374,10 +375,10 @@ function updateLangIndicator() {
   if (lang) document.getElementById('lang-indicator').innerHTML = `<span>${lang.flag}</span>${lang.name}`;
 }
 
-// ======================================
+// ══════════════════════════════════════
 // GOOGLE LOGIN
-// ======================================
-// == GOOGLE OAUTH (redirect method — works on all browsers) ==
+// ══════════════════════════════════════
+// ── GOOGLE OAUTH (redirect method — works on all browsers) ──
 const GOOGLE_CLIENT_ID = '402537131595-rqpu96pc14naubv5lhkodh8e1n920old.apps.googleusercontent.com';
 const REDIRECT_URI     = window.location.origin;
 
@@ -409,7 +410,7 @@ async function handleGoogleRedirect() {
     });
     const p = await res.json();
     currentUser = { id: p.sub, name: p.given_name || p.name, email: p.email, avatar: p.picture };
-    localStorage.setItem('shaykh_user', JSON.stringify(currentUser));
+    localStorage.removeItem('shaykh_user');
     // Clean URL
     window.history.replaceState({}, document.title, window.location.pathname);
     return true;
@@ -436,7 +437,16 @@ function afterLogin() {
 }
 
 function signOut() {
-  showConfirm('Sign Out?', 'Are you sure you want to sign out of Shaykh AI?', '👋', 'Yes, Sign Out', () => { localStorage.removeItem(\'shaykh_user\'); location.reload(); });
+  showConfirm(
+    'Sign Out?',
+    'Are you sure you want to sign out of Shaykh AI?',
+    '👋',
+    'Yes, Sign Out',
+    () => {
+      localStorage.removeItem('shaykh_user');
+      location.reload();
+    }
+  );
 }
 
 window.addEventListener('load', async () => {
@@ -451,9 +461,9 @@ window.addEventListener('load', async () => {
   document.getElementById('login-screen').style.display = 'flex';
 });
 
-// ======================================
+// ══════════════════════════════════════
 // CHAT HISTORY
-// ======================================
+// ══════════════════════════════════════
 function getStorageKey() { return 'shaykh_chats_'+currentUser.id; }
 function getAllChats() { const r=localStorage.getItem(getStorageKey()); return r?JSON.parse(r):[]; }
 function saveAllChats(c) { localStorage.setItem(getStorageKey(), JSON.stringify(c)); }
@@ -506,9 +516,9 @@ function deleteChat(e, id) {
   );
 }
 
-// ======================================
+// ══════════════════════════════════════
 // CHAT
-// ======================================
+// ══════════════════════════════════════
 function showWelcome() {
   const lang = LANGUAGES.find(l => l.code===selectedLang);
   const greetings = { urdu:'السلام علیکم ورحمۃ اللہ وبرکاتہ', arabic:'السلام عليكم ورحمة الله وبركاته', english:'As-Salamu Alaykum wa Rahmatullahi wa Barakatuh', hindi:'अस्सलामु अलैकुम व रहमतुल्लाहि व बरकातुह', bengali:'আস-সালামু আলাইকুম', turkish:'Es-Selâmü Aleyküm', malay:'Assalamualaikum Warahmatullahi Wabarakatuh', french:'As-Salamu Alaykum', indonesian:'Assalamualaikum Warahmatullahi Wabarakatuh', persian:'السلام علیکم', somali:'Assalaamu Calaykum', hausa:'Assalamu Alaikum' };
@@ -600,9 +610,9 @@ async function sendMsg(){
   busy=false;
 }
 
-// ======================================
+// ══════════════════════════════════════
 // CUSTOM CONFIRM DIALOG
-// ======================================
+// ══════════════════════════════════════
 let confirmCallback = null;
 
 function showConfirm(title, msg, icon, yesText, callback) {
@@ -629,9 +639,9 @@ document.getElementById('confirm-modal').addEventListener('click', function(e) {
   if (e.target === this) closeConfirm();
 });
 
-// ======================================
+// ══════════════════════════════════════
 // SUGGEST CORRECTION
-// ======================================
+// ══════════════════════════════════════
 let suggestContext = { question:'', answer:'' };
 
 function openSuggest(btn) {
