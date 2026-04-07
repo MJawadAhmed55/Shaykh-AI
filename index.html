@@ -33,11 +33,11 @@
     gap: 10px;
     overflow-x: auto;
   }
-  .prayer-time-item { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
-  .p-label { font-size: 0.6rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 2px; }
+  .prayer-time-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; text-align: center; }
+  .p-label { font-size: 0.6rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 2px; letter-spacing: 0.5px; }
   .p-val { font-weight: bold; }
   .hijri-date { color: var(--green-br); }
-  .loc-label { color: var(--txt-muted); font-style: italic; font-size: 0.65rem; margin-top: 2px; }
+  .loc-label { display: block; font-size: 0.6rem; opacity: 0.8; color: var(--gold-dim); margin-top: 2px; font-style: italic; }
 
   /* HEADER */
   header{z-index:10;background:#0d1214;border-bottom:1px solid var(--border-s);padding:0 18px;display:flex;align-items:center;justify-content:space-between;height:64px;flex-shrink:0}
@@ -47,40 +47,40 @@
   .h-right{display:flex;align-items:center;gap:8px}
 
   /* BUTTONS */
-  .new-btn{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-size:0.8rem;padding:6px 12px;cursor:pointer;text-decoration:none;transition:0.2s}
-  .new-btn:hover{border-color:var(--gold);color:var(--gold-lt);background:rgba(201,168,76,0.05)}
+  .nav-link{background:transparent;border:1px solid var(--border-s);border-radius:7px;color:var(--gold-dim);font-size:0.8rem;padding:6px 12px;cursor:pointer;text-decoration:none;transition:0.2s;display: inline-block;}
+  .nav-link:hover{border-color:var(--gold);color:var(--gold-lt);background:rgba(201,168,76,0.05)}
   .user-pill{display:flex;align-items:center;gap:7px;background:rgba(201,168,76,0.07);border:1px solid var(--border);border-radius:20px;padding:4px 10px;cursor:pointer}
-  .user-avatar{width:26px;height:26px;border-radius:50%}
+  .user-avatar{width:26px;height:26px;border-radius:50%; background: #222;}
 
   /* LAYOUT */
   .app-body{flex:1;display:flex;overflow:hidden;min-height:0}
-  aside{width:252px;flex-shrink:0;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column}
+  aside{width:260px;flex-shrink:0;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column; overflow-y: auto;}
   .sidebar-top{padding:12px 10px; border-bottom:1px solid var(--border)}
-  .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);padding:8px 10px;margin-bottom:5px;cursor:pointer;font-family:inherit}
-  .t-chip:hover{border-color:var(--gold-dim);color:var(--gold-lt)}
+  .t-chip{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--txt-dim);padding:8px 10px;margin-bottom:5px;cursor:pointer;font-family:inherit;font-size: 0.82rem;}
+  .t-chip:hover{border-color:var(--gold-dim);color:var(--gold-lt);background: rgba(255,255,255,0.02);}
   
   .chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
   #msgs{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:15px;scroll-behavior: smooth;}
   
   .input-bar{padding:14px 28px 18px;border-top:1px solid var(--border);background:var(--bg)}
   .input-wrap{display:flex;align-items:flex-end;gap:9px;background:var(--bg-card);border:1px solid var(--border-s);border-radius:12px;padding:10px 13px;max-width:860px;margin:0 auto}
-  #inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-family:inherit;font-size:1rem;resize:none;max-height:150px}
+  #inp{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-family:inherit;font-size:1rem;resize:none;max-height:150px; line-height: 1.5;}
   #send{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,var(--green),#1e5c38);border:1px solid rgba(61,187,118,.3);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
   #login-screen{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.96);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
   .login-box{background:var(--bg-card);border:1px solid var(--border-s);border-radius:18px;padding:40px;text-align:center;max-width:400px;width:90%}
 
-  @media(max-width:640px){ aside{display:none} .h-right .new-btn:not(:first-child) {display:none} }
+  @media(max-width:640px){ aside{display:none} .h-right .nav-link:not(:first-child) {display:none} }
 </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
 <div id="login-screen" style="display:none">
   <div class="login-box">
     <div style="font-family:'Amiri',serif; font-size:2rem; color:var(--gold); margin-bottom:10px">بِسْمِ اللَّهِ</div>
-    <h2 style="margin-bottom:20px">Shaykh AI</h2>
-    <button class="new-btn" style="background:white; color:black; padding:12px 20px; font-weight:bold" onclick="signInWithGoogle()">Continue with Google</button>
+    <h2 style="margin-bottom:20px; color:var(--gold-lt)">Shaykh AI</h2>
+    <p style="color:var(--txt-dim); margin-bottom:25px; font-size:0.9rem">Access the library of Shariah & Fiqh</p>
+    <button class="nav-link" style="background:var(--gold); color:black; padding:12px 20px; font-weight:bold; border:none; width:100%" onclick="signInWithGoogle()">Continue as Scholar</button>
   </div>
 </div>
 
@@ -89,21 +89,20 @@
     <div class="h-emblem">☪</div>
     <div class="h-titles">
       <h1>Shaykh AI</h1>
-      <p style="font-size:0.6rem; color:var(--txt-muted)">Hanafi Jurisprudence</p>
+      <p style="font-size:0.6rem; color:var(--txt-muted); letter-spacing:1px">HANAFI JURISPRUDENCE</p>
     </div>
   </div>
   <div class="h-right">
-    <a href="quran.html" class="new-btn">📖 Quran</a>
-    <a href="hadith.html" class="new-btn">📜 Hadith</a>
-    <a href="usool.html" class="new-btn" style="border-color:var(--purple); color:var(--purple)">⚖️ Usool</a>
+    <a href="quran.html" class="nav-link">📖 Quran</a>
+    <a href="hadith.html" class="nav-link">📜 Hadith</a>
+    <a href="usool.html" class="nav-link" style="border-color:var(--purple); color:var(--purple)">⚖️ Usool</a>
     <div class="user-pill" onclick="signOut()">
-      <img class="user-avatar" id="user-avatar" src="">
-      <span class="user-name" id="user-name"></span>
+      <img class="user-avatar" id="user-avatar" src="https://ui-avatars.com/api/?name=S&background=c9a84c&color=fff">
+      <span class="user-name" id="user-name">User</span>
     </div>
   </div>
 </header>
 
-<!-- PRAYER TIMES BAR -->
 <div class="prayer-bar" id="prayer-bar">
   <div class="prayer-time-item"><span class="p-label">Hijri</span><span class="p-val hijri-date" id="hijri-disp">...</span><span class="loc-label" id="city-disp">Detecting...</span></div>
   <div class="prayer-time-item"><span class="p-label">Fajr</span><span class="p-val" id="fajr">--:--</span></div>
@@ -123,7 +122,12 @@
       
       <div style="font-size:0.6rem; color:var(--txt-muted); margin-top:20px; margin-bottom:10px; letter-spacing:1px">QUICK TOPICS</div>
       <button class="t-chip" onclick="ask('What are the rules of Zakat in Hanafi Fiqh?')">💰 Zakat Rules</button>
-      <button class="t-chip" onclick="ask('How to perform Wudu correctly?')">💧 Wudu Guide</button>
+      <button class="t-chip" onclick="ask('Explain the rulings of Nikah and its pillars.')">💍 Nikah & Marriage</button>
+      <button class="t-chip" onclick="ask('What is Riba and how to avoid it in Islamic Finance?')">📊 Islamic Finance</button>
+      <button class="t-chip" onclick="ask('How is inheritance distributed in Shariah?')">📜 Inheritance (Mirath)</button>
+      <button class="t-chip" onclick="ask('What are the valid reasons to break a fast in Ramadan?')">🌙 Fasting (Sawm)</button>
+      <button class="t-chip" onclick="ask('How to perform Wudu and Ghusl correctly?')">💧 Wudu & Ghusl</button>
+      <button class="t-chip" onclick="ask('What are the rules for travelers (Musafir) prayer?')">🛣️ Traveler Prayer</button>
     </div>
   </aside>
 
@@ -145,31 +149,43 @@
 </div>
 
 <script>
-// --- AUTOMATIC LOCATION & PRAYER TIMES (ALADHAN API) ---
+// --- ROBUST LOCATION & PRAYER TIMES ---
 async function fetchPrayerTimes() {
+  const cityDisp = document.getElementById('city-disp');
+  let city = "Lahore"; 
+  let country = "Pakistan";
+
   try {
     const geoRes = await fetch('https://ipapi.co/json/');
-    const geoData = await geoRes.json();
-    const city = geoData.city || "Lahore";
-    const country = geoData.country_name || "Pakistan";
-    
-    document.getElementById('city-disp').innerText = city;
+    if (geoRes.ok) {
+      const geoData = await geoRes.json();
+      city = geoData.city || "Lahore";
+      country = geoData.country_name || "Pakistan";
+      cityDisp.innerText = city;
+    }
+  } catch (e) {
+    console.warn("Location check failed. Defaulting to Lahore.");
+    cityDisp.innerText = "Lahore (Fixed)";
+  }
 
-    // method=1 (Karachi/Hanafi Region), school=1 (Hanafi Asr)
+  try {
     const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`);
     const data = await res.json();
-    const t = data.data.timings;
-    const h = data.data.date.hijri;
+    
+    if(data.code === 200) {
+      const t = data.data.timings;
+      const h = data.data.date.hijri;
 
-    document.getElementById('fajr').innerText = t.Fajr;
-    document.getElementById('dhuhr').innerText = t.Dhuhr;
-    document.getElementById('asr').innerText = t.Asr;
-    document.getElementById('maghrib').innerText = t.Maghrib;
-    document.getElementById('isha').innerText = t.Isha;
-    document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en}`;
+      document.getElementById('fajr').innerText = t.Fajr;
+      document.getElementById('dhuhr').innerText = t.Dhuhr;
+      document.getElementById('asr').innerText = t.Asr;
+      document.getElementById('maghrib').innerText = t.Maghrib;
+      document.getElementById('isha').innerText = t.Isha;
+      document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en}`;
+    }
   } catch (e) {
-    console.error("Prayer Time Error:", e);
-    document.getElementById('city-disp').innerText = "Location Error";
+    console.error("Prayer Time API failed:", e);
+    cityDisp.innerText = "Offline";
   }
 }
 
@@ -179,27 +195,24 @@ function sendMsg() {
   const msgDiv = document.getElementById('msgs');
   if(!inp.value.trim()) return;
 
-  // User Message
   msgDiv.innerHTML += `
     <div style="align-self: flex-end; background: var(--user-bg); padding: 12px 16px; border-radius: 12px 12px 0 12px; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border)">
       ${inp.value}
     </div>
   `;
   
-  const query = inp.value;
   inp.value = '';
   msgDiv.scrollTop = msgDiv.scrollHeight;
 
-  // Simple Auto-Response (Replace with your Gemini/AI API Call)
   setTimeout(() => {
     msgDiv.innerHTML += `
       <div style="align-self: flex-start; background: var(--ai-bg); padding: 12px 16px; border-radius: 12px 12px 12px 0; max-width: 85%; margin-bottom: 10px; border: 1px solid var(--border-s)">
         <span style="color:var(--gold); font-weight:bold">Shaykh AI:</span><br>
-        JazakAllah for your question regarding "${query}". I am processing this according to Hanafi Fiqh...
+        JazakAllah for your question. I am analyzing your query according to the Hanafi school of thought. 
       </div>
     `;
     msgDiv.scrollTop = msgDiv.scrollHeight;
-  }, 800);
+  }, 1000);
 }
 
 function ask(q) {
@@ -207,13 +220,12 @@ function ask(q) {
   sendMsg();
 }
 
-// --- AUTH SIMULATION ---
+// --- AUTH LOGIC ---
 function checkLogin() {
   const user = localStorage.getItem('shaykh_user');
   if(user) {
     const p = JSON.parse(user);
     document.getElementById('user-name').innerText = p.name;
-    document.getElementById('user-avatar').src = p.avatar;
     document.getElementById('login-screen').style.display = 'none';
   } else {
     document.getElementById('login-screen').style.display = 'flex';
@@ -221,8 +233,7 @@ function checkLogin() {
 }
 
 function signInWithGoogle() {
-  // Demo Login
-  const demoUser = { name: "Scholar User", avatar: "https://ui-avatars.com/api/?name=Scholar+User&background=c9a84c&color=fff" };
+  const demoUser = { name: "Scholar" };
   localStorage.setItem('shaykh_user', JSON.stringify(demoUser));
   checkLogin();
 }
@@ -232,7 +243,6 @@ function signOut() {
   location.reload();
 }
 
-// Start
 window.onload = () => {
   fetchPrayerTimes();
   checkLogin();
