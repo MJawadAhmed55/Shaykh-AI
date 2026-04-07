@@ -65,10 +65,9 @@
   .sidebar-section { padding: 15px 12px; }
   .section-title { font-size: 0.65rem; color: var(--gold-dim); margin-bottom: 10px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
   
-  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 9px 12px; margin-bottom: 6px; cursor: pointer; font-family: inherit; font-size: 0.8rem; transition: 0.2s; }
+  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 9px 12px; margin-bottom: 6px; cursor: pointer; font-family: inherit; font-size: 0.8rem; transition: 0.2s; text-decoration: none; }
   .t-chip:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
 
-  /* History Specific Styles */
   .hist-item { font-size: 0.75rem; color: var(--txt-muted); padding: 8px 12px; border-left: 2px solid var(--gold-dim); margin-bottom: 5px; background: rgba(255,255,255,0.01); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .hist-item:hover { color: var(--txt); background: rgba(255,255,255,0.03); }
 
@@ -86,9 +85,9 @@
 
 <div id="location-overlay">
   <div class="perm-box">
-    <div style="font-size:3rem; margin-bottom:15px;">🕌</div>
+    <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
     <h2 style="color:var(--gold-lt); margin-bottom:10px;">Scholar Portal</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">Access 12h prayer timings and Islamic dates based on your city.</p>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;">Allow access for 12h prayer ranges and Hijri/English dates.</p>
     <button class="perm-btn btn-allow" onclick="handleLocation(true)">Allow Location</button>
     <button class="perm-btn btn-deny" onclick="handleLocation(false)">Lahore (Default)</button>
   </div>
@@ -103,8 +102,8 @@
     </div>
   </div>
   <div style="display:flex; gap:10px;">
-    <button class="t-chip" style="margin:0; padding:5px 15px;">📖 Quran</button>
-    <button class="t-chip" style="margin:0; padding:5px 15px;">📜 Hadith</button>
+    <a href="quran.html" class="t-chip" style="margin:0; padding:5px 15px;">📖 Quran</a>
+    <a href="hadith.html" class="t-chip" style="margin:0; padding:5px 15px;">📜 Hadith</a>
   </div>
 </header>
 
@@ -125,7 +124,12 @@
 <div class="app-body">
   <aside>
     <div class="sidebar-section">
-      <div class="section-title">Arkan-ul-Islam</div>
+      <div class="section-title">Library Access</div>
+      <a href="quran.html" class="t-chip">📖 Noble Quran Reader</a>
+      <a href="hadith.html" class="t-chip">📜 Hadith Database</a>
+      <a href="usool.html" class="t-chip" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</a>
+
+      <div class="section-title" style="margin-top:20px;">Arkan-ul-Islam</div>
       <button class="t-chip" onclick="ask('Explain Shahada')">☝️ Shahada</button>
       <button class="t-chip" onclick="ask('Rules of Salah')">🛐 Salah</button>
       <button class="t-chip" onclick="ask('Calculate Zakat')">💰 Zakat</button>
@@ -143,7 +147,7 @@
 
       <div class="section-title" style="margin-top:25px;">Recent Conversations</div>
       <div id="chat-history-list">
-        <div class="hist-item">No recent chats</div>
+        <div class="hist-item" style="border:none; opacity:0.5">No recent chats</div>
       </div>
     </div>
   </aside>
@@ -152,7 +156,7 @@
     <div id="msgs">
       <div style="text-align:center; padding:60px 20px">
         <div style="font-family:'Amiri',serif; font-size:3.5rem; color:var(--gold); margin-bottom:10px">السَّلَامُ عَلَيْكُمْ</div>
-        <h2 style="font-weight:400; color:var(--txt-dim)">How can I assist you today?</h2>
+        <h2 style="font-weight:400; color:var(--txt-dim)">How can I assist your study today?</h2>
       </div>
     </div>
     <div class="input-bar">
@@ -212,12 +216,11 @@ const chatHistory = [];
 
 function updateHistoryUI(query) {
   const list = document.getElementById('chat-history-list');
-  if (chatHistory.length === 0) list.innerHTML = '';
-  
-  chatHistory.unshift(query);
-  if(chatHistory.length > 5) chatHistory.pop(); // Keep last 5
-
-  list.innerHTML = chatHistory.map(q => `<div class="hist-item" onclick="ask('${q}')">${q}</div>`).join('');
+  if (chatHistory.indexOf(query) === -1) {
+    chatHistory.unshift(query);
+    if(chatHistory.length > 8) chatHistory.pop();
+    list.innerHTML = chatHistory.map(q => `<div class="hist-item" onclick="ask('${q.replace(/'/g, "\\'")}')">${q}</div>`).join('');
+  }
 }
 
 function sendMsg() {
@@ -225,13 +228,18 @@ function sendMsg() {
   const text = inp.value.trim();
   if(!text) return;
 
-  document.getElementById('msgs').innerHTML += `
-    <div style="align-self: flex-end; background: var(--user-bg); padding: 12px 16px; border-radius: 12px 12px 0 12px; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border)">${text}</div>
-  `;
+  const msgs = document.getElementById('msgs');
+  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--user-bg); padding: 12px 16px; border-radius: 12px 12px 0 12px; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border)">${text}</div>`;
   
   updateHistoryUI(text);
   inp.value = '';
-  document.getElementById('msgs').scrollTop = document.getElementById('msgs').scrollHeight;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Simple automated reply for UI feel
+  setTimeout(() => {
+    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 12px 16px; border-radius: 12px 12px 12px 0; max-width: 80%; margin-bottom: 10px; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">Processing your request based on Hanafi Fiqh sources...</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
 }
 
 function ask(q) { 
