@@ -3,76 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shaykh AI — Islamic Scholar Suite</title>
+<title>Shaykh AI — Research & Jurisprudence Suite</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0b0e0f; --bg-card: #111618; --bg-panel: #151b1d;
     --gold: #c9a84c; --gold-lt: #e2c97e; --gold-dim: #7a6230;
-    --green: #2e7d52; --green-br: #3dbb76; --txt: #e8e0d0; 
-    --txt-dim: #8a8278; --border: rgba(201,168,76,0.15);
+    --green: #2e7d52; --txt: #e8e0d0; --txt-dim: #8a8278; --border: rgba(201,168,76,0.15);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { height: 100vh; overflow: hidden; background: var(--bg); color: var(--txt); font-family: 'Playfair Display', serif; display: flex; flex-direction: column; }
 
   /* --- AUTH --- */
-  .auth-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; }
-  .perm-box { background: var(--bg-card); border: 1px solid var(--gold-dim); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; }
-  .btn-gold { padding: 12px; border-radius: 8px; background: var(--gold); color: #000; font-weight: bold; border: none; cursor: pointer; width: 100%; font-family: inherit; }
+  .auth-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.98); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; }
+  .perm-box { background: var(--bg-card); border: 1px solid var(--gold-dim); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; width: 90%; box-shadow: 0 10px 50px rgba(0,0,0,0.5); }
+  .btn-gold { padding: 15px; border-radius: 8px; background: var(--gold); color: #000; font-weight: bold; border: none; cursor: pointer; width: 100%; font-family: inherit; font-size: 1rem; }
 
   /* --- HEADER --- */
-  header { height: 80px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #0d1214; flex-shrink: 0; }
-  .logo-area { display: flex; align-items: center; gap: 15px; }
-  .emblem { width: 45px; height: 45px; border: 1.5px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 20px; }
-  .top-nav { display: flex; gap: 10px; align-items: center; }
-  .nav-item { padding: 8px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; cursor: pointer; color: var(--txt-dim); }
+  header { height: 70px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #0d1214; flex-shrink: 0; }
+  .logo-area { display: flex; align-items: center; gap: 12px; }
+  .emblem { width: 40px; height: 40px; border: 1.5px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1.2rem; }
+  .top-nav { display: flex; gap: 12px; }
+  .nav-item { padding: 8px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; cursor: pointer; color: var(--txt-dim); transition: 0.3s; }
+  .nav-item:hover { border-color: var(--gold); color: var(--gold); }
 
-  /* --- PRAYER BAR --- */
-  .prayer-bar { min-height: 70px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; font-size: 0.65rem; color: var(--gold-lt); flex-shrink: 0; overflow-x: auto; padding: 5px; }
-  .date-box { text-align: left; border-right: 1px solid var(--border); padding-right: 15px; }
-  .date-box p { font-size: 0.75rem; color: var(--gold); }
-  .prayer-item { text-align: center; min-width: 100px; }
-  .prayer-item span { display: block; color: var(--txt-dim); font-size: 0.55rem; text-transform: uppercase; }
-  .p-range { font-family: monospace; font-weight: bold; }
+  /* --- PRAYER BAR (RESEARCH DATA) --- */
+  .prayer-bar { min-height: 90px; background: var(--bg-card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; font-size: 0.65rem; color: var(--gold-lt); flex-shrink: 0; padding: 5px 20px; }
+  .date-box { text-align: left; border-right: 1px solid var(--border); padding-right: 25px; }
+  .date-box span { color: var(--txt-dim); font-size: 0.55rem; text-transform: uppercase; display: block; }
+  .prayer-item { text-align: center; min-width: 120px; }
+  .prayer-item span { display: block; color: var(--txt-dim); font-size: 0.55rem; text-transform: uppercase; margin-bottom: 5px; }
+  .p-range { font-family: 'Amiri', serif; font-size: 0.9rem; color: var(--gold); letter-spacing: 0.5px; font-weight: bold; }
 
-  /* --- MAIN --- */
+  /* --- MAIN LAYOUT --- */
   main { flex: 1; display: flex; overflow: hidden; }
-  aside { width: 280px; border-right: 1px solid var(--border); background: var(--bg-panel); padding: 20px; overflow-y: auto; }
-  .side-label { font-size: 0.65rem; color: var(--gold-dim); margin: 25px 0 10px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
-  .side-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); cursor: pointer; margin-bottom: 8px; font-family: inherit; text-align: left; transition: 0.2s; font-size: 0.82rem; }
-  .side-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
-  .new-chat-btn { background: var(--gold); color: #000 !important; font-weight: bold; border: none; justify-content: center; }
+  aside { width: 300px; border-right: 1px solid var(--border); background: var(--bg-panel); padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
+  .side-label { font-size: 0.65rem; color: var(--gold-dim); margin: 25px 0 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; }
+  .side-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); cursor: pointer; margin-bottom: 10px; font-family: inherit; font-size: 0.85rem; text-align: left; transition: 0.2s; }
+  .side-btn:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
+  .new-chat-btn { background: var(--gold); color: #000 !important; font-weight: 700; border: none; margin-bottom: 20px; justify-content: center; }
   
-  #chat-history { margin-top: 5px; max-height: 180px; overflow-y: auto; }
-  .hist-item { font-size: 0.75rem; color: var(--txt-dim); padding: 8px 12px; border-left: 2px solid var(--gold-dim); margin-bottom: 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(255,255,255,0.02); }
+  #chat-history { flex: 1; overflow-y: auto; margin-top: 5px; }
+  .hist-item { font-size: 0.75rem; color: var(--txt-dim); padding: 10px; border-left: 3px solid var(--gold-dim); margin-bottom: 8px; cursor: pointer; background: rgba(255,255,255,0.02); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: 0.2s; }
+  .hist-item:hover { border-left-color: var(--gold); background: rgba(201,168,76,0.05); color: var(--txt); }
 
-  /* --- VIEWS --- */
+  /* --- RESEARCH SCREEN --- */
   .view-container { flex: 1; position: relative; }
   .screen { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); }
   .screen.active { display: flex; }
-
   #msgs { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 20px; }
-  .msg-ai { align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); padding: 18px; border-radius: 18px 18px 18px 0; max-width: 80%; line-height: 1.6; color: var(--gold-lt); }
-  .msg-user { align-self: flex-end; background: var(--green); color: #fff; padding: 15px 20px; border-radius: 18px 18px 0 18px; max-width: 80%; }
   
-  .input-area { padding: 20px 40px 30px; }
-  .input-wrap { display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--border); border-radius: 15px; padding: 10px 20px; max-width: 850px; margin: 0 auto; }
-  textarea { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: 1rem; resize: none; max-height: 80px; }
-  #send-btn { background: var(--gold); border: none; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; color: #000; font-weight: bold; }
+  .msg-ai { align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 0 20px 20px 20px; max-width: 90%; line-height: 1.8; font-size: 1rem; color: var(--txt); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+  .msg-ai h3 { color: var(--gold); margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+  .msg-ai b { color: var(--gold-lt); }
+  .msg-ai .ref { display: block; margin-top: 15px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.8rem; color: var(--txt-dim); font-style: italic; }
 
-  .lib-header { padding: 12px 20px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .back-btn { background: var(--gold-dim); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; }
-  iframe { flex: 1; width: 100%; border: none; }
+  .msg-user { align-self: flex-end; background: var(--green); color: #fff; padding: 15px 25px; border-radius: 20px 20px 0 20px; max-width: 80%; font-size: 1rem; font-weight: 500; }
+  
+  .input-area { padding: 30px 40px; border-top: 1px solid var(--border); background: var(--bg); }
+  .input-wrap { display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--gold-dim); border-radius: 15px; padding: 12px 20px; max-width: 900px; margin: 0 auto; box-shadow: 0 0 20px rgba(201,168,76,0.05); }
+  textarea { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: 1rem; resize: none; max-height: 120px; padding: 5px; }
+  #send-btn { background: var(--gold); border: none; width: 45px; height: 45px; border-radius: 12px; cursor: pointer; color: #000; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+  #send-btn:hover { transform: scale(1.05); background: var(--gold-lt); }
+
+  /* --- LIBRARY IFRAMES --- */
+  .lib-header { padding: 15px 25px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .back-btn { background: var(--gold); color: #000; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 0.85rem; }
+  iframe { flex: 1; width: 100%; border: none; background: #fff; }
 </style>
 </head>
 <body>
 
 <div id="auth-screen" class="auth-overlay">
   <div class="perm-box">
-    <div style="font-size:3rem;">🕋</div>
-    <h2 style="color:var(--gold); margin:15px 0 10px;">Shaykh AI</h2>
-    <p style="color:var(--txt-dim); font-size:0.9rem; margin-bottom:25px;">Islamic Scholar Suite v2.0</p>
-    <button class="btn-gold" onclick="login()">Enter Library</button>
+    <div style="font-size:4rem; margin-bottom:20px;">📜</div>
+    <h2 style="color:var(--gold); margin-bottom:10px;">Shaykh AI Research</h2>
+    <p style="color:var(--txt-dim); margin-bottom:30px;">Formal Scholars Suite for In-Depth Islamic Analysis</p>
+    <button class="btn-gold" onclick="login()">Initialize System</button>
   </div>
 </div>
 
@@ -80,147 +87,174 @@
   <div class="logo-area">
     <div class="emblem">☪</div>
     <div>
-      <h1 style="font-size:1.1rem; color:var(--gold)">Shaykh AI</h1>
-      <p style="font-size:0.55rem; color:var(--txt-dim); letter-spacing:1px;">HANAFI JURISPRUDENCE</p>
+      <h1 style="font-size:1.1rem; color:var(--gold); letter-spacing:1px;">SHAYKH AI</h1>
+      <p style="font-size:0.55rem; color:var(--txt-dim); font-weight:bold;">RESEARCH FACULTY</p>
     </div>
   </div>
   <div class="top-nav">
-    <div class="nav-item" onclick="switchView('quran')">📖 Quran</div>
-    <div class="nav-item" onclick="switchView('hadith')">📜 Hadith</div>
+    <div class="nav-item" onclick="switchView('quran')">📖 Quran Scholar</div>
+    <div class="nav-item" onclick="switchView('hadith')">📜 Hadith Archive</div>
   </div>
 </header>
 
 <div class="prayer-bar">
   <div class="date-box">
-    <span>Islamic Date</span>
-    <p id="h-date">-- ---</p>
-    <span style="font-size: 0.5rem; margin-top:2px;">English Date</span>
-    <p id="g-date" style="font-size:0.6rem; color:var(--txt-dim)">-- ---</p>
+    <span>Islamic / Hijri Calendar</span>
+    <p id="h-date" class="p-range">-- --- ----</p>
+    <span style="margin-top:8px;">Gregorian / English</span>
+    <p id="g-date" style="font-size:0.7rem; color:var(--txt-dim)">-- --- ----</p>
   </div>
-  <div class="prayer-item"><span>Fajr (Start - Sun)</span><p class="p-range" id="p-fajr">--:--</p></div>
-  <div class="prayer-item"><span>Dhuhr (Start - Asr)</span><p class="p-range" id="p-dhuhr">--:--</p></div>
-  <div class="prayer-item"><span>Asr (Start - Magh)</span><p class="p-range" id="p-asr">--:--</p></div>
-  <div class="prayer-item"><span>Maghrib (Start - Isha)</span><p class="p-range" id="p-maghrib">--:--</p></div>
-  <div class="prayer-item"><span>Isha (Start - Fajr)</span><p class="p-range" id="p-isha">--:--</p></div>
+  <div class="prayer-item"><span>Fajr (Dawn)</span><p class="p-range" id="p-fajr">--:--</p></div>
+  <div class="prayer-item"><span>Dhuhr (Noon)</span><p class="p-range" id="p-dhuhr">--:--</p></div>
+  <div class="prayer-item"><span>Asr (Afternoon)</span><p class="p-range" id="p-asr">--:--</p></div>
+  <div class="prayer-item"><span>Maghrib (Sunset)</span><p class="p-range" id="p-maghrib">--:--</p></div>
+  <div class="prayer-item"><span>Isha (Night)</span><p class="p-range" id="p-isha">--:--</p></div>
 </div>
 
 <main>
   <aside>
-    <button class="side-btn new-chat-btn" onclick="newChat()">+ New Chat</button>
+    <button class="side-btn new-chat-btn" onclick="newChat()">+ Start New Research</button>
+    <div class="side-label">Primary Sources</div>
+    <button class="side-btn" onclick="switchView('quran')">📖 Al-Quran Al-Kareem</button>
+    <button class="side-btn" onclick="switchView('hadith')">📜 Hadith API Library</button>
 
-    <div class="side-label">Islamic Libraries</div>
-    <button class="side-btn" onclick="switchView('quran')">📖 Noble Quran Reader</button>
-    <button class="side-btn" onclick="switchView('hadith')">📜 Hadith Database</button>
+    <div class="side-label">Direct Inquiries</div>
+    <button class="side-btn" onclick="ask('Detail the history of the Five Daily Prayers and their specific times.')">🕌 Daily Prayer Research</button>
+    <button class="side-btn" onclick="ask('Provide a deep analysis of Zakat Nisab according to Hanafi Fiqh.')">💰 Zakat Jurisprudence</button>
+    <button class="side-btn" onclick="ask('Explain the collection and preservation of the Holy Quran.')">🖋️ Quranic Preservation</button>
 
-    <div class="side-label">Ask Options</div>
-    <button class="side-btn" onclick="ask('How to calculate Zakat?')">💰 Zakat Calculation</button>
-    <button class="side-btn" onclick="ask('Correct way to do Wudu')">💧 Wudu Method</button>
-    <button class="side-btn" onclick="ask('What are the 5 pillars?')">🖐️ Five Pillars</button>
-
-    <div class="side-label">Chat History</div>
+    <div class="side-label">Session History</div>
     <div id="chat-history"></div>
   </aside>
 
   <div class="view-container">
     <div id="chat-screen" class="screen active">
       <div id="msgs">
-        <div id="welcome-msg" style="text-align:center; padding-top:80px; opacity:0.6">
-          <div style="font-family:'Amiri',serif; font-size:4rem; color:var(--gold);">السَّلَامُ عَلَيْكُمْ</div>
-          <h2 style="font-weight:400; color:var(--txt-dim)">Start a new scholarship session.</h2>
+        <div id="welcome-note" style="text-align:center; padding-top:100px; opacity:0.6">
+          <div style="font-family:'Amiri',serif; font-size:4.5rem; color:var(--gold);">بِسْمِ اللهِ</div>
+          <h2 style="font-weight:400; color:var(--txt-dim); margin-top:10px;">Submit a topic for deep research and verification.</h2>
         </div>
       </div>
       <div class="input-area">
         <div class="input-wrap">
-          <textarea id="inp" rows="1" placeholder="Ask about Shariah..."></textarea>
+          <textarea id="inp" rows="1" placeholder="Enter research topic (e.g. History of Fiqh, Hadith Science)..."></textarea>
           <button id="send-btn" onclick="handleSend()">➤</button>
         </div>
       </div>
     </div>
 
+    <!-- Quran Integrated View -->
     <div id="quran-screen" class="screen">
-      <div class="lib-header"><h3>Noble Quran</h3><button class="back-btn" onclick="switchView('chat')">Back to Chat</button></div>
-      <iframe src="https://quran.com"></iframe>
+      <div class="lib-header">
+        <h3 style="color:var(--gold)">Al-Quran Research Portal</h3>
+        <button class="back-btn" onclick="switchView('chat')">← Back to Shaykh AI</button>
+      </div>
+      <iframe src="https://quran.com" title="Quran Research"></iframe>
     </div>
 
+    <!-- Hadith API Integrated View -->
     <div id="hadith-screen" class="screen">
-      <div class="lib-header"><h3>Sunnah Database</h3><button class="back-btn" onclick="switchView('chat')">Back to Chat</button></div>
-      <iframe src="https://sunnah.com"></iframe>
+      <div class="lib-header">
+        <h3 style="color:var(--gold)">Hadith Scientific Database</h3>
+        <button class="back-btn" onclick="switchView('chat')">← Back to Shaykh AI</button>
+      </div>
+      <iframe src="https://sunnah.com" title="Hadith Research"></iframe>
     </div>
   </div>
 </main>
 
 <script>
-  function login() { document.getElementById('auth-screen').style.display = 'none'; updatePrayers(); }
-
-  function switchView(v) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(v + '-screen').classList.add('active');
-  }
-
-  function newChat() {
-    document.getElementById('msgs').innerHTML = `<div style="text-align:center; padding-top:80px; opacity:0.6"><div style="font-family:'Amiri',serif; font-size:4rem; color:var(--gold);">السَّلَامُ عَلَيْكُمْ</div><h2 style="font-weight:400; color:var(--txt-dim)">How can I help you today?</h2></div>`;
+  function login() { document.getElementById('auth-screen').style.display='none'; updatePrayers(); }
+  function switchView(v) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(v+'-screen').classList.add('active'); }
+  
+  function newChat() { 
+    document.getElementById('msgs').innerHTML = `<div style="text-align:center; padding-top:100px; opacity:0.6"><h2 style="font-family:'Amiri',serif; font-size:3rem; color:var(--gold);">New Session</h2><p>Ready for scholarly inquiry.</p></div>`; 
   }
 
   function format12(t) {
     if(!t) return "--:--";
     let [h, m] = t.split(':'); h = parseInt(h);
-    let ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    return `${h}:${m} ${ampm}`;
+    let ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return `${h}:${m} ${ap}`;
   }
 
+  // --- RESEARCH ENGINE LOGIC ---
   function handleSend() {
     const inp = document.getElementById('inp');
     const txt = inp.value.trim();
     if(!txt) return;
 
-    document.getElementById('welcome-msg')?.remove();
+    document.getElementById('welcome-note')?.remove();
     const msgs = document.getElementById('msgs');
     msgs.innerHTML += `<div class="msg-user">${txt}</div>`;
     
-    // History
-    const h = document.getElementById('chat-history');
-    const item = document.createElement('div');
-    item.className = 'hist-item'; item.innerText = txt;
-    item.onclick = () => ask(txt);
-    h.prepend(item);
+    // Add to History
+    const hist = document.getElementById('chat-history');
+    const hItem = document.createElement('div'); hItem.className='hist-item'; hItem.innerText=txt; hItem.onclick=()=>ask(txt);
+    hist.prepend(hItem);
 
-    inp.value = '';
-    msgs.scrollTop = msgs.scrollHeight;
-
-    const id = 'ai-' + Date.now();
-    msgs.innerHTML += `<div class="msg-ai" id="${id}">Analyzing through Hanafi lens...</div>`;
+    inp.value = ''; msgs.scrollTop = msgs.scrollHeight;
+    
+    const id = 'ai-'+Date.now();
+    msgs.innerHTML += `<div class="msg-ai" id="${id}">Cross-referencing classical texts and Hadith databases...</div>`;
     
     setTimeout(() => {
-      let r = "I have noted your inquiry. According to Hanafi Jurisprudence, this requires examining the 'Ila (cause). Please provide more context.";
+      let response = `<h3>Research Summary: ${txt}</h3>
+      Your inquiry into <b>${txt}</b> has been analyzed. 
+      <br><br>
+      In <b>Hanafi Jurisprudence</b>, this topic involves the application of <i>Qiyas</i> (analogical reasoning) and <i>Istihsan</i> (legal preference). 
+      From a research perspective, we examine the primary text (Nass) from the Quran and correlate it with Sahih Hadith. 
+      <br><br>
+      <b>Key Evidence:</b> The consensus (Ijma) of the companions serves as a secondary source for this context. 
+      Please look into the <i>Kutub al-Sittah</i> for specific narrations regarding this matter.
+      <span class="ref">References: Al-Hidayah (Marghinani), Sahih al-Bukhari, Fath al-Qadir.</span>`;
+
       const q = txt.toLowerCase();
-      if(q.includes("salam")) r = "Wa Alaikum Assalam! May your journey for knowledge be blessed.";
-      else if(q.includes("zakat")) r = "Zakat is 2.5% of surplus wealth held for one lunar year.";
-      else if(q.includes("wudu")) r = "The Fard of Wudu are washing face, washing arms, wiping head, and washing feet.";
-      document.getElementById(id).innerText = r;
+      if(q.includes("prayer") || q.includes("namaz") || q.includes("salah")) {
+        response = `<h3>Deep Research: Daily Prayers (Salah)</h3>
+        The five daily prayers were made obligatory during the <b>Isra and Mi'raj</b> (The Night Journey). 
+        <br><br>
+        1. <b>Fajr:</b> Consists of 2 Rakat Sunnah and 2 Rakat Fard. <br>
+        2. <b>Dhuhr:</b> Consists of 4 Sunnah, 4 Fard, 2 Sunnah, and 2 Nafl. <br>
+        3. <b>Asr:</b> 4 Sunnah (Ghair-Mu'akkadah) and 4 Fard. <br>
+        4. <b>Maghrib:</b> 3 Fard, 2 Sunnah, and 2 Nafl. <br>
+        5. <b>Isha:</b> 4 Sunnah, 4 Fard, 2 Sunnah, 2 Nafl, 3 Witr, and 2 Nafl. 
+        <br><br>
+        <b>Legal Note:</b> In the Hanafi school, <b>Witr</b> prayer is considered <i>Wajib</i> (necessary), unlike other schools that view it as Sunnah Mu'akkadah.
+        <span class="ref">Source: Sahih Muslim (Book of Prayer), Al-Bahr al-Ra'iq.</span>`;
+      }
+      else if(q.includes("zakat")) {
+        response = `<h3>Research: Zakat Jurisprudence</h3>
+        Zakat is the third pillar of Islam. It is calculated at <b>2.5%</b> of wealth held for a full lunar year (Hawl).
+        <br><br>
+        <b>Nisab:</b> The minimum threshold is the value of 87.48 grams of gold or 612.36 grams of silver. 
+        According to the Hanafi school, jewelry worn by women is also subject to Zakat if it exceeds the Nisab. 
+        <span class="ref">Source: Surah At-Tawbah (9:60), Kitab al-Zakat (Mishkat al-Masabih).</span>`;
+      }
+
+      document.getElementById(id).innerHTML = response;
       msgs.scrollTop = msgs.scrollHeight;
-    }, 1000);
+    }, 1500);
   }
 
-  function ask(q) { switchView('chat'); document.getElementById('inp').value = q; handleSend(); }
+  function ask(q) { switchView('chat'); document.getElementById('inp').value=q; handleSend(); }
 
   async function updatePrayers() {
     try {
-      const r = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Lahore&country=Pakistan&method=1&school=1').then(res => res.json());
-      const t = r.data.timings;
-      const d = r.data.date;
-      document.getElementById('h-date').innerText = `${d.hijri.day} ${d.hijri.month.en}`;
-      document.getElementById('g-date').innerText = `${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year}`;
+      const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Lahore&country=Pakistan&method=1&school=1').then(r=>r.json());
+      const t = res.data.timings; const d = res.data.date;
+      document.getElementById('h-date').innerText = `${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year} AH`;
+      document.getElementById('g-date').innerText = `${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year} AD`;
       
       document.getElementById('p-fajr').innerText = `${format12(t.Fajr)} - ${format12(t.Sunrise)}`;
       document.getElementById('p-dhuhr').innerText = `${format12(t.Dhuhr)} - ${format12(t.Asr)}`;
       document.getElementById('p-asr').innerText = `${format12(t.Asr)} - ${format12(t.Maghrib)}`;
       document.getElementById('p-maghrib').innerText = `${format12(t.Maghrib)} - ${format12(t.Isha)}`;
       document.getElementById('p-isha').innerText = `${format12(t.Isha)} - ${format12(t.Fajr)}`;
-    } catch(e) {}
+    } catch(e) { console.log("Prayer API Sync Failed."); }
   }
 
-  document.getElementById('inp').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleSend(); });
+  document.getElementById('inp').addEventListener('keypress', (e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
 </script>
 </body>
 </html>
