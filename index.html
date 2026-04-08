@@ -9,8 +9,8 @@
   :root {
     --bg: #0b0e0f; --bg-card: #111618; --bg-panel: #151b1d;
     --gold: #c9a84c; --gold-lt: #e2c97e; --gold-dim: #7a6230;
-    --green: #2e7d52; --green-br: #3dbb76; --purple: #8e44ad;
-    --txt: #e8e0d0; --txt-dim: #8a8278; --border: rgba(201,168,76,0.15);
+    --green: #2e7d52; --green-br: #3dbb76; --txt: #e8e0d0; 
+    --txt-dim: #8a8278; --border: rgba(201,168,76,0.15);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { height: 100vh; overflow: hidden; background: var(--bg); color: var(--txt); font-family: 'Playfair Display', serif; display: flex; flex-direction: column; }
@@ -18,15 +18,14 @@
   /* --- AUTH --- */
   .auth-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; }
   .perm-box { background: var(--bg-card); border: 1px solid var(--gold-dim); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; }
-  .btn { padding: 12px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; width: 100%; margin-bottom: 10px; font-family: inherit; transition: 0.3s; }
-  .btn-gold { background: var(--gold); color: #000; font-weight: bold; border: none; }
+  .btn-gold { padding: 12px; border-radius: 8px; background: var(--gold); color: #000; font-weight: bold; border: none; cursor: pointer; width: 100%; font-family: inherit; }
 
   /* --- HEADER --- */
   header { height: 80px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #0d1214; flex-shrink: 0; }
   .logo-area { display: flex; align-items: center; gap: 15px; }
   .emblem { width: 45px; height: 45px; border: 1.5px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 20px; }
   .top-nav { display: flex; gap: 10px; align-items: center; }
-  .nav-item { padding: 8px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--txt-dim); text-decoration: none; }
+  .nav-item { padding: 8px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; cursor: pointer; color: var(--txt-dim); text-decoration: none; }
   .nav-item:hover { border-color: var(--gold); color: var(--gold-lt); }
 
   /* --- PRAYER BAR --- */
@@ -34,36 +33,35 @@
   .prayer-item { text-align: center; }
   .prayer-item span { display: block; color: var(--txt-dim); font-size: 0.55rem; text-transform: uppercase; margin-bottom: 2px; }
 
-  /* --- MAIN --- */
+  /* --- MAIN LAYOUT --- */
   main { flex: 1; display: flex; overflow: hidden; }
   aside { width: 280px; border-right: 1px solid var(--border); background: var(--bg-panel); padding: 20px; overflow-y: auto; }
   .side-label { font-size: 0.65rem; color: var(--gold-dim); margin: 25px 0 10px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
   .side-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); cursor: pointer; margin-bottom: 8px; font-family: inherit; text-align: left; transition: 0.2s; font-size: 0.82rem; }
   .side-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
   
-  /* HISTORY LIST */
-  #chat-history { margin-top: 5px; }
-  .hist-item { font-size: 0.75rem; color: var(--txt-dim); padding: 8px 12px; border-left: 1px solid var(--gold-dim); margin-bottom: 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hist-item:hover { color: var(--gold-lt); background: rgba(255,255,255,0.02); }
+  /* CHAT HISTORY STYLES */
+  #chat-history { margin-top: 5px; max-height: 200px; overflow-y: auto; }
+  .hist-item { font-size: 0.75rem; color: var(--txt-dim); padding: 8px 12px; border-left: 2px solid var(--gold-dim); margin-bottom: 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: rgba(255,255,255,0.02); }
+  .hist-item:hover { color: var(--gold-lt); border-left-color: var(--gold); }
 
-  /* --- CONTENT --- */
+  /* --- CONTENT VIEWS --- */
   .view-container { flex: 1; position: relative; height: 100%; }
   .screen { position: absolute; inset: 0; display: none; flex-direction: column; background: var(--bg); }
   .screen.active { display: flex; }
 
-  /* CHAT STYLES */
+  /* CHAT AREA */
   #msgs { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 20px; }
   .msg-ai { align-self: flex-start; background: var(--bg-card); border: 1px solid var(--border); padding: 18px; border-radius: 18px 18px 18px 0; max-width: 80%; line-height: 1.6; color: var(--gold-lt); }
   .msg-user { align-self: flex-end; background: var(--green); color: #fff; padding: 15px 20px; border-radius: 18px 18px 0 18px; max-width: 80%; }
-  
   .input-area { padding: 20px 40px 30px; }
   .input-wrap { display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--border); border-radius: 15px; padding: 10px 20px; max-width: 850px; margin: 0 auto; }
-  textarea { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: 1rem; resize: none; max-height: 100px; }
+  textarea { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: 1rem; resize: none; max-height: 80px; }
   #send-btn { background: var(--gold); border: none; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; color: #000; font-weight: bold; }
 
-  /* LIBRARY STYLES */
-  .lib-header { padding: 15px 25px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .back-btn { background: var(--gold-dim); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+  /* LIBRARY / IFRAME AREA */
+  .lib-header { padding: 12px 20px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .back-btn { background: var(--gold-dim); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.75rem; }
   .iframe-box { flex: 1; width: 100%; height: 100%; border: none; }
 </style>
 </head>
@@ -71,10 +69,10 @@
 
 <div id="auth-screen" class="auth-overlay">
   <div class="perm-box">
-    <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
+    <div style="font-size:3.5rem; margin-bottom:15px;">🕋</div>
     <h2 style="color:var(--gold); margin-bottom:10px;">Shaykh AI</h2>
-    <p style="color:var(--txt-dim); font-size:0.9rem; margin-bottom:25px;">Enter to begin your scholarly session</p>
-    <button class="btn btn-gold" onclick="login()">Start Session</button>
+    <p style="color:var(--txt-dim); font-size:0.9rem; margin-bottom:25px;">Hanafi Fiqh Assistant</p>
+    <button class="btn-gold" onclick="login()">Open Scholar Suite</button>
   </div>
 </div>
 
@@ -83,7 +81,7 @@
     <div class="emblem">☪</div>
     <div>
       <h1 style="font-size:1.1rem; color:var(--gold)">Shaykh AI</h1>
-      <p style="font-size:0.6rem; color:var(--txt-dim); letter-spacing:1px;">STUDENT OF KNOWLEDGE</p>
+      <p style="font-size:0.6rem; color:var(--txt-dim); letter-spacing:1px;">HANAFI JURISPRUDENCE</p>
     </div>
   </div>
   <div class="top-nav">
@@ -108,29 +106,29 @@
     <button class="side-btn" onclick="switchView('hadith')">📜 Hadith Database</button>
 
     <div class="side-label">Ask Options</div>
-    <button class="side-btn" onclick="ask('Rules of Zakat calculation')">💰 Zakat Rules</button>
-    <button class="side-btn" onclick="ask('Method of performing Wudu')">💧 Wudu Guide</button>
-    <button class="side-btn" onclick="ask('What are the 5 pillars of Islam?')">🖐️ 5 Pillars</button>
-    <button class="side-btn" onclick="ask('Perform Janazah Prayer')">⚰️ Janazah Salah</button>
+    <button class="side-btn" onclick="ask('How to calculate Zakat?')">💰 Zakat Calculation</button>
+    <button class="side-btn" onclick="ask('Correct way to do Wudu')">💧 Wudu Method</button>
+    <button class="side-btn" onclick="ask('What are the 5 pillars?')">🖐️ Five Pillars</button>
+    <button class="side-btn" onclick="ask('Rules for Janazah Prayer')">⚰️ Janazah Rules</button>
 
     <div class="side-label">Chat History</div>
     <div id="chat-history">
        </div>
     
-    <button class="side-btn" style="margin-top:20px; border-color:var(--gold-dim)" onclick="switchView('chat')">💬 Back to Chat</button>
+    <button class="side-btn" style="margin-top:30px; border-color:var(--gold-dim)" onclick="switchView('chat')">💬 Back to Chat</button>
   </aside>
 
   <div class="view-container">
     <div id="chat-screen" class="screen active">
       <div id="msgs">
-        <div style="text-align:center; padding-top:80px; opacity:0.7">
-          <div style="font-family:'Amiri',serif; font-size:4rem; color:var(--gold);">السَّلَامُ عَلَيْكُمْ</div>
-          <h2 style="font-weight:400; color:var(--txt-dim)">How can I assist your study today?</h2>
+        <div style="text-align:center; padding-top:80px; opacity:0.6">
+          <div style="font-family:'Amiri',serif; font-size:4.2rem; color:var(--gold);">السَّلَامُ عَلَيْكُمْ</div>
+          <h2 style="font-weight:400; color:var(--txt-dim)">I am ready to assist your inquiry.</h2>
         </div>
       </div>
       <div class="input-area">
         <div class="input-wrap">
-          <textarea id="inp" rows="1" placeholder="Ask about Deen or Shariah..."></textarea>
+          <textarea id="inp" rows="1" placeholder="Type your question..."></textarea>
           <button id="send-btn" onclick="handleSend()">➤</button>
         </div>
       </div>
@@ -146,7 +144,7 @@
 
     <div id="hadith-screen" class="screen">
       <div class="lib-header">
-        <h3 style="color:var(--gold)">Hadith Database</h3>
+        <h3 style="color:var(--gold)">Sunnah Database</h3>
         <button class="back-btn" onclick="switchView('chat')">← Back to Shaykh AI</button>
       </div>
       <iframe class="iframe-box" src="https://sunnah.com"></iframe>
@@ -162,45 +160,43 @@
     document.getElementById(view + '-screen').classList.add('active');
   }
 
-  function addToHistory(text) {
-    const hist = document.getElementById('chat-history');
-    const item = document.createElement('div');
-    item.className = 'hist-item';
-    item.innerText = text;
-    item.onclick = () => { ask(text); };
-    hist.prepend(item);
-  }
-
   function handleSend() {
     const inp = document.getElementById('inp');
     const txt = inp.value.trim();
     if(!txt) return;
 
+    // Display User Message
     const msgs = document.getElementById('msgs');
     msgs.innerHTML += `<div class="msg-user">${txt}</div>`;
     
-    // Add to history sidebar
-    addToHistory(txt);
-    
+    // SAVE TO HISTORY
+    const hist = document.getElementById('chat-history');
+    const hItem = document.createElement('div');
+    hItem.className = 'hist-item';
+    hItem.innerText = txt;
+    hItem.onclick = () => { ask(txt); };
+    hist.prepend(hItem);
+
     inp.value = '';
     msgs.scrollTop = msgs.scrollHeight;
 
-    const thinkId = 't-' + Date.now();
-    msgs.innerHTML += `<div class="msg-ai" id="${thinkId}">Processing through Hanafi Jurisprudence...</div>`;
+    // AI Response Logic
+    const id = 'ai-' + Date.now();
+    msgs.innerHTML += `<div class="msg-ai" id="${id}">Reviewing classical texts...</div>`;
     
     setTimeout(() => {
-      let reply = "I have reviewed your query. In the Hanafi school, we look at the 'Urf (custom) and the evidence from the Sunnah. Could you provide more details so I can assist you better?";
+      let reply = "That is a valid inquiry. In the Hanafi Madhab, we emphasize the evidence from the Sahaba and established practice. Could you elaborate further?";
       const q = txt.toLowerCase();
 
-      if(q.includes("salam")) reply = "Wa Alaikum Assalam! May Allah increase you in knowledge.";
-      else if(q.includes("zakat")) reply = "Zakat is obligatory on wealth reaching the Nisab. It is calculated as 2.5% of your total qualifying assets held for a lunar year.";
-      else if(q.includes("wudu")) reply = "The obligations of Wudu are: washing the face, arms to elbows, wiping the head, and washing the feet to ankles.";
-      else if(q.includes("pillar")) reply = "Islam is built on five pillars: Testimony of faith, Prayer, Zakat, Fasting Ramadan, and Hajj.";
-      else if(q.includes("janazah")) reply = "Janazah prayer has four Takbirs. It is performed standing with no Ruku or Sujud.";
+      if(q.includes("salam")) reply = "Wa Alaikum Assalam! How can I help you in your path of knowledge?";
+      else if(q.includes("zakat")) reply = "Zakat is 2.5% of assets above Nisab. It should be given to the needy, as outlined in the Quran.";
+      else if(q.includes("wudu")) reply = "Wudu has 4 Fard acts: washing face, washing arms, wiping head, and washing feet.";
+      else if(q.includes("pillar")) reply = "Islam has 5 pillars: Shahadah, Salah, Zakat, Sawm, and Hajj.";
+      else if(q.includes("going on")) reply = "I am ready. Ask me any question about Fiqh, Hadith, or Shariah, and I will provide an answer.";
 
-      document.getElementById(thinkId).innerHTML = reply;
+      document.getElementById(id).innerHTML = reply;
       msgs.scrollTop = msgs.scrollHeight;
-    }, 1100);
+    }, 1000);
   }
 
   function ask(q) {
