@@ -47,7 +47,8 @@
   .h-titles p { font-size: 0.65rem; color: var(--txt-muted); letter-spacing: 1px; margin-top: 4px; }
   
   .h-nav { display: flex; gap: 12px; align-items: center; }
-  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; }
+  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
+  .nav-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
 
   .profile-chip { display: none; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 30px; border: 1px solid var(--border-s); background: rgba(201,168,76,0.1); margin-left: 10px; }
   .profile-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold-dim); background: #000; }
@@ -74,7 +75,7 @@
   .sidebar-section { padding: 20px 15px; }
   .section-title { font-size: 0.65rem; color: var(--gold-dim); margin-bottom: 12px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
   
-  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; }
+  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; transition: 0.2s; }
   .t-chip:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
 
   .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
@@ -89,24 +90,19 @@
 </head>
 <body>
 
-<!-- 1. GOOGLE LOGIN OVERLAY -->
+<!-- AUTH OVERLAYS -->
 <div id="google-overlay" class="auth-overlay">
   <div class="perm-box">
     <div style="font-size:3.5rem; margin-bottom:15px;">🌐</div>
     <h2 style="color:var(--gold-lt); margin-bottom:10px;">Welcome to Shaykh AI</h2>
     <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Sign in with Google to sync your library or continue as Guest.</p>
-    
     <button class="perm-btn btn-google" onclick="handleAuth('google')">
        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="G"> Continue with Google
     </button>
-    
-    <button class="perm-btn btn-skip" onclick="handleAuth('guest')">
-       Continue as Guest
-    </button>
+    <button class="perm-btn btn-skip" onclick="handleAuth('guest')">Continue as Guest</button>
   </div>
 </div>
 
-<!-- 2. LOCATION OVERLAY -->
 <div id="location-overlay" class="auth-overlay" style="display:none;">
   <div class="perm-box">
     <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
@@ -127,10 +123,9 @@
   </div>
 
   <div class="h-nav">
-    <a href="#" class="nav-btn">📖 Quran</a>
-    <a href="#" class="nav-btn">📜 Hadith</a>
-    
-    <!-- DYNAMIC USER PROFILE -->
+    <a href="quran.html" class="nav-btn">📖 Quran</a>
+    <a href="hadith.html" class="nav-btn">📜 Hadith</a>
+    <a href="usool.html" class="nav-btn">⚖️ Usool</a>
     <div id="user-profile" class="profile-chip">
       <img src="" id="user-img" alt="User" class="profile-img">
       <span id="user-name" class="profile-name">...</span>
@@ -156,17 +151,25 @@
   <aside>
     <div class="sidebar-section">
       <div class="section-title">Islamic Libraries</div>
-      <button class="t-chip" onclick="ask('Open Quran Reader')">📖 Noble Quran Reader</button>
-      <button class="t-chip" onclick="ask('Search Hadith')">📜 Hadith Database</button>
+      <a href="quran.html" class="t-chip">📖 Noble Quran Reader</a>
+      <a href="hadith.html" class="t-chip">📜 Hadith Database</a>
+      <a href="usool.html" class="t-chip" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</a>
 
-      <div class="section-title" style="margin-top:25px;">Pillars of Islam</div>
+      <div class="section-title" style="margin-top:25px;">Arkan-ul-Islam (5)</div>
+      <button class="t-chip" onclick="ask('Explain Shahada.')">☝️ Shahada</button>
       <button class="t-chip" onclick="ask('Explain Salah.')">🛐 Salah</button>
-      <button class="t-chip" onclick="ask('Zakat Rules.')">💰 Zakat</button>
+      <button class="t-chip" onclick="ask('Rules of Zakat.')">💰 Zakat</button>
+      <button class="t-chip" onclick="ask('Rules of Sawm.')">🌙 Sawm</button>
+      <button class="t-chip" onclick="ask('Method of Hajj.')">🕋 Hajj</button>
 
-      <div class="section-title" style="margin-top:25px;">Recent History</div>
-      <div id="chat-history-list">
-        <div class="hist-item" style="font-size:0.75rem; color:var(--txt-muted); padding:10px;">Empty History</div>
-      </div>
+      <div class="section-title" style="margin-top:25px;">Arkan-ul-Iman (7)</div>
+      <button class="t-chip" onclick="ask('Belief in Allah.')">✨ Allah</button>
+      <button class="t-chip" onclick="ask('Belief in Angels.')">🪽 Angels</button>
+      <button class="t-chip" onclick="ask('Belief in Books.')">📖 Books</button>
+      <button class="t-chip" onclick="ask('Belief in Prophets.')">📜 Prophets</button>
+      <button class="t-chip" onclick="ask('Belief in Last Day.')">⚖️ Resurrection</button>
+      <button class="t-chip" onclick="ask('Belief in Qadar.')">✍️ Destiny</button>
+      <button class="t-chip" onclick="ask('Belief in Afterlife.')">🌱 Afterlife</button>
     </div>
   </aside>
 
@@ -187,32 +190,23 @@
 </div>
 
 <script>
-// --- CORE AUTH LOGIC ---
 function handleAuth(type) {
-  // Hide Login Overlay
   document.getElementById('google-overlay').style.display = 'none';
-  // Show Location Overlay
   document.getElementById('location-overlay').style.display = 'flex';
-  
   const profileDiv = document.getElementById('user-profile');
   const userImg = document.getElementById('user-img');
   const userName = document.getElementById('user-name');
 
   if (type === 'google') {
-    // This simulates finding the user's real Google ID/Photo
-    userImg.src = "https://i.pravatar.cc/150?u=google_user"; 
+    userImg.src = "https://i.pravatar.cc/150?u=active_scholar"; 
     userName.innerText = "Authorized User";
   } else {
-    // Guest User
     userImg.src = "https://www.gravatar.com/avatar/0?d=mp";
     userName.innerText = "Guest Scholar";
   }
-  
-  // Display the profile in the top right
   profileDiv.style.display = 'flex';
 }
 
-// --- LOCATION & PRAYER LOGIC ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
   fetchPrayerData(allow);
@@ -243,20 +237,17 @@ async function fetchPrayerData(auto) {
       const t = res.data.timings;
       const h = res.data.date.hijri;
       const g = res.data.date.gregorian;
-      
       document.getElementById('fajr-range').innerText = formatTime12(t.Fajr);
       document.getElementById('dhuhr-range').innerText = formatTime12(t.Dhuhr);
       document.getElementById('asr-range').innerText = formatTime12(t.Asr);
       document.getElementById('maghrib-range').innerText = formatTime12(t.Maghrib);
       document.getElementById('isha-range').innerText = formatTime12(t.Isha);
-      
       document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
       document.getElementById('angrezi-disp').innerText = `${g.day} ${g.month.en} ${g.year} AD`;
     }
-  } catch (e) { console.log(e); }
+  } catch (e) {}
 }
 
-// --- CHAT LOGIC ---
 function sendMsg() {
   const inp = document.getElementById('inp');
   const val = inp.value.trim();
@@ -266,10 +257,11 @@ function sendMsg() {
   inp.value = '';
   msgs.scrollTop = msgs.scrollHeight;
   setTimeout(() => {
-    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">The Shaykh is analyzing your inquiry...</div>`;
+    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">The Shaykh is analyzing your inquiry based on Hanafi Fiqh...</div>`;
     msgs.scrollTop = msgs.scrollHeight;
   }, 600);
 }
+
 function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
 </script>
 </body>
