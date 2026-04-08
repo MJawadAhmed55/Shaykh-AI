@@ -20,23 +20,21 @@
 
   /* ── OVERLAYS ── */
   .auth-overlay {
-    position: fixed; inset: 0; z-index: 10000;
-    background: rgba(0,0,0,0.92); backdrop-filter: blur(15px);
+    position: fixed; inset: 0; z-index: 99999;
+    background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
     display: flex; align-items: center; justify-content: center;
   }
   .perm-box {
     background: var(--bg-card); border: 1px solid var(--border-s);
     padding: 40px; border-radius: 24px; text-align: center; max-width: 420px; width: 90%;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
   .perm-btn {
     padding: 14px 24px; border-radius: 12px; border: 1px solid var(--border);
-    cursor: pointer; font-family: inherit; font-size: 1rem; transition: 0.3s; width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 12px;
+    cursor: pointer; font-family: inherit; font-size: 1rem; transition: 0.2s; width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 12px;
   }
   .btn-gold { background: var(--gold); color: #000; font-weight: bold; border: none; }
   .btn-google { background: #fff; color: #000; font-weight: 600; border: none; }
   .btn-skip { background: transparent; color: var(--txt-dim); border: 1px solid var(--border); }
-  .btn-skip:hover { color: var(--txt); border-color: var(--txt-dim); }
 
   /* ── HEADER ── */
   header {
@@ -49,10 +47,10 @@
   .h-titles p { font-size: 0.65rem; color: var(--txt-muted); letter-spacing: 1px; margin-top: 4px; }
   
   .h-nav { display: flex; gap: 12px; align-items: center; }
-  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
+  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; }
 
-  .profile-chip { display: none; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 30px; border: 1px solid var(--border-s); background: rgba(201,168,76,0.05); margin-left: 10px; }
-  .profile-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold-dim); background: var(--bg-panel); }
+  .profile-chip { display: none; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 30px; border: 1px solid var(--border-s); background: rgba(201,168,76,0.1); margin-left: 10px; }
+  .profile-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold-dim); background: #000; }
   .profile-name { font-size: 0.85rem; color: var(--txt); font-weight: 500; }
 
   /* ── PRAYER BAR ── */
@@ -76,11 +74,8 @@
   .sidebar-section { padding: 20px 15px; }
   .section-title { font-size: 0.65rem; color: var(--gold-dim); margin-bottom: 12px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
   
-  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: 0.2s; text-decoration: none; }
+  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; }
   .t-chip:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
-
-  .hist-item { font-size: 0.75rem; color: var(--txt-muted); padding: 10px 12px; border-left: 2px solid var(--gold-dim); margin-bottom: 6px; background: rgba(255,255,255,0.01); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hist-item:hover { color: var(--txt); background: rgba(255,255,255,0.03); }
 
   .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
   #msgs { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
@@ -89,27 +84,29 @@
   #inp { flex: 1; background: transparent; border: none; outline: none; color: var(--txt); font-family: inherit; font-size: 1.1rem; resize: none; max-height: 120px; }
   #send { width: 44px; height: 44px; border-radius: 10px; background: var(--green); border: none; color: #fff; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
 
-  @media(max-width: 1000px) { aside { display: none; } .h-nav { display: none; } }
+  @media(max-width: 1000px) { aside { display: none; } }
 </style>
 </head>
 <body>
 
+<!-- 1. GOOGLE LOGIN OVERLAY -->
 <div id="google-overlay" class="auth-overlay">
   <div class="perm-box">
     <div style="font-size:3.5rem; margin-bottom:15px;">🌐</div>
-    <h2 style="color:var(--gold-lt); margin-bottom:10px; font-size: 1.6rem;">Welcome to Shaykh AI</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.5;">Sign in to save your scholarly history or continue as a guest.</p>
+    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Welcome to Shaykh AI</h2>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Sign in with Google to sync your library or continue as Guest.</p>
     
-    <button class="perm-btn btn-google" onclick="handleAuth(true)">
-       <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="Google"> Continue with Google
+    <button class="perm-btn btn-google" onclick="handleAuth('google')">
+       <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="G"> Continue with Google
     </button>
     
-    <button class="perm-btn btn-skip" onclick="handleAuth(false)">
+    <button class="perm-btn btn-skip" onclick="handleAuth('guest')">
        Continue as Guest
     </button>
   </div>
 </div>
 
+<!-- 2. LOCATION OVERLAY -->
 <div id="location-overlay" class="auth-overlay" style="display:none;">
   <div class="perm-box">
     <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
@@ -130,13 +127,13 @@
   </div>
 
   <div class="h-nav">
-    <a href="quran.html" class="nav-btn">📖 Quran</a>
-    <a href="hadith.html" class="nav-btn">📜 Hadith</a>
-    <a href="usool.html" class="nav-btn">⚖️ Usool</a>
+    <a href="#" class="nav-btn">📖 Quran</a>
+    <a href="#" class="nav-btn">📜 Hadith</a>
     
+    <!-- DYNAMIC USER PROFILE -->
     <div id="user-profile" class="profile-chip">
       <img src="" id="user-img" alt="User" class="profile-img">
-      <span id="user-name" class="profile-name">Guest Scholar</span>
+      <span id="user-name" class="profile-name">...</span>
     </div>
   </div>
 </header>
@@ -159,29 +156,16 @@
   <aside>
     <div class="sidebar-section">
       <div class="section-title">Islamic Libraries</div>
-      <a href="quran.html" class="t-chip">📖 Noble Quran Reader</a>
-      <a href="hadith.html" class="t-chip">📜 Hadith Database</a>
-      <a href="usool.html" class="t-chip" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</a>
+      <button class="t-chip" onclick="ask('Open Quran Reader')">📖 Noble Quran Reader</button>
+      <button class="t-chip" onclick="ask('Search Hadith')">📜 Hadith Database</button>
 
-      <div class="section-title" style="margin-top:25px;">Arkan-ul-Islam (5)</div>
-      <button class="t-chip" onclick="ask('Explain Shahada (Testimony of Faith).')">☝️ Shahada</button>
-      <button class="t-chip" onclick="ask('Explain Salah (Five Daily Prayers).')">🛐 Salah</button>
-      <button class="t-chip" onclick="ask('Rules of Zakat (Almsgiving).')">💰 Zakat</button>
-      <button class="t-chip" onclick="ask('Rules of Sawm (Fasting).')">🌙 Sawm</button>
-      <button class="t-chip" onclick="ask('Method and Pillars of Hajj.')">🕋 Hajj</button>
+      <div class="section-title" style="margin-top:25px;">Pillars of Islam</div>
+      <button class="t-chip" onclick="ask('Explain Salah.')">🛐 Salah</button>
+      <button class="t-chip" onclick="ask('Zakat Rules.')">💰 Zakat</button>
 
-      <div class="section-title" style="margin-top:25px;">Arkan-ul-Iman (7)</div>
-      <button class="t-chip" onclick="ask('Belief in Allah (Tawheed)')">✨ Allah</button>
-      <button class="t-chip" onclick="ask('Belief in the Angels (Malaikah)')">🪽 Angels</button>
-      <button class="t-chip" onclick="ask('Belief in Revealed Books')">📖 Books</button>
-      <button class="t-chip" onclick="ask('Belief in the Prophets')">📜 Prophets</button>
-      <button class="t-chip" onclick="ask('Belief in the Last Day')">⚖️ Resurrection</button>
-      <button class="t-chip" onclick="ask('Belief in Qadar (Destiny)')">✍️ Destiny</button>
-      <button class="t-chip" onclick="ask('Belief in Life after Death')">🌱 Afterlife</button>
-
-      <div class="section-title" style="margin-top:25px;">Recent Conversations</div>
+      <div class="section-title" style="margin-top:25px;">Recent History</div>
       <div id="chat-history-list">
-        <div class="hist-item" style="border:none; opacity:0.3">No recent history</div>
+        <div class="hist-item" style="font-size:0.75rem; color:var(--txt-muted); padding:10px;">Empty History</div>
       </div>
     </div>
   </aside>
@@ -191,7 +175,6 @@
       <div style="text-align:center; padding-top:100px">
         <div style="font-family:'Amiri',serif; font-size:4rem; color:var(--gold); margin-bottom:15px">السَّلَامُ عَلَيْكُمْ</div>
         <h2 style="font-weight:400; color:var(--txt-dim); font-size: 1.8rem;">How can I assist your study today?</h2>
-        <p style="color:var(--txt-muted); margin-top:10px;">Ask about Fiqh, Hadith, or Shariah rulings.</p>
       </div>
     </div>
     <div class="input-bar">
@@ -204,43 +187,44 @@
 </div>
 
 <script>
-// --- AUTH LOGIC ---
-function handleAuth(isGoogle) {
+// --- CORE AUTH LOGIC ---
+function handleAuth(type) {
+  // Hide Login Overlay
   document.getElementById('google-overlay').style.display = 'none';
+  // Show Location Overlay
   document.getElementById('location-overlay').style.display = 'flex';
   
   const profileDiv = document.getElementById('user-profile');
   const userImg = document.getElementById('user-img');
   const userName = document.getElementById('user-name');
 
-  if (isGoogle) {
-    // In a real app, this would be the actual Google result. 
-    // Here we simulate the successful login.
-    userImg.src = "https://i.pravatar.cc/150?u=scholar_user";
-    userName.innerText = "Authorized Scholar";
-    profileDiv.style.display = 'flex';
+  if (type === 'google') {
+    // This simulates finding the user's real Google ID/Photo
+    userImg.src = "https://i.pravatar.cc/150?u=google_user"; 
+    userName.innerText = "Authorized User";
   } else {
-    // Guest Mode
+    // Guest User
     userImg.src = "https://www.gravatar.com/avatar/0?d=mp";
-    userName.innerText = "Guest User";
-    profileDiv.style.display = 'flex';
+    userName.innerText = "Guest Scholar";
   }
+  
+  // Display the profile in the top right
+  profileDiv.style.display = 'flex';
 }
 
-// --- CONVERTER: 24h to 12h ---
-function formatTime12(time24) {
-  if (!time24) return "--:--";
-  let [hours, minutes] = time24.split(':');
-  let h = parseInt(hours);
-  let ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  return `${h}:${minutes} ${ampm}`;
-}
-
-// --- LOCATION & DATE LOGIC ---
+// --- LOCATION & PRAYER LOGIC ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
   fetchPrayerData(allow);
+}
+
+function formatTime12(t) {
+  if (!t) return "--:--";
+  let [h, m] = t.split(':');
+  h = parseInt(h);
+  let ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m} ${ampm}`;
 }
 
 async function fetchPrayerData(auto) {
@@ -269,38 +253,23 @@ async function fetchPrayerData(auto) {
       document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
       document.getElementById('angrezi-disp').innerText = `${g.day} ${g.month.en} ${g.year} AD`;
     }
-  } catch (e) { document.getElementById('city-disp').innerText = "Load Error"; }
+  } catch (e) { console.log(e); }
 }
 
-// --- CHAT & HISTORY LOGIC ---
-const history = [];
-function updateHistory(q) {
-  const list = document.getElementById('chat-history-list');
-  if (history.indexOf(q) === -1) {
-    history.unshift(q);
-    if(history.length > 7) history.pop();
-    list.innerHTML = history.map(item => `<div class="hist-item" onclick="ask('${item.replace(/'/g, "\\"')}')">${item}</div>`).join('');
-  }
-}
-
+// --- CHAT LOGIC ---
 function sendMsg() {
   const inp = document.getElementById('inp');
   const val = inp.value.trim();
   if(!val) return;
-  
   const msgs = document.getElementById('msgs');
   msgs.innerHTML += `<div style="align-self: flex-end; background: var(--user-bg); padding: 15px 20px; border-radius: 15px 15px 0 15px; max-width: 80%; border: 1px solid var(--border); font-size:0.95rem;">${val}</div>`;
-  
-  updateHistory(val);
   inp.value = '';
   msgs.scrollTop = msgs.scrollHeight;
-
   setTimeout(() => {
-    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">Reviewing Shariah sources...</div>`;
+    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">The Shaykh is analyzing your inquiry...</div>`;
     msgs.scrollTop = msgs.scrollHeight;
-  }, 500);
+  }, 600);
 }
-
 function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
 </script>
 </body>
