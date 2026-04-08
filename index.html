@@ -18,7 +18,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--txt); font-family: 'Playfair Display', serif; }
 
-  /* ── OVERLAYS ── */
+  /* --- AUTH OVERLAYS --- */
   .auth-overlay {
     position: fixed; inset: 0; z-index: 99999;
     background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
@@ -36,7 +36,7 @@
   .btn-google { background: #fff; color: #000; font-weight: 600; border: none; }
   .btn-skip { background: transparent; color: var(--txt-dim); border: 1px solid var(--border); }
 
-  /* ── HEADER ── */
+  /* --- HEADER --- */
   header {
     background: #0d1214; border-bottom: 1px solid var(--border-s);
     padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 80px; flex-shrink: 0;
@@ -47,69 +47,67 @@
   .h-titles p { font-size: 0.65rem; color: var(--txt-muted); letter-spacing: 1px; margin-top: 4px; }
   
   .h-nav { display: flex; gap: 12px; align-items: center; }
-  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
-  .nav-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
+  .nav-btn { display: flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.03); color: var(--txt-dim); text-decoration: none; font-size: 0.85rem; }
 
   .profile-chip { display: none; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 30px; border: 1px solid var(--border-s); background: rgba(201,168,76,0.1); margin-left: 10px; }
   .profile-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold-dim); background: #000; }
-  .profile-name { font-size: 0.85rem; color: var(--txt); font-weight: 500; }
 
-  /* ── PRAYER BAR ── */
+  /* --- PRAYER BAR --- */
   .prayer-bar {
     background: var(--bg-card); border-bottom: 1px solid var(--border);
     padding: 15px 18px; display: flex; justify-content: space-around;
     font-size: 0.75rem; color: var(--gold-lt); gap: 15px; overflow-x: auto;
   }
-  .prayer-time-item { 
-    display: flex; flex-direction: column; align-items: center; 
-    min-width: 140px; text-align: center; border-right: 1px solid var(--border); 
-    padding-right: 15px; flex-shrink: 0;
-  }
-  .prayer-time-item:last-child { border-right: none; }
-  .p-label { font-size: 0.65rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px; }
-  .p-val { font-weight: bold; font-family: monospace; color: var(--gold-lt); font-size: 0.9rem; }
+  .prayer-item { display: flex; flex-direction: column; align-items: center; min-width: 120px; border-right: 1px solid var(--border); padding-right: 10px; }
+  .prayer-item:last-child { border: none; }
+  .p-label { font-size: 0.6rem; text-transform: uppercase; color: var(--txt-muted); margin-bottom: 4px; }
+  .p-val { font-weight: bold; font-family: monospace; color: var(--gold-lt); }
 
-  /* ── LAYOUT ── */
+  /* --- MAIN CONTENT --- */
   .app-body { flex: 1; display: flex; overflow: hidden; }
-  aside { width: 300px; flex-shrink: 0; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
-  .sidebar-section { padding: 20px 15px; }
-  .section-title { font-size: 0.65rem; color: var(--gold-dim); margin-bottom: 12px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
+  aside { width: 280px; background: var(--bg-panel); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 15px; }
+  .section-title { font-size: 0.65rem; color: var(--gold-dim); margin: 20px 0 10px; letter-spacing: 1px; text-transform: uppercase; font-weight: bold; }
   
-  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 12px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; transition: 0.2s; }
+  .t-chip { display: block; width: 100%; text-align: left; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--txt-dim); padding: 10px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; text-decoration: none; transition: 0.2s; }
   .t-chip:hover { border-color: var(--gold); color: var(--gold-lt); background: rgba(201,168,76,0.05); }
 
-  .chat-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+  .chat-wrap { flex: 1; display: flex; flex-direction: column; background: var(--bg); }
   #msgs { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+  
+  .msg-ai { align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.95rem; line-height: 1.6; }
+  .msg-user { align-self: flex-end; background: var(--user-bg); padding: 15px 20px; border-radius: 15px 15px 0 15px; max-width: 80%; border: 1px solid var(--border); font-size: 0.95rem; }
+
   .input-bar { padding: 20px 40px 30px; }
   .input-wrap { display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border-s); border-radius: 14px; padding: 12px 20px; max-width: 900px; margin: 0 auto; }
-  #inp { flex: 1; background: transparent; border: none; outline: none; color: var(--txt); font-family: inherit; font-size: 1.1rem; resize: none; max-height: 120px; }
-  #send { width: 44px; height: 44px; border-radius: 10px; background: var(--green); border: none; color: #fff; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+  #inp { flex: 1; background: transparent; border: none; outline: none; color: var(--txt); font-family: inherit; font-size: 1.1rem; resize: none; }
+  #send { width: 44px; height: 44px; border-radius: 10px; background: var(--green); border: none; color: #fff; cursor: pointer; font-size: 1.2rem; }
 
   @media(max-width: 1000px) { aside { display: none; } }
 </style>
 </head>
 <body>
 
-<!-- AUTH OVERLAYS -->
+<!-- 1. LOGIN -->
 <div id="google-overlay" class="auth-overlay">
   <div class="perm-box">
     <div style="font-size:3.5rem; margin-bottom:15px;">🌐</div>
-    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Welcome to Shaykh AI</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Sign in with Google to sync your library or continue as Guest.</p>
+    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Shaykh AI</h2>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Sign in to sync your library or continue as Guest.</p>
     <button class="perm-btn btn-google" onclick="handleAuth('google')">
-       <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" alt="G"> Continue with Google
+       <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18"> Continue with Google
     </button>
     <button class="perm-btn btn-skip" onclick="handleAuth('guest')">Continue as Guest</button>
   </div>
 </div>
 
+<!-- 2. LOCATION -->
 <div id="location-overlay" class="auth-overlay" style="display:none;">
   <div class="perm-box">
     <div style="font-size:3rem; margin-bottom:15px;">🕋</div>
-    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Scholar Suite</h2>
-    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Setting up 12h timings and Hijri calendars for your city.</p>
+    <h2 style="color:var(--gold-lt); margin-bottom:10px;">Prayer Settings</h2>
+    <p style="color:var(--txt-dim); font-size: 0.9rem; margin-bottom: 30px;">Enable location for accurate Athan times and Hijri dates.</p>
     <button class="perm-btn btn-gold" onclick="handleLocation(true)">Allow Location</button>
-    <button class="perm-btn btn-skip" onclick="handleLocation(false)">Lahore (Default)</button>
+    <button class="perm-btn btn-skip" onclick="handleLocation(false)">Use Default (Lahore)</button>
   </div>
 </div>
 
@@ -118,71 +116,56 @@
     <div class="h-emblem">☪</div>
     <div class="h-titles">
       <h1>Shaykh AI</h1>
-      <p>Hanafi Jurisprudence</p>
+      <p>Hanafi Scholar Assistant</p>
     </div>
   </div>
-
   <div class="h-nav">
-    <a href="quran.html" class="nav-btn">📖 Quran</a>
-    <a href="hadith.html" class="nav-btn">📜 Hadith</a>
-    <a href="usool.html" class="nav-btn">⚖️ Usool</a>
+    <a href="#" class="nav-btn">📖 Quran</a>
+    <a href="#" class="nav-btn">📜 Hadith</a>
     <div id="user-profile" class="profile-chip">
-      <img src="" id="user-img" alt="User" class="profile-img">
-      <span id="user-name" class="profile-name">...</span>
+      <img src="" id="user-img" class="profile-img">
+      <span id="user-name" style="font-size: 0.8rem;">...</span>
     </div>
   </div>
 </header>
 
 <div class="prayer-bar">
-  <div class="prayer-time-item">
-    <span class="p-label">Hijri & Gregorian</span>
-    <span class="p-val" id="hijri-disp" style="color:var(--green-br)">...</span>
-    <span style="font-size:0.6rem; color:var(--txt-muted); margin-top:2px;" id="angrezi-disp">...</span>
-    <span style="font-size:0.6rem; color:var(--gold-dim)" id="city-disp">Location...</span>
+  <div class="prayer-item">
+    <span class="p-label" id="city-disp">Location</span>
+    <span class="p-val" id="hijri-disp">-- --- ----</span>
   </div>
-  <div class="prayer-time-item"><span class="p-label">Fajr</span><span class="p-val" id="fajr-range">--:--</span></div>
-  <div class="prayer-time-item"><span class="p-label">Dhuhr</span><span class="p-val" id="dhuhr-range">--:--</span></div>
-  <div class="prayer-time-item"><span class="p-label">Asr (Hanafi)</span><span class="p-val" id="asr-range">--:--</span></div>
-  <div class="prayer-time-item"><span class="p-label">Maghrib</span><span class="p-val" id="maghrib-range">--:--</span></div>
-  <div class="prayer-time-item"><span class="p-label">Isha</span><span class="p-val" id="isha-range">--:--</span></div>
+  <div class="prayer-item"><span class="p-label">Fajr</span><span class="p-val" id="fajr">--:--</span></div>
+  <div class="prayer-item"><span class="p-label">Dhuhr</span><span class="p-val" id="dhuhr">--:--</span></div>
+  <div class="prayer-item"><span class="p-label">Asr</span><span class="p-val" id="asr">--:--</span></div>
+  <div class="prayer-item"><span class="p-label">Maghrib</span><span class="p-val" id="maghrib">--:--</span></div>
+  <div class="prayer-item"><span class="p-label">Isha</span><span class="p-val" id="isha">--:--</span></div>
 </div>
 
 <div class="app-body">
   <aside>
-    <div class="sidebar-section">
-      <div class="section-title">Islamic Libraries</div>
-      <a href="quran.html" class="t-chip">📖 Noble Quran Reader</a>
-      <a href="hadith.html" class="t-chip">📜 Hadith Database</a>
-      <a href="usool.html" class="t-chip" style="color:var(--purple); border-color:var(--purple)">⚖️ Usool ul-Fiqh</a>
+    <div class="section-title">Islamic Libraries</div>
+    <button class="t-chip" onclick="ask('Open Quran Reader')">📖 Noble Quran</button>
+    <button class="t-chip" onclick="ask('Browse Hadith')">📜 Hadith Database</button>
+    <button class="t-chip" onclick="ask('Study Usool-ul-Fiqh')">⚖️ Usool ul-Fiqh</button>
 
-      <div class="section-title" style="margin-top:25px;">Arkan-ul-Islam (5)</div>
-      <button class="t-chip" onclick="ask('Explain Shahada.')">☝️ Shahada</button>
-      <button class="t-chip" onclick="ask('Explain Salah.')">🛐 Salah</button>
-      <button class="t-chip" onclick="ask('Rules of Zakat.')">💰 Zakat</button>
-      <button class="t-chip" onclick="ask('Rules of Sawm.')">🌙 Sawm</button>
-      <button class="t-chip" onclick="ask('Method of Hajj.')">🕋 Hajj</button>
-
-      <div class="section-title" style="margin-top:25px;">Arkan-ul-Iman (7)</div>
-      <button class="t-chip" onclick="ask('Belief in Allah.')">✨ Allah</button>
-      <button class="t-chip" onclick="ask('Belief in Angels.')">🪽 Angels</button>
-      <button class="t-chip" onclick="ask('Belief in Books.')">📖 Books</button>
-      <button class="t-chip" onclick="ask('Belief in Prophets.')">📜 Prophets</button>
-      <button class="t-chip" onclick="ask('Belief in Last Day.')">⚖️ Resurrection</button>
-      <button class="t-chip" onclick="ask('Belief in Qadar.')">✍️ Destiny</button>
-      <button class="t-chip" onclick="ask('Belief in Afterlife.')">🌱 Afterlife</button>
-    </div>
+    <div class="section-title">Arkan-ul-Islam</div>
+    <button class="t-chip" onclick="ask('Tell me about Shahada.')">☝️ Shahada</button>
+    <button class="t-chip" onclick="ask('How to perform Salah?')">🛐 Salah</button>
+    <button class="t-chip" onclick="ask('What are the rules of Zakat?')">💰 Zakat</button>
+    <button class="t-chip" onclick="ask('Explain the fast of Ramadan.')">🌙 Sawm</button>
+    <button class="t-chip" onclick="ask('What is the method of Hajj?')">🕋 Hajj</button>
   </aside>
 
   <div class="chat-wrap">
     <div id="msgs">
-      <div style="text-align:center; padding-top:100px">
-        <div style="font-family:'Amiri',serif; font-size:4rem; color:var(--gold); margin-bottom:15px">السَّلَامُ عَلَيْكُمْ</div>
-        <h2 style="font-weight:400; color:var(--txt-dim); font-size: 1.8rem;">How can I assist your study today?</h2>
+      <div style="text-align:center; padding-top:80px; opacity:0.6">
+        <div style="font-family:'Amiri',serif; font-size:3.5rem; color:var(--gold);">السَّلَامُ عَلَيْكُمْ</div>
+        <p>Ask a question about Deen or Shariah.</p>
       </div>
     </div>
     <div class="input-bar">
       <div class="input-wrap">
-        <textarea id="inp" rows="1" placeholder="Type your question..."></textarea>
+        <textarea id="inp" rows="1" placeholder="Type your message..."></textarea>
         <button id="send" onclick="sendMsg()">➤</button>
       </div>
     </div>
@@ -190,30 +173,99 @@
 </div>
 
 <script>
+// --- AUTH ---
 function handleAuth(type) {
   document.getElementById('google-overlay').style.display = 'none';
   document.getElementById('location-overlay').style.display = 'flex';
-  const profileDiv = document.getElementById('user-profile');
-  const userImg = document.getElementById('user-img');
-  const userName = document.getElementById('user-name');
-
-  if (type === 'google') {
-    userImg.src = "https://i.pravatar.cc/150?u=active_scholar"; 
-    userName.innerText = "Authorized User";
+  const prof = document.getElementById('user-profile');
+  const img = document.getElementById('user-img');
+  const name = document.getElementById('user-name');
+  
+  if(type === 'google') {
+    img.src = "https://i.pravatar.cc/100?u=scholar";
+    name.innerText = "Authorized Scholar";
   } else {
-    userImg.src = "https://www.gravatar.com/avatar/0?d=mp";
-    userName.innerText = "Guest Scholar";
+    img.src = "https://www.gravatar.com/avatar/0?d=mp";
+    name.innerText = "Guest User";
   }
-  profileDiv.style.display = 'flex';
+  prof.style.display = 'flex';
 }
 
+// --- LOCATION ---
 function handleLocation(allow) {
   document.getElementById('location-overlay').style.display = 'none';
-  fetchPrayerData(allow);
+  fetchPrayers(allow);
 }
 
-function formatTime12(t) {
-  if (!t) return "--:--";
+// --- CHAT LOGIC (THE BRAIN) ---
+const msgsBox = document.getElementById('msgs');
+
+function sendMsg() {
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim();
+  if(!text) return;
+
+  // Add User Bubble
+  msgsBox.innerHTML += `<div class="msg-user">${text}</div>`;
+  const query = text.toLowerCase();
+  inp.value = '';
+  msgsBox.scrollTop = msgsBox.scrollHeight;
+
+  // Thinking State
+  const thinkingId = "think-" + Date.now();
+  msgsBox.innerHTML += `<div class="msg-ai" id="${thinkingId}">Thinking...</div>`;
+  msgsBox.scrollTop = msgsBox.scrollHeight;
+
+  setTimeout(() => {
+    let reply = "I have noted your inquiry. According to the Hanafi school, we must look into the Primary sources (Quran and Sunnah) and secondary sources (Ijma and Qiyas) to provide a detailed ruling. Could you please provide more context?";
+
+    // Basic Keyword Responses
+    if (query.includes("salam") || query.includes("hello")) {
+      reply = "Wa Alaikum Assalam wa Rahmatullahi wa Barakatuh! I am your AI Shaykh. How can I assist your Islamic path today?";
+    } else if (query.includes("salah") || query.includes("prayer")) {
+      reply = "Salah is the key to Jannah. In the Hanafi Fiqh, there are 6 compulsory (Faraid) conditions before prayer and 7 inside. Would you like to know the steps of Wudu or the method of prayer?";
+    } else if (query.includes("zakat")) {
+      reply = "Zakat is Wajib upon every sane, adult Muslim who owns 'Nisab' for a full lunar year. Currently, Nisab is based on 87.48g of gold or 612.36g of silver.";
+    } else if (query.includes("hajj")) {
+      reply = "Hajj is a journey of a lifetime. It has three main types: Tamattu, Qiran, and Ifrad. Which one are you inquiring about?";
+    } else if (query.includes("quran")) {
+        reply = "The Holy Quran was revealed over 23 years to the Prophet Muhammad (ﷺ). It is the final word of Allah. Would you like to hear a specific Tafsir?";
+    }
+
+    document.getElementById(thinkingId).innerText = reply;
+    msgsBox.scrollTop = msgsBox.scrollHeight;
+  }, 1000);
+}
+
+function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
+
+// --- PRAYER DATA ---
+async function fetchPrayers(auto) {
+  let city = "Lahore", country = "Pakistan";
+  if(auto) {
+    try {
+      const g = await fetch('https://ipapi.co/json/').then(r => r.json());
+      city = g.city || city; country = g.country_name || country;
+    } catch(e){}
+  }
+  document.getElementById('city-disp').innerText = city;
+
+  try {
+    const r = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`).then(res => res.json());
+    if(r.code === 200) {
+      const t = r.data.timings;
+      const h = r.data.date.hijri;
+      document.getElementById('fajr').innerText = formatTime(t.Fajr);
+      document.getElementById('dhuhr').innerText = formatTime(t.Dhuhr);
+      document.getElementById('asr').innerText = formatTime(t.Asr);
+      document.getElementById('maghrib').innerText = formatTime(t.Maghrib);
+      document.getElementById('isha').innerText = formatTime(t.Isha);
+      document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
+    }
+  } catch(e){}
+}
+
+function formatTime(t) {
   let [h, m] = t.split(':');
   h = parseInt(h);
   let ampm = h >= 12 ? 'PM' : 'AM';
@@ -221,48 +273,13 @@ function formatTime12(t) {
   return `${h}:${m} ${ampm}`;
 }
 
-async function fetchPrayerData(auto) {
-  let city = "Lahore", country = "Pakistan";
-  if (auto) {
-    try {
-      const geo = await fetch('https://ipapi.co/json/').then(r => r.json());
-      city = geo.city || city; country = geo.country_name || country;
-    } catch (e) {}
+// Enter key support
+document.getElementById('inp').addEventListener("keypress", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMsg();
   }
-  document.getElementById('city-disp').innerText = city;
-
-  try {
-    const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=1&school=1`).then(r => r.json());
-    if(res.code === 200) {
-      const t = res.data.timings;
-      const h = res.data.date.hijri;
-      const g = res.data.date.gregorian;
-      document.getElementById('fajr-range').innerText = formatTime12(t.Fajr);
-      document.getElementById('dhuhr-range').innerText = formatTime12(t.Dhuhr);
-      document.getElementById('asr-range').innerText = formatTime12(t.Asr);
-      document.getElementById('maghrib-range').innerText = formatTime12(t.Maghrib);
-      document.getElementById('isha-range').innerText = formatTime12(t.Isha);
-      document.getElementById('hijri-disp').innerText = `${h.day} ${h.month.en} ${h.year} AH`;
-      document.getElementById('angrezi-disp').innerText = `${g.day} ${g.month.en} ${g.year} AD`;
-    }
-  } catch (e) {}
-}
-
-function sendMsg() {
-  const inp = document.getElementById('inp');
-  const val = inp.value.trim();
-  if(!val) return;
-  const msgs = document.getElementById('msgs');
-  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--user-bg); padding: 15px 20px; border-radius: 15px 15px 0 15px; max-width: 80%; border: 1px solid var(--border); font-size:0.95rem;">${val}</div>`;
-  inp.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(() => {
-    msgs.innerHTML += `<div style="align-self: flex-start; background: var(--ai-bg); padding: 15px 20px; border-radius: 15px 15px 15px 0; max-width: 80%; border: 1px solid var(--border-s); color: var(--gold-lt); font-size: 0.9rem;">The Shaykh is analyzing your inquiry based on Hanafi Fiqh...</div>`;
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 600);
-}
-
-function ask(q) { document.getElementById('inp').value = q; sendMsg(); }
+});
 </script>
 </body>
 </html>
